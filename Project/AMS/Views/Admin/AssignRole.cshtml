@@ -1,0 +1,733 @@
+﻿@model List<AMS.Models.mvcUserRoleViewModel>
+@{
+    var UserID = ViewBag.UserID;
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<br />
+<style>
+    .toggle-label {
+        position: relative;
+        display: block;
+        width: 90px;
+        height: 30px;
+        /*margin-top: 8px;*/
+        /*border: 1px solid #808080;*/
+    }
+
+        .toggle-label input[type=checkbox] {
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+            height: 30px;
+        }
+
+            .toggle-label input[type=checkbox] + .back {
+                position: absolute;
+                width: 100px;
+                height: 30px;
+                /*background: red;*/
+                background-color: #dddddd;
+                color: #918f8c;
+                /*background-color: #5D34C2; color: #FFFFFF;*/
+                transition: background 150ms linear;
+                border-radius: 20px;
+            }
+
+            .toggle-label input[type=checkbox]:checked + .back {
+                background-color: #dddddd;
+                color: white;
+                /*green*/
+                /*background: #fff;*/
+            }
+
+            .toggle-label input[type=checkbox] + .back .toggle {
+                display: block;
+                position: absolute;
+                content: ' ';
+                background-color: #5D34C2;
+                color: #FFFFFF;
+                width: 50%;
+                height: 30px;
+                transition: margin 150ms linear;
+                border: 1px solid #808080;
+                border-radius: 20px;
+            }
+
+            .toggle-label input[type=checkbox]:checked + .back .toggle {
+                margin-left: 50px;
+            }
+
+        .toggle-label .label {
+            display: block;
+            position: absolute;
+            width: 50%;
+            color: #ddd;
+            line-height: 25px;
+            text-align: center;
+            font-size: 1em;
+        }
+
+            .toggle-label .label.on {
+                left: 0px;
+            }
+
+            .toggle-label .label.off {
+                right: 0px;
+            }
+
+        .toggle-label input[type=checkbox]:checked + .back .label.on {
+            color: #fff;
+        }
+
+        .toggle-label input[type=checkbox] + .back .label.off {
+            color: #fff;
+        }
+
+        .toggle-label input[type=checkbox]:checked + .back .label.off {
+            color: #ddd;
+        }
+</style>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    Assign Roles
+                </h3>
+                <button onclick="saveConfirmInvoice()" type="button" class="btn btn-outline-success float-sm-right " id="">
+                    <i class="fas fa-plus"></i> Assign Roles
+                </button>
+                <a class="btn btn-outline-info float-sm-right mr-2" href="/Admin/CreateUser"><i class="fas fa-arrow-left"></i> Back To User</a>
+
+            </div>
+            <div class="card-body login-card-body">
+                <div class="form-inline row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <span class="form-control ml-2">@ViewBag.user.UserName</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <span class="form-control ml-2">@ViewBag.user.Email</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <span class="form-control ml-2">@ViewBag.user.PhoneNumber</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-body">
+                <table id="myTable" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                Sr#
+                            </th>
+                            <th>
+                                Role Name
+                            </th>
+                            <th>
+                                <input id="checkAll" class="RegisterChkboxtop" type="checkbox" /> all?
+                            </th>
+                            <th>
+                                Details
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int counter = 1;
+                            for (int i = 0; i < Model.Count; i++)
+                            {
+                                <tr id="@Model[i].RoleID">
+                                    <td>
+                                        @counter
+                                    </td>
+                                    <td>
+                                        <input readonly id="@Model[i].RoleID" type="text" name="name" value="@Model[i].RoleName" class="form-control" />
+                                    </td>
+                                    <td>
+                                        @{
+                                            if (Model[i].IsSelected == true)
+                                            {
+                                                <label class='toggle-label'>
+                                                    <input id="@Model[i].RoleID" onclick='toggle(this)' checked class="RegisterChkbox" type='checkbox' name="RegisterChkbox1" />
+                                                    <span class='back'>
+                                                        <span class='toggle'></span>
+                                                        <span class='label on'>OFF</span>
+                                                        <span class='label off'>ON</span>
+                                                    </span>
+                                                </label>
+                                            }
+                                            else
+                                            {
+                                                <label class='toggle-label'>
+                                                    <input id="@Model[i].RoleID" onclick='toggle(this)' class="RegisterChkbox" type='checkbox' name="RegisterChkbox1" />
+                                                    <span class='back'>
+                                                        <span class='toggle'></span>
+                                                        <span class='label on'>OFF</span>
+                                                        <span class='label off'>ON</span>
+                                                    </span>
+                                                </label>
+                                            }
+
+                                        }
+
+
+                                    </td>
+                                    <td>
+                                        @if (Model[i].RoleName == "Admin")
+                                        {
+                                            <label class="badge bg-success">Can Manage Whole Application</label>
+                                        }
+                                        else if (Model[i].RoleName == "Delete Record")
+                                        {
+                                            <label class="badge bg-danger">Can Delete Any Record</label>
+                                        }
+                                        else if (Model[i].RoleName == "Update Record")
+                                        {
+                                            <label class="badge bg-info">Can Update Any Record</label>
+                                        }
+                                        else if (Model[i].RoleName == "Add New Record")
+                                        {
+                                            <label class="badge bg-warning">Can Add New Record</label>
+                                        }
+                                        else
+                                        {
+                                            <span>Can Manage @Model[i].RoleName</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @{
+                                            if (Model[i].IsSelected == true)
+                                            {
+                                                <button onclick='removeRole(this.id)' id="@Model[i].RoleID" class="btn btn-danger btn-sm">Remove Role</button>
+                                            }
+                                        }
+
+                                    </td>
+                                </tr>
+
+                                counter++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+
+
+    <script>
+        var TotalInvoiceNoWithArray = [];
+        var StudentObtainedMarks = [];
+
+        $("#checkAll").change(function () {
+
+            TotalInvoiceNoWithArray = ArrNoDupe(TotalInvoiceNoWithArray);
+
+            if (this.checked) {
+                $(".RegisterChkbox").each(function () {
+                    this.checked = true;
+                    TotalInvoiceNoWithArray.push(this.id);
+                });
+            } else {
+
+                $(".RegisterChkbox").each(function () {
+                    this.checked = false;
+
+                    var itemtoRemove = TotalInvoiceNoWithArray[this.id];
+                    TotalInvoiceNoWithArray.splice($.inArray(itemtoRemove, TotalInvoiceNoWithArray), 1);
+                });
+            }
+        });
+
+        function toggle(source) {
+
+            var ID = source.id;
+            var defaultCheck = source.checked;
+
+            if (defaultCheck == true) {
+                var isAllChecked = 0;
+
+                $(".RegisterChkbox").each(function () {
+                    if (!this.checked)
+                        isAllChecked = 1;
+                });
+
+                if (isAllChecked == 0) {
+                    $("#checkAll").prop("checked", true);
+                }
+
+                TotalInvoiceNoWithArray.push(ID);
+            }
+            else {
+                $("#checkAll").prop("checked", false);
+                var y = ArrNoDupe(TotalInvoiceNoWithArray);
+
+                var removeItem = source.id;
+                y = jQuery.grep(y, function (value) {
+                    return value != removeItem;
+                });
+
+                TotalInvoiceNoWithArray = y;
+            }
+
+        }
+
+        function saveConfirmInvoice() {
+
+
+            TotalInvoiceNoWithArray = ArrNoDupe(TotalInvoiceNoWithArray);
+
+            if (TotalInvoiceNoWithArray.length > 0) {
+                for (var i = 0; i < TotalInvoiceNoWithArray.length; i++) { // 2
+                    var InvoiceNo = TotalInvoiceNoWithArray[i];
+
+                    var obtainerMarks = $("input[type=text][id="+InvoiceNo+"]").val();
+                    if (obtainerMarks == "") {
+                        StudentObtainedMarks.push(null);
+                    } else {
+                        StudentObtainedMarks.push(obtainerMarks);
+                    }
+                }
+
+                UpdateConfirmInvoice(TotalInvoiceNoWithArray, StudentObtainedMarks);
+            } else {
+                $('.ui-pnotify').remove();
+                new PNotify({
+                    title: 'INFO!',
+                    text: "Please Check at least one",
+                    type: 'info',
+                    animation: 'slide',
+                    delay: 3000,
+                    top: "500px",
+                    min_height: "16px",
+                    animate_speed: 400,
+                    text_escape: true,
+                    //nonblock: {
+                    //    nonblock: true,
+                    //    nonblock_opacity: .1
+                    //},
+                    styling: 'bootstrap3',
+                });
+            }
+
+        }
+
+        function UpdateConfirmInvoice(InvNo, Paid) {
+            var table = $('#myTable').DataTable();
+            var UserID = '@UserID';
+            $.ajax({
+                type: "POST",
+                url: "/Admin/AssignRole",
+                data: {
+                    UserID: UserID,
+                    InvNo: InvNo,
+                    roleName: Paid
+                },
+                success: function (data) {
+
+                    if (data.success == true) {
+                        //$('#myTable').DataTable().destroy();
+
+                        for (var i = 0; i < InvNo.length; i++) {
+
+                            index = table.row('#' + InvNo[i]);
+                            var temp = table.row(index[0]).data();
+                            temp[2] = "<label class='toggle-label'><input checked id='" + InvNo[i] + "' onclick='toggle(this)' class='RegisterChkbox' type='checkbox' name='RegisterChkbox1' /><span class='back'> <span class='toggle'></span><span class='label on'>OFF</span><span class='label off'>ON</span></span></label>";
+                            temp[4] = '<button onclick="removeRole(this.id)" id="' + InvNo[i] + '" class="btn btn-danger btn-sm">Remove Role</button>';
+
+                            table.row(index[0]).data(temp).draw();
+                        }
+
+                        //newRollNo = [];
+                        TotalInvoiceNoWithArray = [];
+                        StudentObtainedMarks = [];
+
+                        $('.ui-pnotify').remove();
+                        // mydatatble();
+                        new PNotify({
+                            title: 'SUCCESS!',
+                            text: data.message,
+                            type: 'success',
+                            animation: 'slide',
+                            delay: 3000,
+                            top: "500px",
+                            min_height: "16px",
+                            animate_speed: 400,
+                            text_escape: true,
+                            //nonblock: {
+                            //    nonblock: true,
+                            //    nonblock_opacity: .1
+                            //},
+                            styling: 'bootstrap3',
+                        });
+                    } else {
+                        $("table tbody").append("<tr>" +
+                            "<td style='text-align:center; font-weight:500' colspan='9'>No Data Found, Invoice has already been Received</td>" +
+                            "</tr > ");
+                    }
+
+                }
+            })
+        }
+
+
+        $("#AddBtn").click(function () {
+            resetDatafromFrom();
+
+            $("#btnSave").show();
+            $("#btnUpdate").hide();
+
+            $(".modal-title").text("New User Information");
+            $("#myModal").modal('show');
+            $(".modal-header").removeClass('bg-primary');
+            $(".modal-header").addClass('bg-success');
+
+        });
+
+
+        $("#btnUpdate").click(function (e) {
+
+            if ($("#myForm").valid()) {  //<<< I was missing this check
+                var oForm = document.forms["myForm"];
+                //var CourseType = $('#Course_Type option:selected').text();
+
+                var ajaxConfig = {
+                    type: "POST",
+                    url: oForm.action,
+                    data: new FormData(oForm),
+                    success: function (data) {
+                        if (data.success) {
+                            var table = $("#myTable").DataTable();
+
+                            $('#myModal').modal('hide');
+
+                            index = table.row('#' + oForm["Stream_ID"].value); //1234126
+                            var temp = table.row(index[0]).data();
+
+                            if (oForm["Stream_Status"].value == "1") {
+                                temp[1] = oForm["Stream_Name"].value;
+                                temp[2] = '<label class="badge bg-success">Active</label>';
+                            } else {
+                                temp[1] = oForm["Stream_Name"].value;
+                                temp[2] = '<label class="badge bg-danger">Closed</label>';
+                            }
+
+                            table.row(index[0]).data(temp).draw();
+
+
+                            $('.ui-pnotify').remove();
+                            new PNotify({
+                                title: 'SUCCESS!',
+                                text: data.message,
+                                type: 'success',
+                                animation: 'slide',
+                                delay: 3000,
+                                top: "500px",
+                                min_height: "16px",
+                                animate_speed: 400,
+                                text_escape: true,
+                                //nonblock: {
+                                //    nonblock: true,
+                                //    nonblock_opacity: .1
+                                //},
+                                styling: 'bootstrap3',
+                            });
+                        }
+                        else {
+                            swal("Error!", data.message, "error");
+                        }
+                    }
+                }
+                if ($("form").attr('enctype') == "multipart/form-data") {
+                    ajaxConfig["contentType"] = false,
+                        ajaxConfig["processData"] = false;
+                }
+                $.ajax(ajaxConfig);
+                return false;
+            }
+
+        });
+        var progid = [];
+        $("#btnAssign").click(function () {
+            progid = [];
+            var oForm = document.forms["myForm"];
+
+            if ($("#myForm").valid()) {  //<<< I was missing this check
+                var table = $("#myTable").DataTable();
+
+                var ajaxConfig = {
+                    type: "POST",
+                    url: oForm.action,
+                    data: new FormData(oForm),
+                    success: function (data) {
+
+                        if (data.success) {
+
+                            $('.ui-pnotify').remove();
+                            new PNotify({
+                                title: 'SUCCESS!',
+                                text: data.message,
+                                type: 'success',
+                                animation: 'slide',
+                                delay: 3000,
+                                top: "500px",
+                                min_height: "16px",
+                                animate_speed: 400,
+                                text_escape: true,
+                                //nonblock: {
+                                //    nonblock: true,
+                                //    nonblock_opacity: .1
+                                //},
+                                styling: 'bootstrap3',
+                            });
+                        }
+                        else {
+
+                            swal("Error!", data.message, "error");
+                        }
+                    }
+                }
+                if ($("form").attr('enctype') == "multipart/form-data") {
+                    ajaxConfig["contentType"] = false,
+                        ajaxConfig["processData"] = false;
+                }
+                $.ajax(ajaxConfig);
+                return false;
+            }
+        });
+
+        function removeRole(id) {
+            var table = $('#myTable').DataTable();
+            var roleName = $("input[type=text][id=" + id + "]").val();
+
+
+            swal({
+                title: "Are you sure you want to remove role?",
+                //text: "You will not be able to recover this Data!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel plx!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    var Role = id;
+                    //var userid = '@ViewBag.UserID';
+                    var userid = '@UserID';
+                    //var obtainerMarks = $("input[type=text][id=" + InvoiceNo + "]").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/RemoveRoleOfEmployee",
+                        data: {
+                            roleName: roleName,
+                            userid: userid
+                        },
+                        beforeSend: function () {
+                            swal({
+                                title: " ",
+                                text: "Please Wait",
+                                imageUrl: "/Logo/ajax-Load.gif",
+                                showCancelButton: false,
+                                showConfirmButton: false
+                            });
+                        },
+                        success: function (data) {
+
+                            if (data.success == true) {
+
+                                index = table.row('#' + id);
+                                var temp = table.row(index[0]).data();
+                                temp[2] = "<label class='toggle-label'><input id='" + id +"' onclick='toggle(this)' class='RegisterChkbox' type='checkbox' name='RegisterChkbox1' /><span class='back'> <span class='toggle'></span><span class='label on'>OFF</span><span class='label off'>ON</span></span></label>";
+                                temp[4] = '';
+
+                                table.row(index[0]).data(temp).draw();
+
+                                swal({
+                                    title: "Deleted",
+                                    text: data.message,
+                                    type: "success",
+                                    showCancelButton: false,
+                                    showConfirmButton: true,
+                                    confirmButtonText: 'OK',
+                                    cancelButtonText: "OK",
+                                });
+                            } else {
+
+                                swal({
+                                    title: "ERROR",
+                                    text: data,
+                                    type: "error",
+                                    showCancelButton: false,
+                                    showConfirmButton: true
+                                });
+                            }
+                        },
+                        error: function (result) {
+                            swal({
+                                title: "EXCEPTION",
+                                text: result,
+                                type: "info",
+                                showCancelButton: false,
+                                showConfirmButton: true
+                            });
+                        }
+                    });
+
+                } else {
+                    swal("Cancelled", "Yor Data is Safe :", "error");
+                }
+            });
+
+
+        }
+
+        function resetDatafromFrom() {
+            // $("#ImagePreview").attr('src', '/AdminAssets/dist/img/avatar5.png');//e.target.result);
+            //$("#Prog_ID").prop('readonly', false);
+            $("#Stream_ID").prop('readonly', true);
+            $("#myForm")[0].reset();
+            $(".form-control.is-invalid").removeClass('is-invalid');
+
+
+        }
+
+        $(document).ready(function () {
+
+
+            $("#btnUpdate").hide();
+
+            $('#myForm').validate({
+                rules: {
+                    Course_ID: {
+                        required: true,
+                    },
+                    //Email: {
+                    //    required: true,
+                    //    Email: true,
+                    //},
+                    //password: {
+                    //    required: true,
+                    //    minlength: 5
+                    //},
+                    //terms: {
+                    //    required: true
+                    //},
+                },
+                messages: {
+                    RoleName: {
+                        required: "Please Select Role"
+                    },
+                    Stream_Name: {
+                        required: "Please Enter Stream Name"
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+        });
+
+        $(function () {
+            $("#myTable").DataTable({
+                //"paging": false,
+                //searching: false,                   // for disable search box
+                select: {
+                    info: false
+                },
+
+                //"order": [4, "DESC"],
+                // "orderable": false,
+                "columnDefs": [
+                    { "targets": [2], "orderable": false },
+                    { "targets": [4], "orderable": false},
+                    { "width": "100px", "targets": [4], "orderable": false },
+                ],
+                dom: 'lBfrtip',
+                language: {
+                    search: "", // for hide label of search
+                    searchPlaceholder: "Search Stream", // place holder of search box
+                },
+                responsive: true,
+                //select: 'single',
+                //select: true,                       // for Select Row
+                //bDestroy: true,                     // this will disable table when new load data
+                "bLengthChange": false,           //  for Show more Entries
+                //scrollY: '20vh',
+                "sScrollX": "100%",
+                "sScrollXInner": "100%",
+                "bScrollCollapse": true,
+                "processing": true,
+                "bPaginate": false,
+                "sPaginationType": "full_numbers",
+                //"langauge": {
+                //    "QueryTable": "No data found, Please click on <b>Add New </b> Button"
+                //},
+                "oLanguage": {
+                    "sEmptyTable": "No data found, Please click on <b>+ Add New Income Stream</b> Button"
+                }
+            });
+
+            $('input[type="search"]').addClass('form-control'); // <-- add this line
+
+            //$("#myTable").DataTable({
+            //    "responsive": true,
+            //    "autoWidth": false,
+            //});
+
+            //$('#example2').DataTable({
+            //    "paging": true,
+            //    "lengthChange": false,
+            //    "searching": false,
+            //    "ordering": true,
+            //    "info": true,
+            //    "autoWidth": false,
+            //    "responsive": true,
+            //});
+        });
+
+
+        function ArrNoDupe(a) {
+            var temp = {};
+            for (var i = 0; i < a.length; i++)
+                temp[a[i]] = true;
+            var r = [];
+            for (var k in temp)
+                r.push(k);
+            return r;
+        }
+
+    </script>
+
+
+
+}
+

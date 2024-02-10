@@ -1,0 +1,51 @@
+﻿@model AMS.Models.mvcModelDailyExpens
+@{ Layout = null; }
+
+@using (Html.BeginForm("AddOrEdit", "EXP", FormMethod.Post,
+    new { enctype = "multipart/form-data", id = "myForm", @class = "form-horizontal", role = "form", autocomplete = "off" }))
+{
+<div class="row">
+    @*@Html.HiddenFor(x => x.Exp_Code)*@
+
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Exp_Code, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Exp_Code, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Agent ID" } })
+            @Html.ValidationMessageFor(model => model.Exp_Code, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Account, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Agent Name", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "150" } })
+            @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Contact_Name, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Contact_Name, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Agent Name", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "150" } })
+            @Html.ValidationMessageFor(model => model.Contact_Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @*<div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Cat_ID, htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.Cat_ID,
+           new List<SelectListItem> {new SelectListItem { Value = "" , Text = "--Select Category--",Selected=true },
+                                            new SelectListItem { Value = "1" , Text = "AP" },
+                                            new SelectListItem { Value = "2" , Text = "Daily Expenses" }}, new { @class = "form-control select2", @required = "required" })
+            @Html.ValidationMessageFor(model => model.Cat_ID, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+
+</div>
+                <button type="submit" id="btnSave" class="btn btn-success">Add</button>
+                                <button type="submit" id="btnUpdate" class="btn btn-primary">Update</button>}
+
+
+<script>
+    var NextID = '@ViewBag.NextID';
+
+</script>
+

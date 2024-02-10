@@ -1,0 +1,65 @@
+﻿@model AMS.Models.mvcModelAirLine
+@{ Layout = null; }
+
+@using (Html.BeginForm("AddOrEdit", "AP", FormMethod.Post,
+    new { enctype = "multipart/form-data", id = "myForm", @class = "form-horizontal", role = "form", autocomplete = "off" }))
+{
+<div class="row">
+    @*@Html.HiddenFor(x => x.Air_ID)*@
+    <div class="col-sm-12">
+        <div class="form-group">
+
+            @Html.LabelFor(model => model.Air_ID, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Air_ID, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Payable Code" } })
+            @Html.ValidationMessageFor(model => model.Air_ID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Payable_Code, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Payable_Code, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Payable Code" } })
+            @Html.ValidationMessageFor(model => model.Payable_Code, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Payable_Supplier, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Payable_Supplier, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Payable Supplier", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "50" } })
+            @Html.ValidationMessageFor(model => model.Payable_Supplier, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ticket_Commission, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Ticket_Commission, new { htmlAttributes = new { @type = "number", @value = "0", @oninput = "this.value = Math.abs(this.value)", @class = "form-control", @required = "required", placeholder = "Enter Ticket Commission", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "6" } })
+            @Html.ValidationMessageFor(model => model.Ticket_Commission, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.VAT, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.VAT, new { htmlAttributes = new { @type = "number", @value = "0", @oninput = "this.value = Math.abs(this.value)", @class = "form-control", @required = "required", placeholder = "Enter VAT %", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "6" } })
+            @Html.ValidationMessageFor(model => model.VAT, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @*<div class="col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Cat_ID, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.Cat_ID,
+                                                                                                                                                                                                           new List<SelectListItem> {new SelectListItem { Value = "" , Text = "--Select Category--",Selected=true },
+                                                new SelectListItem { Value = "1" , Text = "AP" },
+                                                new SelectListItem { Value = "2" , Text = "Daily Expenses" }}, new { @class = "form-control select2", @required = "required" })
+                @Html.ValidationMessageFor(model => model.Cat_ID, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+</div>
+                <button type="submit" id="btnSave" class="btn btn-success">Add</button>
+                                <button type="submit" id="btnUpdate" class="btn btn-primary">Update</button>}
+
+
+
+<script>
+    var NextID = '@ViewBag.NextID';
+
+</script>

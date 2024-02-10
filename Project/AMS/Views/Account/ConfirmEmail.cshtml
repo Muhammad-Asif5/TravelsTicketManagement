@@ -1,0 +1,61 @@
+﻿
+@using AMS.Models
+@model LoginViewModel
+@{
+    Layout = null; // "~/Views/Shared/_Admin.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="refresh" content="2;url=/Account/Login" />
+    <title>Brillant Travel | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Font Awesome -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/Logo/logo.png" />
+    <link href="~/AdminAssets/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- icheck bootstrap -->
+
+    <link href="~/AdminAssets/plugins/icheck-bootstrap/icheck-bootstrap.min.css" rel="stylesheet" />
+    <!-- Theme style -->
+
+    <link href="~/AdminAssets/dist/css/adminlte.min.css" rel="stylesheet" />
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition login-page">
+    <div>
+        <div>
+            <div class="lockscreen-logo" style="margin-top:100px;">
+                <a href="/Account/Login"><b>Brillant </b>Travel</a>
+            </div>
+            <hgroup class="title">
+                <p>
+                    Thank you for confirming your email. Please @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+                </p>
+            </hgroup>
+        </div>
+    </div>
+
+    <script src="~/AdminAssets/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+
+    <script src="~/AdminAssets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+
+    <script src="~/AdminAssets/dist/js/adminlte.min.js"></script>
+
+</body>
+</html>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

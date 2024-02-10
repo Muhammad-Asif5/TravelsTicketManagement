@@ -1,0 +1,27 @@
+﻿
+
+
+.warning {
+    background-color: #F99 !important;
+}
+
+.lightRed {
+    background-color: #ff8080 !important
+}
+
+    .lightRed a {
+        color: #fff;
+        font-weight: bold;
+    }
+
+.red {
+    background-color: #f00;
+}
+.table-hover tbody tr:hover {
+    color: #ffffff;
+    background-color: rgb(56 169 166);
+}
+
+th {
+    white-space: nowrap;
+}

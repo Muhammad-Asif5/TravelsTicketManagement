@@ -1,0 +1,893 @@
+CREATE TABLE AcCat(
+	CatID smallint NOT NULL,
+	CatName nvarchar(20) NULL
+);
+Alter table AcCat 
+add constraint pk_AcCat_CatID primary key(CatID);
+
+
+CREATE TABLE Accounts(
+	AccountID int NOT NULL,
+	AcNumber int NULL,
+	AcName nvarchar(20) NULL,
+	CatID smallint NULL,
+	Balance_Amt money NULL
+);
+Alter table Accounts 
+add constraint pk_Accounts_AccountID primary key(AccountID);
+
+alter table Accounts
+add constraint fk_Accounts_CatID foreign key(CatID)
+references AcCat(CatID);
+
+
+CREATE TABLE Agent(
+	Agent_ID int NOT NULL,
+	Agent_Name varchar(50) NULL,
+	Agent_Status char(1) NULL
+);
+Alter table Agent 
+add constraint pk_Agent_Agent_ID primary key(Agent_ID);
+
+CREATE TABLE Expenses_Category(
+	CategoryId int NOT NULL,
+	Payable_Code varchar(50) NULL
+);
+Alter table Expenses_Category
+add constraint pk_Expenses_Category_CategoryId primary key(CategoryId);
+
+
+CREATE TABLE AirLines(
+	Air_ID char(2) NOT NULL,
+	Payable_Code varchar(50) NOT NULL,
+	Payable_Supplier varchar(50) NULL,
+	Ticket_Commission decimal(5, 2) NULL,
+	VAT decimal(5, 2) NULL,
+	Cat_ID int NOT NULL
+);
+Alter table AirLines 
+add constraint pk_AirLines_Air_ID primary key(Air_ID);
+
+alter table AirLines
+add constraint fk_AirLines_Cat_ID foreign key(Cat_ID)
+references Expenses_Category(CategoryId);
+
+
+CREATE TABLE Bank(
+	Bank_ID int NOT NULL,
+	Bank_Name varchar(50) NULL,
+	Status bit NULL
+);
+Alter table Bank 
+add constraint pk_Bank_Bank_ID primary key(Bank_ID);
+
+
+CREATE TABLE TicketClass(
+	TicketClass_ID int NOT NULL,
+	Ticket_Class varchar(50) NULL,
+	Ticket_Class_Status char(1) NULL
+);
+Alter table TicketClass
+add constraint pk_TicketClass_TicketClass_ID primary key(TicketClass_ID);
+
+
+CREATE TABLE Customers(
+	Cust_ID int NOT NULL,
+	Lookup varchar(200) NULL,
+	Cust_Code varchar(200) NULL,
+	Company_Name varchar(200) NULL,
+	Contact_Name varchar(200) NULL,
+	Address varchar(max) NULL,
+	City varchar(150) NULL,
+	State varchar(150) NULL,
+	ZIP_Code varchar(50) NULL,
+	Phone varchar(50) NULL,
+	Email varchar(200) NULL,
+	Fax varchar(200) NULL
+);
+Alter table Customers
+add constraint pk_Customers_Cust_ID primary key(Cust_ID);
+
+CREATE TABLE DailyExpenses(
+	Exp_Code char(3) NOT NULL,
+	Account varchar(150) NULL,
+	Contact_Name varchar(150) NULL,
+	Cat_ID int NOT NULL
+);
+Alter table DailyExpenses
+add constraint pk_DailyExpenses_Exp_Code primary key(Exp_Code);
+
+alter table DailyExpenses
+add constraint fk_DailyExpenses_Cat_ID foreign key(Cat_ID)
+references Expenses_Category(CategoryId);
+
+
+
+
+CREATE TABLE Income_Stream(
+	Stream_ID char(2) NOT NULL,
+	Stream_Name varchar(50) NULL,
+	Stream_Status char(1) NULL
+);
+Alter table Income_Stream
+add constraint pk_Income_Stream_Stream_ID primary key(Stream_ID);
+
+
+CREATE TABLE Invoice_Details(
+	Invoice_Number int IDENTITY(1200001,1) NOT NULL,
+	Invoice_Date date NULL,
+	Ticket_Number varchar(50) NULL,
+	Description varchar(50) NULL,
+	Routing varchar(50) NULL,
+	Departure_Date datetime NULL,
+	Arrival_Date datetime NULL,
+	Paid decimal(8, 2) NULL CONSTRAINT [DF_Invoice_Details_Paid]  DEFAULT ((0)),
+	Invoice_Amount decimal(8, 2) NULL,
+	Base_Fare decimal(8, 2) NULL,
+	Total_Value decimal(8, 2) NULL,
+	Tax decimal(8, 2) NULL,
+	Other_Cost decimal(8, 2) NULL,
+	Stream_ID char(2) NULL,
+	Net_Payable decimal(8, 2) NULL,
+	Paid2 decimal(8, 2) NULL CONSTRAINT [DF_Invoice_Details_Paid2]  DEFAULT ((0)),
+	Other_Ref varchar(200) NULL,
+	Cust_Code int NULL,
+	Payable_Code char(2) NULL,
+	Agent_ID int NULL,
+	Ticket_Commission decimal(8, 2) NULL,
+	Commission_Amount  decimal(8, 2) NULL,
+	VAT decimal(8, 2) NULL,
+	VAT_Amount decimal(8, 2) NULL,
+	TicketClass_ID int NULL,
+	Pay_Status char(1) NULL CONSTRAINT [Invoice_Details_Pay_Status]  DEFAULT (N'0'),
+	ReceivePay_Status char(1) NULL,
+	Ticket_Status char(2) NULL,
+	Customer_Penalty decimal(8, 2) NULL,
+	AirLine_Penalty decimal(8, 2) NULL,
+	User_Name nvarchar(256) NULL
+
+);
+
+Alter table Invoice_Details
+add constraint pk_Invoice_Details_Invoice_Number primary key(Invoice_Number);
+
+alter table Invoice_Details
+add constraint fk_Invoice_Details_Stream_ID foreign key(Stream_ID)
+references Income_Stream(Stream_ID);
+
+alter table Invoice_Details
+add constraint fk_Invoice_Details_Cust_Code foreign key(Cust_Code)
+references Customers(Cust_ID);
+
+alter table Invoice_Details
+add constraint fk_Invoice_Details_Payable_Code foreign key(Payable_Code)
+references AirLines(Air_ID);
+
+alter table Invoice_Details
+add constraint fk_Invoice_Details_Agent_ID foreign key(Agent_ID)
+references Agent(Agent_ID);
+
+alter table Invoice_Details
+add constraint fk_Invoice_Details_TicketClass_ID foreign key(TicketClass_ID)
+references TicketClass(TicketClass_ID);
+
+
+CREATE TABLE Voucher(
+	VID int IDENTITY(10001,1) NOT NULL,
+	Bank_ID int NULL,
+	Bank_Cash_Receiveable char(1) NOT NULL,
+	Payable_Code char(2) NULL,
+	Exp_Code char(3) NULL,
+	Cust_Code int NULL,
+	Received_Paid_Date date NULL,
+	AccountID int NULL,
+	DrCr nvarchar(2) NULL,
+	Amount money NULL,
+	Narration varchar(max) NULL,
+	Received_Paid varchar(50) NULL,
+	User_Name nvarchar(256) NULL
+);
+Alter table Voucher
+add constraint pk_Voucher_VID primary key(VID);
+
+alter table Voucher
+add constraint fk_Voucher_Bank_ID foreign key(Bank_ID)
+references Bank(Bank_ID);
+
+alter table Voucher
+add constraint fk_Voucher_Payable_Code foreign key(Payable_Code)
+references AirLines(Air_ID);
+
+alter table Voucher
+add constraint fk_Voucher_Exp_Code foreign key(Exp_Code)
+references DailyExpenses(Exp_Code);
+
+
+alter table Voucher
+add constraint fk_Voucher_Cust_Code foreign key(Cust_Code)
+references Customers(Cust_ID);
+
+alter table Voucher
+add constraint fk_Voucher_AccountID foreign key(AccountID)
+references Accounts(AccountID);
+
+
+
+
+GO
+
+CREATE VIEW V_Payable
+AS
+SELECT        dbo.Invoice_Details.Invoice_Number, dbo.Invoice_Details.Invoice_Date, dbo.Invoice_Details.Ticket_Number, dbo.Invoice_Details.Description, dbo.Invoice_Details.Routing, dbo.Invoice_Details.Net_Payable, 
+                         dbo.Invoice_Details.Paid2, SUM(dbo.Invoice_Details.Net_Payable - dbo.Invoice_Details.Paid2) AS Balance, dbo.AirLines.Payable_Supplier, dbo.AirLines.Payable_Code, dbo.AirLines.Air_ID, 
+                         dbo.Invoice_Details.Pay_Status
+FROM            dbo.Invoice_Details INNER JOIN
+                         dbo.AirLines ON dbo.Invoice_Details.Payable_Code = dbo.AirLines.Air_ID
+GROUP BY dbo.Invoice_Details.Invoice_Number, dbo.Invoice_Details.Invoice_Date, dbo.Invoice_Details.Ticket_Number, dbo.Invoice_Details.Description, dbo.Invoice_Details.Routing, dbo.Invoice_Details.Net_Payable, 
+                         dbo.Invoice_Details.Paid2, dbo.AirLines.Payable_Supplier, dbo.AirLines.Payable_Code, dbo.AirLines.Air_ID, dbo.Invoice_Details.Pay_Status
+
+GO
+
+CREATE VIEW V_Receiveable
+AS
+SELECT        dbo.Invoice_Details.Invoice_Number, dbo.Invoice_Details.Invoice_Date, dbo.Invoice_Details.Ticket_Number, dbo.Invoice_Details.Description, dbo.Invoice_Details.Routing, dbo.Invoice_Details.Invoice_Amount, 
+                         dbo.Invoice_Details.Paid, SUM(dbo.Invoice_Details.Invoice_Amount - dbo.Invoice_Details.Paid) AS Balance, dbo.Customers.Cust_Code, dbo.Customers.Company_Name, dbo.Customers.Contact_Name, 
+                         dbo.Customers.Address, dbo.Customers.Phone, dbo.Customers.Email, dbo.Customers.Cust_ID, dbo.Invoice_Details.ReceivePay_Status
+FROM            dbo.Invoice_Details INNER JOIN
+                         dbo.Customers ON dbo.Invoice_Details.Cust_Code = dbo.Customers.Cust_ID
+GROUP BY dbo.Invoice_Details.Invoice_Number, dbo.Invoice_Details.Invoice_Date, dbo.Invoice_Details.Ticket_Number, dbo.Invoice_Details.Description, dbo.Invoice_Details.Routing, dbo.Invoice_Details.Paid, 
+                         dbo.Invoice_Details.Invoice_Amount, dbo.Customers.Cust_Code, dbo.Customers.Company_Name, dbo.Customers.Contact_Name, dbo.Customers.Address, dbo.Customers.Phone, dbo.Customers.Email, 
+                         dbo.Customers.Cust_ID, dbo.Invoice_Details.ReceivePay_Status
+
+GO
+CREATE PROCEDURE sp_get_All_Invoice
+	-- Add the parameters for the stored procedure here
+	@Dfrom datetime= NULL, @Dto Datetime= NULL, @PayStatus CHAR(1)
+
+AS
+
+BEGIN
+IF @Dfrom IS NULL AND @Dto IS NULL
+BEGIN
+	SELECT        Invoice_Details.Invoice_Number, Invoice_Details.ReceivePay_Status, Invoice_Details.Invoice_Date, Invoice_Details.Ticket_Number, Invoice_Details.Description, Invoice_Details.Routing, 
+                         Invoice_Details.Departure_Date, Invoice_Details.Arrival_Date, Invoice_Details.Paid, Invoice_Details.Invoice_Amount, Invoice_Details.Base_Fare, Invoice_Details.Tax, Invoice_Details.Other_Cost, 
+                         Invoice_Details.Net_Payable, Invoice_Details.Paid2, Invoice_Details.Other_Ref, Customers.Cust_Code, AirLines.Payable_Code, AirLines.Payable_Supplier, Agent.Agent_Name, 
+                         Invoice_Details.Ticket_Commission, Invoice_Details.Commission_Amount, Invoice_Details.VAT, Invoice_Details.VAT_Amount, TicketClass.Ticket_Class, Invoice_Details.Pay_Status, 
+                         Invoice_Details.Ticket_Status, Invoice_Details.Stream_ID,
+						  Invoice_Details.Agent_ID, Invoice_Details.TicketClass_ID, Invoice_Details.AirLine_Penalty, Invoice_Details.Customer_Penalty,
+						  Invoice_Details.User_Name
+FROM            Agent INNER JOIN
+                         Invoice_Details ON Agent.Agent_ID = Invoice_Details.Agent_ID INNER JOIN
+                         TicketClass ON Invoice_Details.TicketClass_ID = TicketClass.TicketClass_ID INNER JOIN
+                         AirLines ON Invoice_Details.Payable_Code = AirLines.Air_ID INNER JOIN
+                         Customers ON Invoice_Details.Cust_Code = Customers.Cust_ID
+
+END
+
+ELSE IF @Dfrom IS NOT NULL AND @Dto IS NOT NULL
+BEGIN
+
+	SELECT        Invoice_Details.Invoice_Number, Invoice_Details.ReceivePay_Status, Invoice_Details.Invoice_Date, Invoice_Details.Ticket_Number, Invoice_Details.Description, Invoice_Details.Routing, 
+                         Invoice_Details.Departure_Date, Invoice_Details.Arrival_Date, Invoice_Details.Paid, Invoice_Details.Invoice_Amount, Invoice_Details.Base_Fare, Invoice_Details.Tax, Invoice_Details.Other_Cost, 
+                         Invoice_Details.Net_Payable, Invoice_Details.Paid2, Invoice_Details.Other_Ref, Customers.Cust_Code, AirLines.Payable_Code, AirLines.Payable_Supplier, Agent.Agent_Name, 
+                         Invoice_Details.Ticket_Commission, Invoice_Details.Commission_Amount, Invoice_Details.VAT, Invoice_Details.VAT_Amount, TicketClass.Ticket_Class, Invoice_Details.Pay_Status, 
+                         Invoice_Details.Ticket_Status, Invoice_Details.Stream_ID, Invoice_Details.Agent_ID, Invoice_Details.TicketClass_ID, Invoice_Details.AirLine_Penalty, Invoice_Details.Customer_Penalty,
+						 Invoice_Details.User_Name
+FROM            Agent INNER JOIN
+                         Invoice_Details ON Agent.Agent_ID = Invoice_Details.Agent_ID INNER JOIN
+                         TicketClass ON Invoice_Details.TicketClass_ID = TicketClass.TicketClass_ID INNER JOIN
+                         AirLines ON Invoice_Details.Payable_Code = AirLines.Air_ID INNER JOIN
+                         Customers ON Invoice_Details.Cust_Code = Customers.Cust_ID
+
+where Invoice_Details.Invoice_Date  between @Dfrom and  @Dto and Invoice_Details.Pay_Status= @PayStatus
+
+END
+END
+
+GO
+
+CREATE PROCEDURE sp_get_Balance
+	-- Add the parameters for the stored procedure here
+	@BankCashReceiveable int
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT       
+	 ROUND(SUM(COALESCE ((CASE WHEN t1.DrCr = 'Dr' THEN t1.Amount END), 0) - 
+	 COALESCE ((CASE WHEN t1.DrCr = 'Cr' THEN t1.Amount END), 0)),2) AS Balance
+FROM            Voucher AS t1
+where t1.Bank_ID=@BankCashReceiveable
+END
+
+GO
+
+
+CREATE PROCEDURE sp_View_Amount_Payable
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT        
+(CASE WHEN t2.DrCr = 'Cr' THEN t2.VID END) AS Payment_Ref,
+ t2.Received_Paid_Date AS Date, 
+ t2.Received_Paid AS [Received From],
+ t2.Narration, 
+ (CASE WHEN t2.DrCr = 'Cr' THEN t2.Amount END) AS Cedit, 
+SUM(COALESCE ((CASE WHEN t2.DrCr = 'Dr' THEN t2.Amount END), 0) 
+- COALESCE ((CASE WHEN t2.DrCr = 'Cr' THEN t2.Amount END), 0)) AS Balance,
+ (CASE WHEN DailyExpenses.Account IS NULL THEN '' ELSE DailyExpenses.Account END) AS Account, 
+ (CASE WHEN AirLines.Payable_Code IS NULL THEN '' ELSE AirLines.Payable_Code END) AS Payable_Code,
+  t2.User_Name
+FROM            Voucher AS t2 LEFT OUTER JOIN
+                         AirLines ON t2.Payable_Code = AirLines.Air_ID LEFT OUTER JOIN
+                         DailyExpenses ON t2.Exp_Code = DailyExpenses.Exp_Code
+WHERE        (t2.DrCr = 'Cr')
+GROUP BY t2.DrCr, t2.VID,t2.Received_Paid_Date, t2.Received_Paid, t2.Narration, t2.Amount,
+DailyExpenses.Account, AirLines.Payable_Code, t2.User_Name
+ORDER BY Date
+END
+
+GO
+
+CREATE PROCEDURE sp_View_Amount_Receiveable
+
+AS 
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT        (CASE WHEN t2.DrCr = 'Dr' THEN t2.VID END) AS Receipt_Ref, t2.Received_Paid_Date AS Date, t2.Received_Paid, t2.Narration, (CASE WHEN t2.DrCr = 'Dr' THEN t2.Amount END) AS Debit, 
+                         SUM(COALESCE ((CASE WHEN t2.DrCr = 'Dr' THEN t2.Amount END), 0) - COALESCE ((CASE WHEN t2.DrCr = 'Cr' THEN t2.Amount END), 0)) AS Balance, Customers.Cust_Code, t2.User_Name
+FROM            Voucher AS t2 LEFT OUTER JOIN
+                         Customers ON t2.Cust_Code = Customers.Cust_ID
+WHERE        (t2.DrCr = 'Dr')
+GROUP BY t2.DrCr , t2.VID, t2.Received_Paid_Date, t2.Received_Paid, t2.Narration, t2.Amount,
+Customers.Cust_Code,t2.User_Name
+ORDER BY Date
+END
+
+GO
+
+CREATE proc spGet_All_Invoice_Details
+AS BEGIN
+SELECT        Invoice_Details.ReceivePay_Status, Invoice_Details.Invoice_Number, Invoice_Details.Ticket_Status, Invoice_Details.Invoice_Date, Invoice_Details.Ticket_Number, Invoice_Details.Description, 
+                         Invoice_Details.Routing, Invoice_Details.Departure_Date, Invoice_Details.Arrival_Date, Invoice_Details.Paid, Invoice_Details.Invoice_Amount, Invoice_Details.Base_Fare, Invoice_Details.Tax, 
+                         Invoice_Details.Other_Cost, Invoice_Details.Net_Payable, Invoice_Details.Paid2, Invoice_Details.Other_Ref, Customers.Cust_Code, AirLines.Payable_Code, AirLines.Payable_Supplier, Agent.Agent_Name, 
+                         Invoice_Details.Ticket_Commission, Invoice_Details.Commission_Amount, Invoice_Details.VAT, Invoice_Details.VAT_Amount, TicketClass.Ticket_Class, Invoice_Details.Pay_Status, 
+                         Invoice_Details.Customer_Penalty, Invoice_Details.AirLine_Penalty, Invoice_Details.User_Name
+FROM            Agent RIGHT OUTER JOIN
+                         Invoice_Details ON Agent.Agent_ID = Invoice_Details.Agent_ID LEFT OUTER JOIN
+                         TicketClass ON Invoice_Details.TicketClass_ID = TicketClass.TicketClass_ID LEFT OUTER JOIN
+                         AirLines ON Invoice_Details.Payable_Code = AirLines.Air_ID LEFT OUTER JOIN
+                         Customers ON Invoice_Details.Cust_Code = Customers.Cust_ID
+
+END
+
+GO
+
+CREATE proc spGet_All_Invoice_DetailsByDateAndPayStatus
+@Dfrom datetime= NULL, @Dto Datetime= NULL, @PayStatus CHAR(1)
+AS BEGIN
+IF @Dfrom is null and @Dto is null and @PayStatus ='0'
+BEGIN
+SELECT        Invoice_Details.ReceivePay_Status, Invoice_Details.Invoice_Number, Invoice_Details.Ticket_Status, Invoice_Details.Invoice_Date, Invoice_Details.Ticket_Number, Invoice_Details.Description, 
+                         Invoice_Details.Routing, Invoice_Details.Departure_Date, Invoice_Details.Arrival_Date, Invoice_Details.Paid, Invoice_Details.Invoice_Amount, Invoice_Details.Base_Fare, Invoice_Details.Tax, 
+                         Invoice_Details.Other_Cost, Invoice_Details.Net_Payable, Invoice_Details.Paid2, Invoice_Details.Other_Ref, Customers.Cust_Code, AirLines.Payable_Code, AirLines.Payable_Supplier, Agent.Agent_Name, 
+                         Invoice_Details.Ticket_Commission, Invoice_Details.Commission_Amount, Invoice_Details.VAT, Invoice_Details.VAT_Amount, TicketClass.Ticket_Class, Invoice_Details.Pay_Status, 
+                         Invoice_Details.Customer_Penalty, Invoice_Details.AirLine_Penalty,Invoice_Details.User_Name
+FROM            Agent RIGHT OUTER JOIN
+                         Invoice_Details ON Agent.Agent_ID = Invoice_Details.Agent_ID LEFT OUTER JOIN
+                         TicketClass ON Invoice_Details.TicketClass_ID = TicketClass.TicketClass_ID LEFT OUTER JOIN
+                         AirLines ON Invoice_Details.Payable_Code = AirLines.Air_ID LEFT OUTER JOIN
+                         Customers ON Invoice_Details.Cust_Code = Customers.Cust_ID
+where Invoice_Details.Pay_Status=@PayStatus
+END
+IF @PayStatus = '' OR @PayStatus is null
+BEGIN
+SELECT        Invoice_Details.ReceivePay_Status, Invoice_Details.Invoice_Number, Invoice_Details.Ticket_Status, Invoice_Details.Invoice_Date, Invoice_Details.Ticket_Number, Invoice_Details.Description, 
+                         Invoice_Details.Routing, Invoice_Details.Departure_Date, Invoice_Details.Arrival_Date, Invoice_Details.Paid, Invoice_Details.Invoice_Amount, Invoice_Details.Base_Fare, Invoice_Details.Tax, 
+                         Invoice_Details.Other_Cost, Invoice_Details.Net_Payable, Invoice_Details.Paid2, Invoice_Details.Other_Ref, Customers.Cust_Code, AirLines.Payable_Code, AirLines.Payable_Supplier, Agent.Agent_Name, 
+                         Invoice_Details.Ticket_Commission, Invoice_Details.Commission_Amount, Invoice_Details.VAT, Invoice_Details.VAT_Amount, TicketClass.Ticket_Class, Invoice_Details.Pay_Status, 
+                         Invoice_Details.Customer_Penalty, Invoice_Details.AirLine_Penalty, Invoice_Details.User_Name
+FROM            Agent RIGHT OUTER JOIN
+                         Invoice_Details ON Agent.Agent_ID = Invoice_Details.Agent_ID LEFT OUTER JOIN
+                         TicketClass ON Invoice_Details.TicketClass_ID = TicketClass.TicketClass_ID LEFT OUTER JOIN
+                         AirLines ON Invoice_Details.Payable_Code = AirLines.Air_ID LEFT OUTER JOIN
+                         Customers ON Invoice_Details.Cust_Code = Customers.Cust_ID
+where Invoice_Details.Invoice_Date  between @Dfrom and @Dto
+END
+ELSE IF @Dfrom IS NOT NULL AND @Dto IS NOT NULL and @PayStatus IS NOT NULL
+BEGIN
+SELECT        Invoice_Details.ReceivePay_Status, Invoice_Details.Invoice_Number, Invoice_Details.Ticket_Status, Invoice_Details.Invoice_Date, Invoice_Details.Ticket_Number, Invoice_Details.Description, 
+                         Invoice_Details.Routing, Invoice_Details.Departure_Date, Invoice_Details.Arrival_Date, Invoice_Details.Paid, Invoice_Details.Invoice_Amount, Invoice_Details.Base_Fare, Invoice_Details.Tax, 
+                         Invoice_Details.Other_Cost, Invoice_Details.Net_Payable, Invoice_Details.Paid2, Invoice_Details.Other_Ref, Customers.Cust_Code, AirLines.Payable_Code, AirLines.Payable_Supplier, Agent.Agent_Name, 
+                         Invoice_Details.Ticket_Commission, Invoice_Details.Commission_Amount, Invoice_Details.VAT, Invoice_Details.VAT_Amount, TicketClass.Ticket_Class, Invoice_Details.Pay_Status, 
+                         Invoice_Details.Customer_Penalty, Invoice_Details.AirLine_Penalty, Invoice_Details.User_Name
+FROM            Agent RIGHT OUTER JOIN
+                         Invoice_Details ON Agent.Agent_ID = Invoice_Details.Agent_ID LEFT OUTER JOIN
+                         TicketClass ON Invoice_Details.TicketClass_ID = TicketClass.TicketClass_ID LEFT OUTER JOIN
+                         AirLines ON Invoice_Details.Payable_Code = AirLines.Air_ID LEFT OUTER JOIN
+                         Customers ON Invoice_Details.Cust_Code = Customers.Cust_ID
+where Invoice_Details.Invoice_Date  between @Dfrom and  @Dto and Invoice_Details.Pay_Status= @PayStatus
+END
+END
+
+GO
+
+CREATE proc spGet_AP_Summary
+AS
+BEGIN
+SELECT        
+AirLines.Payable_Supplier,
+SUM(Invoice_Details.Paid2) AS Debit, 
+SUM(Invoice_Details.Net_Payable) AS Credit, 
+SUM(Invoice_Details.Paid2) - SUM(Invoice_Details.Net_Payable) AS Balance
+FROM            Invoice_Details LEFT JOIN
+                         AirLines ON Invoice_Details.Payable_Code = AirLines.Air_ID
+WHERE (Invoice_Details.Payable_Code IS NOT NULL)
+GROUP BY AirLines.Payable_Supplier,Invoice_Details.Payable_Code
+ORDER BY Invoice_Details.Payable_Code
+END
+
+GO
+
+CREATE proc spGet_AP_SummaryByDate
+@FromDate Datetime = NULL, @ToDate Datetime = NULL
+AS BEGIN
+
+SELECT        
+AirLines.Payable_Supplier,
+SUM(Invoice_Details.Paid2) AS Debit, 
+SUM(Invoice_Details.Net_Payable) AS Credit, 
+SUM(Invoice_Details.Paid2) - SUM(Invoice_Details.Net_Payable) AS Balance
+FROM            Invoice_Details LEFT JOIN
+                         AirLines ON Invoice_Details.Payable_Code = AirLines.Air_ID
+WHERE (Invoice_Details.Payable_Code IS NOT NULL) 
+AND (Invoice_Details.Invoice_Date between @FromDate and @ToDate)
+GROUP BY AirLines.Payable_Supplier, Invoice_Details.Payable_Code
+ORDER BY Invoice_Details.Payable_Code
+
+END
+
+GO
+
+CREATE procedure spGet_AR_Summary
+AS
+BEGIN
+SELECT        
+Customers.Cust_Code, 
+SUM(Invoice_Details.Invoice_Amount) AS Debit,
+SUM(Invoice_Details.Paid) AS Credit, 
+SUM(Invoice_Details.Invoice_Amount) - SUM(Invoice_Details.Paid) AS Balance
+FROM            Invoice_Details LEFT JOIN
+                         Customers ON Invoice_Details.Cust_Code = Customers.Cust_ID
+						 where Invoice_Details.Cust_Code is not null
+GROUP BY Customers.Cust_Code
+order by Cust_Code
+END
+
+GO
+
+CREATE procedure spGet_AR_SummaryByDate
+@FromDate Datetime = NULL, @ToDate Datetime = NULL
+AS 
+BEGIN
+SELECT        
+Customers.Cust_Code, 
+SUM(Invoice_Details.Invoice_Amount) AS Debit,
+SUM(Invoice_Details.Paid) AS Credit, 
+SUM(Invoice_Details.Invoice_Amount) - SUM(Invoice_Details.Paid) AS Balance
+FROM            Invoice_Details LEFT OUTER JOIN
+                         Customers ON Invoice_Details.Cust_Code = Customers.Cust_ID
+WHERE        (Invoice_Details.Cust_Code IS NOT NULL) 
+AND (Invoice_Details.Invoice_Date  between @FromDate and @ToDate)
+GROUP BY Customers.Cust_Code
+order by Cust_Code
+END
+
+GO
+
+CREATE proc spGet_BankOrCash
+  @BankID int,	@FromDate Datetime = NULL, @ToDate Datetime = NULL
+AS
+BEGIN
+IF @FromDate IS NULL AND @ToDate IS NULL
+BEGIN
+SELECT        t2.Received_Paid_Date AS Date, 
+(CASE WHEN t2.DrCr = 'Dr' THEN t2.VID ELSE '' END) AS Receipt_Ref, (CASE WHEN t2.DrCr = 'Cr' THEN t2.VID ELSE '' END) AS Payment_Ref,
+ t2.Narration, t2.Received_Paid, 
+ (CASE WHEN t2.DrCr = 'Cr' THEN t2.Amount END) AS Credit, (CASE WHEN t2.DrCr = 'Dr' THEN t2.Amount END) AS Debit,
+  SUM(COALESCE ((CASE WHEN t1.DrCr = 'Dr' THEN t1.Amount END), 0) 
+- COALESCE ((CASE WHEN t1.DrCr = 'Cr' THEN t1.Amount END), 0)) AS Balance,
+ (CASE WHEN Customers.Cust_Code IS NULL THEN '' ELSE Customers.Cust_Code END) AS Cust_Code, 
+(CASE WHEN AirLines.Payable_Code IS NULL THEN '' ELSE AirLines.Payable_Code END) AS Payable_Code,
+ (CASE WHEN DailyExpenses.Account IS NULL THEN '' ELSE DailyExpenses.Account END) AS Account
+FROM            Voucher AS t1 FULL OUTER JOIN
+                         Voucher AS t2 ON t1.Bank_ID = t2.Bank_ID AND t1.VID <= t2.VID FULL OUTER JOIN
+                         DailyExpenses ON t2.Exp_Code = DailyExpenses.Exp_Code FULL OUTER JOIN
+                         Customers ON t2.Cust_Code = Customers.Cust_ID FULL OUTER JOIN
+                         AirLines ON t2.Payable_Code = AirLines.Air_ID
+WHERE        (t2.Bank_ID = @BankID)
+GROUP BY t2.Received_Paid_Date , t2.DrCr, t2.VID, t2.Narration, t2.Received_Paid, t2.Amount,
+   Customers.Cust_Code, t2.Payable_Code, AirLines.Payable_Code, DailyExpenses.Account
+ORDER BY t2.VID
+
+END
+
+SELECT        t2.Received_Paid_Date AS Date, 
+(CASE WHEN t2.DrCr = 'Dr' THEN t2.VID ELSE '' END) AS Receipt_Ref, (CASE WHEN t2.DrCr = 'Cr' THEN t2.VID ELSE '' END) AS Payment_Ref,
+ t2.Narration, t2.Received_Paid, 
+ (CASE WHEN t2.DrCr = 'Cr' THEN t2.Amount END) AS Credit, (CASE WHEN t2.DrCr = 'Dr' THEN t2.Amount END) AS Debit,
+  SUM(COALESCE ((CASE WHEN t1.DrCr = 'Dr' THEN t1.Amount END), 0) 
+- COALESCE ((CASE WHEN t1.DrCr = 'Cr' THEN t1.Amount END), 0)) AS Balance,
+ (CASE WHEN Customers.Cust_Code IS NULL THEN '' ELSE Customers.Cust_Code END) AS Cust_Code, 
+(CASE WHEN AirLines.Payable_Code IS NULL THEN '' ELSE AirLines.Payable_Code END) AS Payable_Code,
+ (CASE WHEN DailyExpenses.Account IS NULL THEN '' ELSE DailyExpenses.Account END) AS Account
+FROM            Voucher AS t1 FULL OUTER JOIN
+                         Voucher AS t2 ON t1.Bank_ID = t2.Bank_ID AND t1.VID <= t2.VID FULL OUTER JOIN
+                         DailyExpenses ON t2.Exp_Code = DailyExpenses.Exp_Code FULL OUTER JOIN
+                         Customers ON t2.Cust_Code = Customers.Cust_ID FULL OUTER JOIN
+                         AirLines ON t2.Payable_Code = AirLines.Air_ID
+WHERE        (t2.Bank_ID = @BankID) AND (t2.Received_Paid_Date between @FromDate and @ToDate)
+GROUP BY t2.Received_Paid_Date , t2.DrCr, t2.VID, t2.Narration, t2.Received_Paid, t2.Amount,
+   Customers.Cust_Code, t2.Payable_Code, AirLines.Payable_Code, DailyExpenses.Account
+ORDER BY t2.VID
+END
+
+
+GO
+INSERT [dbo].[AcCat] ([CatID], [CatName]) VALUES (1, N'Debit')
+GO
+INSERT [dbo].[AcCat] ([CatID], [CatName]) VALUES (2, N'Credit')
+
+GO
+INSERT [dbo].[Accounts] ([AccountID], [AcNumber], [AcName], [CatID], [Balance_Amt]) VALUES (1, NULL, NULL, 1, 62345.0000)
+GO
+INSERT [dbo].[Accounts] ([AccountID], [AcNumber], [AcName], [CatID], [Balance_Amt]) VALUES (2, NULL, NULL, 2, 502903.7200)
+GO
+INSERT [dbo].[Accounts] ([AccountID], [AcNumber], [AcName], [CatID], [Balance_Amt]) VALUES (3, NULL, NULL, 1, NULL)
+GO
+INSERT [dbo].[Accounts] ([AccountID], [AcNumber], [AcName], [CatID], [Balance_Amt]) VALUES (4, NULL, NULL, 2, NULL)
+GO
+INSERT [dbo].[Agent] ([Agent_ID], [Agent_Name], [Agent_Status]) VALUES (1, N'Helene', N'1')
+GO
+INSERT [dbo].[Agent] ([Agent_ID], [Agent_Name], [Agent_Status]) VALUES (2, N'Salman', N'1')
+GO
+INSERT [dbo].[Agent] ([Agent_ID], [Agent_Name], [Agent_Status]) VALUES (3, N'Dawood', N'1')
+GO
+INSERT [dbo].[Agent] ([Agent_ID], [Agent_Name], [Agent_Status]) VALUES (4, N'N/A', N'1')
+GO
+INSERT [dbo].[Expenses_Category] ([CategoryId], [Payable_Code]) VALUES (1, N'AP')
+GO
+INSERT [dbo].[Expenses_Category] ([CategoryId], [Payable_Code]) VALUES (2, N'Daily Expenses')
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'20', N'71', N'ETHIOPIAN AIRLINES ', CAST(6.00 AS Decimal(5, 2)), CAST(16.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'21', N'Jumbo', N'Jumbo Mart Farrine', CAST(0.00 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'22', N'Jeffery', N'Jeffery travels', CAST(0.00 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'23', N'Pullman', N'Pullman Karavia', CAST(0.00 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'24', N'AFC', N'Air Fast Congo', CAST(0.00 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'25', N'Charter', N'Charter', CAST(0.00 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'26', N'Lounge', N'Jeffery Lounge', CAST(0.00 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'27', N'Miles Bus', N'Miles Travels', CAST(4.50 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'28', N'Miles Eco', N'Miles Travels', CAST(3.50 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'29', N'CAW ECO', N'Congo Airways', CAST(7.00 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'30', N'KQ', N'Keny Airways', NULL, CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'31', N'Satguru CAW ECO', N'Satguru Travel', CAST(3.50 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'32', N'Satguru CAW BUS', N'Satguru Travel', CAST(4.50 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'33', N'Satguru CAA ECO', N'Satguru Travel', CAST(4.00 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'34', N'Satguru CAA BUS', N'Satguru Travel', CAST(5.00 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'35', N'Satguru', N'Satguru Travel', CAST(0.00 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'36', N'CAW BUS', N'Congo Airways', CAST(9.00 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'37', N'CAA', N'CAA', CAST(9.00 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'38', N'N/A', N'N/A', CAST(0.00 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[AirLines] ([Air_ID], [Payable_Code], [Payable_Supplier], [Ticket_Commission], [VAT], [Cat_ID]) VALUES (N'39', N'Satguru ET', N'Satguru Travel', CAST(5.00 AS Decimal(5, 2)), CAST(0.00 AS Decimal(5, 2)), 1)
+GO
+INSERT [dbo].[Bank] ([Bank_ID], [Bank_Name], [Status]) VALUES (1, N'Cash', 1)
+GO
+INSERT [dbo].[Bank] ([Bank_ID], [Bank_Name], [Status]) VALUES (2, N'RAWBANK', 1)
+GO
+INSERT [dbo].[Bank] ([Bank_ID], [Bank_Name], [Status]) VALUES (5, N'New Bank', 1)
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (1, N'S.Z.C Engineering SARL', N'S.Z.C', N'S.Z.C Engineering SARL', N'PAN ZHIGANG', N'Route Kambove, Quartier KAKONTWE, Commune De Panda', N'Likasi', N'Haut-Katanga', N'', N'+243823339330', N'panzhigang@sinoma-suzhou.com', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (2, N'Cash Customer', N'Cash', N'Cash Customer', N'Cash', N'6021 Route Kilwa Golf Lido', N'Lubumbashi', N'Haut-Katanga', N'', N'2438130595995', N'feng@horizontravels.org', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (3, N'SACIM', N'Sacim', N'SACIM', N'Wang Fangqing', N'Route Likasi, near to Piage Lubumbashi', N'Lubumbashi', N'Haut-Katanga', N'', N'243815888890', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (4, N'Feng Fan SARLU', N'Feng', N'Feng Fan SARLU', N'Kang xufeng', N'Route Likasi, near to Piage Lubumbashi', N'Lubumbashi', N'Haut-Katanga', N'', N'243978998754', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (5, N'Crec-7', N'Crec-7', N'Crec-7', N'Huang shuai', N'Le Village Kasengini, sur la route de Lubumbashi-Kasenga, 13KM Lubumbashi. RDC     ', N'Lubumbashi', N'Haut-Katanga', N'', N'243813229842', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (6, N'Sinohydro-1', N'Sinohydro-1', N'Sinohydro-1', N'Li zheng', N'Busanga', N'Busanka', N'', N'', N'243895465887', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (7, N'STF', N'STF', N'STF', N'Gu jingwen', N'AV NYOTA', N'Lubumbashi', N'Haut-Katanga', N'', N'243893233798', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (8, N'MEC', N'MEC', N'MEC', N'Ye hongfu', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'243897799906', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (9, N'Maque', N'Maque', N'Maque', N'Li bei', N'N 72 Av.Industriel', N'Lubumbashi', N'Haut-Katanga', N'', N'243893341145', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (10, N'Kambove Mining SAS', N'Kambove Mining', N'Kambove Mining SAS', N'Wang shaofen', N'N 2,AV BASOKO,LIDO GOLF', N'Lubumbashi', N'Haut-Katanga', N'', N'243894561507', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (11, N'Xian juncheng', N'Xian jucheng', N'Xian juncheng', N'Xian juncheng', N'KZI', N'Kolwzi', N'Lualaba', N'', N'243844333311', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (12, N'Crec-9', N'CRM', N'Crec-9', N'Ling tiandong', N'Le Village Kasengini, sur la route de Lubumbashi-Kasenga, 13KM Lubumbashi. RDC     ', N'Lubumbashi', N'Haut-Katanga', N'', N'243817311956', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (13, N'GOLDEN DEER INVESTMENT SARLU', N'Golden ', N'GOLDEN DEER INVESTMENT SARLU', N'', N'1902 Avenue Nyota Quartier Golf Lubumbashi, Rubublique Démocratique du Congo', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (14, N'Tengyuan cobalt and copper resources LTD.CO', N'TCC', N'Tengyuan cobalt and copper resources LTD.CO', N'Xia hao', N'KZI', N'Kolwzi', N'Lualaba', N'', N'243841069999', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (15, N'CGM', N'CGM', N'CGM', N'Zhang min', N'Likasi', N'Likasi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (16, N'Sain Service', N'Sain', N'Sain Service', N'', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (17, N'Si hua SARL', N'Si hua', N'Si hua SARL', N'', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (18, N'Tenke Fungurume Mining SA', N'TFM', N'Tenke Fungurume Mining SA', N'Id. Nat: 6-118-K3705D', N'Route de l''Aeroport Batiment TFM Commue Annexe, Ville de Lubumbashi', N'RCCM/14-B-1428', N'Id. Nat: 6-118-K3705D', N'NIF: A0810758D', N'Henry', N'NIF: A0810758D', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (19, N'XINGXING', N'XINGXING', N'XINGXING', N'Liu lisheng', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'QQ', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (20, N'MKM', N'MKM', N'MKM', N'', N'', N'Kolwzi', N'Lualaba', N'', N'', N'QQ', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (21, N'JMMC', N'JMMC', N'JMMC', N'', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (22, N'MSAC SARL', N'MSAC', N'MSAC SARL', N'', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (23, N'FRONTIER SERVICES GROUP SECURITE', N'Frontier', N'FRONTIER SERVICES GROUP SECURITE', N'', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (24, N'NORTH ENGINEERING R.D.CONG SASU', N'North Engineering', N'NORTH ENGINEERING R.D.CONG SASU', N'Yang xuesong', N'', N'Kolwzi', N'Lualaba', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (25, N'CDM', N'CDM', N'CDM', N'', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (26, N'Crec 7 FIH', N'Crec7 FIH', N'Crec 7 FIH', N'Bai qiang', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'QQ', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (27, N'Metal Mine SARL', N'Metal mine', N'Metal Mine SARL', N'Liu yumei', N'', N'Kolwzi', N'Lualaba', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (28, N'SIHYDRO11', N'SInohydro-11', N'SIHYDRO11', N'Liu jinhai', N'', N'Kolwzi', N'Lualaba', N'', N'', N'liujinhai0321@163.com', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (29, N'CHENGTUN CONGO RESSOURCES', N'CCR', N'CHENGTUN CONGO RESSOURCES', N'Wang zehao', N'', N'Kolwzi', N'Lualaba', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (30, N'BMC', N'BMC', N'BMC', N'Zhao pengchen', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (31, N'SICODEX', N'SICODEX', N'SICODEX', N'Li fengjiao', N'', N'Likasi', N'Haut-Katanga', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (32, N'CHGS', N'CHGS', N'CHGS', N'', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (33, N'Kamoa-Kakula Construction Company SAS', N'KKCC', N'Kamoa-Kakula Construction Company SAS', N'Wang qiuyu', N'', N'Kolwzi', N'Lualaba', N'', N'', N'QQ', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (34, N'SICOMINES', N'SCM', N'SICOMINES', N'', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (35, N'Societe Miniere de Deziwa', N'DEZIWA', N'Societe Miniere de Deziwa', N'Cai tong', N'', N'Kolwzi', N'Lualaba', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (36, N'China Civil Engineering construction corporation-RD CONGO', N'CCECC', N'China Civil Engineering construction corporation-RD CONGO', N'I.D.NAT :6-450-N31947T RCCM: CD/LSH/RCCM/18-B-00100 Numero d''impot:A1808541E', N'N 9538,Av Lac Kipopo,Quartier BAUDOUIN,Commune de Lubumbashi,Lubumbashi', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (37, N'CONORD SASU', N'CONORD', N'CONORD SASU', N'Zhou weijian', N'', N'Kolwzi', N'Lualaba', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (38, N'Lualaba Copper Smelter SAS', N'LCS', N'Lualaba Copper Smelter SAS', N'Li bai', N'', N'Kolwzi', N'Lualaba', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (39, N'JTPCC', N'JTPCC', N'JTPCC', N'Liu qi', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (40, N'CNMC CONGO', N'CNMC', N'CNMC CONGO', N'Li wang', N'', N'Likasi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (41, N'CRSN', N'CRSN', N'CRSN', N'Tang xiaoqiang', N'', N'Kolwzi', N'Lualaba', N'', N'', N'QQ', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (42, N'LA MINIERE DE KALUKUNDI', N'LAMIKAL', N'LA MINIERE DE KALUKUNDI', N'Yu xianze', N'', N'Kolwzi', N'Lualaba', N'', N'', N'QQ', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (43, N'MCO CARGO', N'MCO', N'MCO CARGO', N'', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (44, N'EXCELLEN MINERALS SARL', N'Excellen', N'EXCELLEN MINERALS SARL', N'', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (45, N'Sinohydro-4', N'Sinohydro', N'Sinohydro-4', N'', N'', N'Kolwzi', N'Lualaba', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (46, N'CJCMC', N'CJCMC', N'CJCMC', N'', N'', N'Likasi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (47, N'GCK', N'GCK', N'GCK', N'', N'', N'Likasi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (48, N'BETA MINING', N'BETA', N'BETA MINING', N'', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (49, N'HUNAN TIANYU CONSTRUCTION ', N'HTCG', N'HUNAN TIANYU CONSTRUCTION ', N'', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (50, N'La société de construction sino-congolaise société anonyme ', N'SCSC SA', N'La société de construction sino-congolaise société anonyme ', N'Geng shihong', N'', N'Kolwzi', N'Lualaba', N'', N'', N'QQ', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (51, N'SINODRILL', N'SINODRILL', N'SINODRILL', N'ZHANG WEI', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (52, N'HML', N'HML', N'HML', N'Guo yaru', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'We Chat', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (53, N'MIKAS', N'MIKAS', N'MIKAS', N'', N'', N'Likasi', N'Haut-Katanga', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (54, N'CREC 7 KZI', N'Crec 7 kzi', N'CREC 7 KZI', N'', N'', N'Kolwzi', N'Lualaba', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (55, N'KEC', N'KEC', N'KEC', N'', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (56, N'BEMA MINING SARL', N'BEMA', N'BEMA MINING SARL', N'', N'', N'Kolwzi', N'Lualaba', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (57, N'Luilu ressources sas ', N'Luilu', N'Luilu ressources sas ', N'Zhao junxiang', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (58, N'River Side', N'River', N'River Side', N'Huang donghai', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (59, N'INTERNATIONAL FOURTEENTH FIRST CONGO SARL', N'IFF CONGO', N'INTERNATIONAL FOURTEENTH FIRST CONGO SARL', N'Hong hong', N'', N'Kolwzi', N'Lualaba', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (60, N'Sinohydro', N'Sino', N'Sinohydro', N'Zou lilian', N'', N'Kolwzi', N'Lualaba', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (61, N'SINOMINE RDC RESSOURCES EXPLORATION SARL', N'Exploration', N'SINOMINE RDC RESSOURCES EXPLORATION SARL', N'Yao hui', N'', N'Likasi', N'Haut-Katanga', N'', N'', N'QQ', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (62, N'Gly Congo Mining Company Limited Sarl', N'GLY', N'Gly Congo Mining Company Limited Sarl', N'Li teng', N'', N'Kolwzi', N'Lualaba', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (63, N'Crec 8', N'Crec 8', N'Crec 8', N'', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (64, N'CJIC', N'CJIC', N'CJIC', N'', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (65, N'CRSG', N'CRSG', N'CRSG', N'', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (66, N'BANDE SARL', N'BANDE', N'BANDE SARL', N'', N'', N'Kolwzi', N'Lualaba', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (67, N'JIN GANG SA', N'JIN', N'JIN GANG SA', N'Chen yihua', N'', N'Lubumbashi', N'Haut-Katanga', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (68, N'Soprome', N'Soprome', N'Soprome', N'', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (69, N'NEST', N'NEST', N'NEST', N'Zhao kun', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (70, N'Tongguan Mines Construction(DRC) Company SARLU', N'TGMC', N'Tongguan Mines Construction(DRC) Company SARLU', N'Chen cheng', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (71, N'SHIWUYE', N'SHI', N'SHIWUYE', N'', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (72, N'HAN RUI METAL CONGO', N'HMC', N'HAN RUI METAL CONGO', N'', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (73, N'MEI HAOYONG', N'MEI', N'MEI HAOYONG', N'', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (74, N'CIMCO', N'CIMCO', N'CIMCO', N'Yu min', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (75, N'GIANT Mining', N'Giant', N'GIANT Mining', N'', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (76, N'Zero', N'Zero', N'Zero', N'', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (77, N'WUHUANG CONSTRUCTION ET COMMERCE RDC SAS', N'WUHUANG', N'WUHUANG CONSTRUCTION ET COMMERCE RDC SAS', N'Zhou zhixiang', N'No.91 Nyota Street,Golf District, Lubumbashi, Province du katanga en R.D.Congo', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (78, N'Epiroc DRC SARL', N'Epiroc', N'Epiroc DRC SARL', N'Carla', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (79, N'Travels expense', N'Horizon', N'Travels expense', N'', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (80, N'CARRILU', N'CARRILU', N'CARRILU', N'', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (81, N'KICC', N'KICC', N'KICC', N'', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (82, N'Great lakes cement', N'Great', N'Great lakes cement', N'Wu ke', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (83, N'WUHUA INTERNATIONAL', N'WUHUA', N'WUHUA INTERNATIONAL', N'LI HONG', N'', N'', N'', N'', N'', N'', N'')
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (84, N'Crec-9 - Crec-9', N'Crec-9', N'Crec-9', N'Crec-9', NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (85, N'N/A - N/A', N'N/A', N'N/A', N'N/A', NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[Customers] ([Cust_ID], [Lookup], [Cust_Code], [Company_Name], [Contact_Name], [Address], [City], [State], [ZIP_Code], [Phone], [Email], [Fax]) VALUES (86, N'PAN - PAN', N'PAN', N'PAN', N'PAN', NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'100', N'Helene Rent', N'Richard', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'101', N'Dawood Rent', N'Alphonse', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'102', N'Eagle Power', N'Eagle Power', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'103', N'Office Expense', N'Stationary', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'104', N'Medical', N'Hospital', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'105', N'Transport', N'Give EMP', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'106', N'Fuel', N'Vehicle/Generator', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'107', N'Communication', N'Units/Internet', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'108', N'Electricity', N'House Electric', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'109', N'Water', N'Regideso', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'110', N'Salaries', N'Staff Horizon', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'111', N'IT', N'Computer/Paper', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'112', N'Govt Tax', N'IRL/CNPP/INPP/ONEM/IMPOT', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'113', N'Other Tax', N'Regular Problem Bribe Money', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'114', N'Cargo Bags', N'Matadi', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'115', N'Airwaybills', N'Didier', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'116', N'China Cargo', N'Mei ', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'117', N'Accecerois House', N'House Material', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'118', N'Bank Fee', N'Bank Charges', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'119', N'Vehicle', N'Juma Vehicle', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'120', N'Incentive agent', N'Commission', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'121', N'AS service', N'AS service', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'122', N'Peage', N'Peage', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'123', N'Horizon', N'Sam-Helene Saving account', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'124', N'AFC', N'AFC', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'125', N'Refund', N'Refund to client', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'126', N'Jeffery', N'Jeffery travel', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'127', N'Visa', N'Visa', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'128', N'Vehicle tax', N'Vehicle tax', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'129', N'Accecerois Vehicle', N'Accereiois vehicle', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'130', N'Lawyer', N'Lawyer fee', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'131', N'Travel', N'Travel expense', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'132', N'Account', N'Account', 2)
+GO
+INSERT [dbo].[DailyExpenses] ([Exp_Code], [Account], [Contact_Name], [Cat_ID]) VALUES (N'133', N'N/A', N'-', 2)
+GO
+INSERT [dbo].[Income_Stream] ([Stream_ID], [Stream_Name], [Stream_Status]) VALUES (N'01', N'Commission', N'1')
+GO
+INSERT [dbo].[Income_Stream] ([Stream_ID], [Stream_Name], [Stream_Status]) VALUES (N'02', N'Hotel', N'1')
+GO
+INSERT [dbo].[Income_Stream] ([Stream_ID], [Stream_Name], [Stream_Status]) VALUES (N'03', N'Refund', N'1')
+GO
+INSERT [dbo].[Income_Stream] ([Stream_ID], [Stream_Name], [Stream_Status]) VALUES (N'04', N'Cargo Income', N'1')
+GO
+INSERT [dbo].[TicketClass] ([TicketClass_ID], [Ticket_Class], [Ticket_Class_Status]) VALUES (1, N'Business', N'1')
+GO
+INSERT [dbo].[TicketClass] ([TicketClass_ID], [Ticket_Class], [Ticket_Class_Status]) VALUES (2, N'Economy', N'1')
+GO
+INSERT [dbo].[TicketClass] ([TicketClass_ID], [Ticket_Class], [Ticket_Class_Status]) VALUES (3, N'N/A', N'1')
+GO
+SET IDENTITY_INSERT [dbo].[Invoice_Details] ON 
+GO
+INSERT [dbo].[Invoice_Details] ([Invoice_Number], [Invoice_Date], [Ticket_Number], [Description], [Routing], [Departure_Date], [Arrival_Date], [Paid], [Invoice_Amount], [Base_Fare], [Total_Value], [Tax], [Other_Cost], [Stream_ID], [Net_Payable], [Paid2], [Other_Ref], [Cust_Code], [Payable_Code], [Agent_ID], [Ticket_Commission], [Commission_Amount], [VAT], [VAT_Amount], [TicketClass_ID], [Pay_Status], [ReceivePay_Status], [Ticket_Status], [Customer_Penalty], [AirLine_Penalty], [User_Name]) VALUES (1200001, CAST(N'2020-07-15' AS Date), N'2127627616', N'CUI/GUANGYU', N'LUN-ADD-PVG', CAST(N'2020-09-14 00:00:00.000' AS DateTime), NULL, CAST(2950.00 AS Decimal(8, 2)), CAST(2950.00 AS Decimal(8, 2)), CAST(2683.00 AS Decimal(8, 2)), CAST(2922.88 AS Decimal(8, 2)), CAST(239.88 AS Decimal(8, 2)), CAST(27.12 AS Decimal(8, 2)), N'01', CAST(2736.14 AS Decimal(8, 2)), CAST(2736.14 AS Decimal(8, 2)), N'Wechat', 1, N'20', 1, CAST(6.00 AS Decimal(8, 2)), CAST(160.98 AS Decimal(8, 2)), CAST(16.00 AS Decimal(8, 2)), CAST(25.76 AS Decimal(8, 2)), 1, N'1', N'1', N'01', NULL, NULL, NULL)
+GO
+INSERT [dbo].[Invoice_Details] ([Invoice_Number], [Invoice_Date], [Ticket_Number], [Description], [Routing], [Departure_Date], [Arrival_Date], [Paid], [Invoice_Amount], [Base_Fare], [Total_Value], [Tax], [Other_Cost], [Stream_ID], [Net_Payable], [Paid2], [Other_Ref], [Cust_Code], [Payable_Code], [Agent_ID], [Ticket_Commission], [Commission_Amount], [VAT], [VAT_Amount], [TicketClass_ID], [Pay_Status], [ReceivePay_Status], [Ticket_Status], [Customer_Penalty], [AirLine_Penalty], [User_Name]) VALUES (1200002, CAST(N'2020-07-15' AS Date), N'2127627617', N'FANG/ZHI', N'LUN-ADD-PVG', CAST(N'2020-09-14 00:00:00.000' AS DateTime), NULL, CAST(2950.00 AS Decimal(8, 2)), CAST(2950.00 AS Decimal(8, 2)), CAST(2683.00 AS Decimal(8, 2)), CAST(2922.88 AS Decimal(8, 2)), CAST(239.88 AS Decimal(8, 2)), CAST(27.12 AS Decimal(8, 2)), N'01', CAST(2736.14 AS Decimal(8, 2)), CAST(2736.14 AS Decimal(8, 2)), N'Wechat', 1, N'20', 1, CAST(6.00 AS Decimal(8, 2)), CAST(160.98 AS Decimal(8, 2)), CAST(16.00 AS Decimal(8, 2)), CAST(25.76 AS Decimal(8, 2)), 1, N'1', N'1', N'01', NULL, NULL, NULL)
+GO
+INSERT [dbo].[Invoice_Details] ([Invoice_Number], [Invoice_Date], [Ticket_Number], [Description], [Routing], [Departure_Date], [Arrival_Date], [Paid], [Invoice_Amount], [Base_Fare], [Total_Value], [Tax], [Other_Cost], [Stream_ID], [Net_Payable], [Paid2], [Other_Ref], [Cust_Code], [Payable_Code], [Agent_ID], [Ticket_Commission], [Commission_Amount], [VAT], [VAT_Amount], [TicketClass_ID], [Pay_Status], [ReceivePay_Status], [Ticket_Status], [Customer_Penalty], [AirLine_Penalty], [User_Name]) VALUES (1200003, CAST(N'2020-07-15' AS Date), N'2127627618', N'HUANG/ZHONGYI', N'LUN-ADD-PVG', CAST(N'2020-09-14 00:00:00.000' AS DateTime), NULL, CAST(2950.00 AS Decimal(8, 2)), CAST(2950.00 AS Decimal(8, 2)), CAST(2683.00 AS Decimal(8, 2)), CAST(2922.88 AS Decimal(8, 2)), CAST(239.88 AS Decimal(8, 2)), CAST(27.12 AS Decimal(8, 2)), N'01', CAST(2736.14 AS Decimal(8, 2)), CAST(2736.14 AS Decimal(8, 2)), N'Wechat', 1, N'20', 1, CAST(6.00 AS Decimal(8, 2)), CAST(160.98 AS Decimal(8, 2)), CAST(16.00 AS Decimal(8, 2)), CAST(25.76 AS Decimal(8, 2)), 1, N'1', N'1', N'01', NULL, NULL, NULL)
+GO
+INSERT [dbo].[Invoice_Details] ([Invoice_Number], [Invoice_Date], [Ticket_Number], [Description], [Routing], [Departure_Date], [Arrival_Date], [Paid], [Invoice_Amount], [Base_Fare], [Total_Value], [Tax], [Other_Cost], [Stream_ID], [Net_Payable], [Paid2], [Other_Ref], [Cust_Code], [Payable_Code], [Agent_ID], [Ticket_Commission], [Commission_Amount], [VAT], [VAT_Amount], [TicketClass_ID], [Pay_Status], [ReceivePay_Status], [Ticket_Status], [Customer_Penalty], [AirLine_Penalty], [User_Name]) VALUES (1200004, CAST(N'2020-07-22' AS Date), N'2127656781', N'DE MOERLOOSE/PATRICK GUY', N'BRU-ADD-NLA', CAST(N'2020-07-28 00:00:00.000' AS DateTime), NULL, CAST(2120.00 AS Decimal(8, 2)), CAST(2120.00 AS Decimal(8, 2)), CAST(1429.00 AS Decimal(8, 2)), CAST(1633.30 AS Decimal(8, 2)), CAST(204.30 AS Decimal(8, 2)), CAST(486.70 AS Decimal(8, 2)), N'01', CAST(1533.84 AS Decimal(8, 2)), CAST(1533.84 AS Decimal(8, 2)), N'', 2, N'20', 2, CAST(6.00 AS Decimal(8, 2)), CAST(85.74 AS Decimal(8, 2)), CAST(16.00 AS Decimal(8, 2)), CAST(13.72 AS Decimal(8, 2)), 1, N'1', N'1', N'01', NULL, NULL, NULL)
+GO
+INSERT [dbo].[Invoice_Details] ([Invoice_Number], [Invoice_Date], [Ticket_Number], [Description], [Routing], [Departure_Date], [Arrival_Date], [Paid], [Invoice_Amount], [Base_Fare], [Total_Value], [Tax], [Other_Cost], [Stream_ID], [Net_Payable], [Paid2], [Other_Ref], [Cust_Code], [Payable_Code], [Agent_ID], [Ticket_Commission], [Commission_Amount], [VAT], [VAT_Amount], [TicketClass_ID], [Pay_Status], [ReceivePay_Status], [Ticket_Status], [Customer_Penalty], [AirLine_Penalty], [User_Name]) VALUES (1200005, CAST(N'2020-07-22' AS Date), N'20050126', N'500 bags Farrine', N'KZI', NULL, NULL, CAST(6750.00 AS Decimal(8, 2)), CAST(6750.00 AS Decimal(8, 2)), CAST(0.00 AS Decimal(8, 2)), CAST(5750.00 AS Decimal(8, 2)), CAST(5750.00 AS Decimal(8, 2)), CAST(1000.00 AS Decimal(8, 2)), N'01', CAST(5750.00 AS Decimal(8, 2)), CAST(5750.00 AS Decimal(8, 2)), N'Wechat', 6, N'21', 1, NULL, CAST(0.00 AS Decimal(8, 2)), CAST(0.00 AS Decimal(8, 2)), CAST(0.00 AS Decimal(8, 2)), 2, N'1', N'1', N'01', NULL, NULL, NULL)
+GO
+INSERT [dbo].[Invoice_Details] ([Invoice_Number], [Invoice_Date], [Ticket_Number], [Description], [Routing], [Departure_Date], [Arrival_Date], [Paid], [Invoice_Amount], [Base_Fare], [Total_Value], [Tax], [Other_Cost], [Stream_ID], [Net_Payable], [Paid2], [Other_Ref], [Cust_Code], [Payable_Code], [Agent_ID], [Ticket_Commission], [Commission_Amount], [VAT], [VAT_Amount], [TicketClass_ID], [Pay_Status], [ReceivePay_Status], [Ticket_Status], [Customer_Penalty], [AirLine_Penalty], [User_Name]) VALUES (1200006, CAST(N'2020-07-23' AS Date), N'2127660274', N'BRELIVET/MICHEL RENE', N'ADD-CDG', CAST(N'2020-07-26 00:00:00.000' AS DateTime), NULL, CAST(1970.00 AS Decimal(8, 2)), CAST(1970.00 AS Decimal(8, 2)), CAST(1777.00 AS Decimal(8, 2)), CAST(1898.40 AS Decimal(8, 2)), CAST(121.40 AS Decimal(8, 2)), CAST(71.60 AS Decimal(8, 2)), N'01', CAST(1774.72 AS Decimal(8, 2)), CAST(1774.72 AS Decimal(8, 2)), N'', 2, N'20', 2, CAST(6.00 AS Decimal(8, 2)), CAST(106.62 AS Decimal(8, 2)), CAST(16.00 AS Decimal(8, 2)), CAST(17.06 AS Decimal(8, 2)), 1, N'1', N'1', N'01', NULL, NULL, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[Invoice_Details] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Voucher] ON 
+GO
+INSERT [dbo].[Voucher] ([VID], [Bank_ID], [Bank_Cash_Receiveable], [Payable_Code], [Exp_Code], [Cust_Code], [Received_Paid_Date], [AccountID], [DrCr], [Amount], [Narration], [Received_Paid], [User_Name]) VALUES (10001, 1, N'1', NULL, NULL, NULL, CAST(N'2020-06-22' AS Date), 1, N'Dr', 21970.0000, N'Opening Balance', N'', NULL)
+GO

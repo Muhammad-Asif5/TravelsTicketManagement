@@ -1,0 +1,129 @@
+﻿@model AMS.Models.mvcModelsAmountPayable
+@{ Layout = null; }
+
+@using (Html.BeginForm("AddOrEdit", "AmountPayable", FormMethod.Post,
+    new { enctype = "multipart/form-data", id = "myForm", @class = "form-horizontal", role = "form", autocomplete = "off" }))
+{
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="row">
+                @Html.HiddenFor(x => x.VID)
+                @*<div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.VID, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.VID, new { htmlAttributes = new { @tabindex = "2", @class = "form-control is-invalid", @required = "required", placeholder = "Enter Receipt Ref" } })
+                        @Html.ValidationMessageFor(model => model.VID, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Bank_ID, htmlAttributes: new { @class = "control-label" })
+                        @if (User.IsInRole("Admin") == true)
+                        {
+                            @Html.DropDownListFor(model => model.Bank_ID, ViewBag.AllBank as SelectList, "--Select Bank--", new { @tabindex = "3", @onchange = "changeBank(this.value)", @required = "required", @class = "form-control select2" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.Bank_ID, ViewBag.AllBank as SelectList, "--Select Bank--", new { @tabindex = "3", @required = "required", @class = "form-control select2" })
+                        }
+                        @Html.ValidationMessageFor(model => model.Bank_ID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label" for="Received_Paid_Date">Paid Date</label>
+                        @*@Html.LabelFor(model => model.Received_Paid_Date, htmlAttributes: new { @class = "control-label" })*@
+                        @Html.EditorFor(model => model.Received_Paid_Date, new { htmlAttributes = new { @tabindex = "4", @class = "form-control is-invalid", placeholder = "Enter Paid Date" } })
+                        @Html.ValidationMessageFor(model => model.Received_Paid_Date, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label" for="Narration">Description</label>
+                        @*@Html.LabelFor(model => model.Narration, htmlAttributes: new { @class = "control-label" })*@
+                        @Html.EditorFor(model => model.Narration, new { htmlAttributes = new { @tabindex = "5", @class = "form-control is-invalid", placeholder = "Enter Description", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "200" } })
+                        @Html.ValidationMessageFor(model => model.Narration, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="control-label" for="Received_Paid">Paid To</label>
+                        @*@Html.LabelFor(model => model.Received_Paid, htmlAttributes: new { @class = "control-label" })*@
+                        @Html.EditorFor(model => model.Received_Paid, new { htmlAttributes = new { @tabindex = "6", @class = "form-control is-invalid", placeholder = "Enter Paid To" } })
+                        @Html.ValidationMessageFor(model => model.Received_Paid, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @tabindex = "7", @type = "number", @value = "0", oninput = "this.value = Math.abs(this.value)", @onkeyup = "Calculate_Amount(this.value)", @class = "form-control is-invalid", placeholder = "Enter Paid Amount" } })
+                        @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div style="margin-top:40px">
+                            <div class="icheck-primary d-inline">
+                                <input type="radio" id="radioPrimary1" name="r1" checked>
+                                <label tabindex="8" for="radioPrimary1">
+                                    AP
+                                </label>
+                            </div>
+                            <div class="icheck-primary d-inline">
+                                <input  type="radio" id="radioPrimary2" name="r1">
+                                <label tabindex="9" for="radioPrimary2">
+                                    EXP
+                                </label>
+                            </div>
+                        </div>
+                        @*<input  id="isAgeSelected" type="checkbox" name="my-checkbox" checked data-bootstrap-switch>*@
+                        @*<input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">*@
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Code</label>
+                        @Html.DropDownList("Payable_Code", (List<SelectListItem>)ViewBag.AllAirLine,
+                                           "--Select Payable Code--", new { @tabindex="10", @required = "required", @class = "form-control is-invalid select2" })
+
+                        @Html.ValidationMessageFor(model => model.Payable_Code, "", new { @class = "text-danger" })
+
+                        @Html.DropDownList("Exp_Code", (List<SelectListItem>)ViewBag.AllDailyExp,
+                                           "--Select EXP Code--", new { @tabindex = "11", @required = "required", @class = "form-control is-invalid select2" })
+
+                        @Html.ValidationMessageFor(model => model.Exp_Code, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-3">
+            @if (User.IsInRole("Admin") == true)
+            {
+                @*<div class="row">
+                <div class="col-sm-6">
+                    <label style="font-size:14px; color:red;" for="Opening_Balance">Opening Balance:</label>
+                </div>
+                <div class="col-sm-6">
+                    <input type="number" oninput="this.value = Math.abs(this.value)" onkeyup="Calculate_Opening_Balance(this.value)" name="Opening_Balance" id="Opening_Balance" value="" class="col-sm-12" />
+                </div>
+            </div>*@
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label style="font-size:14px; color:red;" for="Balance">Balance:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="number" readonly name="Balance" id="Balance" value="" class="col-sm-12" />
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+
+    <button type="submit" name="btn" tabindex="12" id="btnSave" class="btn btn-success">Pay</button>
+    <button type="submit" name="btn" tabindex="12" id="btnUpdate" class="btn btn-primary">Update</button>
+}
+
+

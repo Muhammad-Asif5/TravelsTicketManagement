@@ -1,0 +1,109 @@
+﻿@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<br />
+<div class="row">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title" style="margin-top:10px;">
+                    <span class="pull-left">Unpaid Invoice</span>
+                </h3>
+                <div class="form-inline  float-sm-right">
+                    <div class="form-group  mr-2">
+                        <label>Date range: </label>
+                        <div class="input-group  ml-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control float-right" id="reservation">
+                        </div>
+                    </div>
+                    <div class="form-group mr-2">
+                        <button onclick="viewReport()" class="btn btn-outline-primary">View</button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-body">
+                <div style="">
+                    <table id="myTable" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Invoice Number</th>
+                                <th>Status</th>
+                                <th>Invoice Date</th>
+                                <th>Ticket Number</th>
+                                <th>Description</th>
+                                <th>Routing</th>
+                                <th>Departure Date</th>
+                                <th>Arrival Date</th>
+                                <th>Paid</th>
+                                <th>Invoice Amount</th>
+                                <th>Base Fare</th>
+                                <th>Tax</th>
+                                <th>Other Cost</th>
+                                <th>Airline Penalty</th>
+                                <th>Customer Penalty</th>
+                                <th>Net Payable</th>
+                                <th>Paid2</th>
+                                <th>Other Ref</th>
+                                <th>Cust Code</th>
+                                <th>Payable Code</th>
+                                <th>Payable Supplier</th>
+                                <th>Agent Name</th>
+                                <th>Ticket Commission</th>
+                                <th>Commission Amount</th>
+                                <th>VAT</th>
+                                <th>VAT Amount</th>
+                                <th>Ticket Class</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="tblbody"></tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Invoice Number</th>
+                                <th>Status</th>
+                                <th>Invoice Date</th>
+                                <th>Ticket Number</th>
+                                <th>Description</th>
+                                <th>Routing</th>
+                                <th>Departure Date</th>
+                                <th>Arrival Date</th>
+                                <th>Paid</th>
+                                <th>Invoice Amount</th>
+                                <th>Base Fare</th>
+                                <th>Tax</th>
+                                <th>Other Cost</th>
+                                <th>Airline Penalty</th>
+                                <th>Customer Penalty</th>
+                                <th>Net Payable</th>
+                                <th>Paid2</th>
+                                <th>Other Ref</th>
+                                <th>Cust Code</th>
+                                <th>Payable Code</th>
+                                <th>Payable Supplier</th>
+                                <th>Agent Name</th>
+                                <th>Ticket Commission</th>
+                                <th>Commission Amount</th>
+                                <th>VAT</th>
+                                <th>VAT Amount</th>
+                                <th>Ticket Class</th>
+
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    @Scripts.Render("~/jsController/UnpaidInvControllerMin")
+}

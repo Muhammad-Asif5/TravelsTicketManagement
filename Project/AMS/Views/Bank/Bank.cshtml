@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<br />
+<div class="row">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    @{
+                        if (User.IsInRole("Add New Record") || User.IsInRole("Admin"))
+                        {
+                            <button type="button" class="btn btn-success" id="AddBtn">
+                                <i class="fas fa-plus"></i> Add New Bank
+                            </button>
+                        }
+                        else
+                        {
+                            <span>All Bank Information</span>
+                        }
+                    }
+
+                </h3>
+            </div>
+            <div class="card-body">
+                @Html.Action("AllBank")
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Action("AddOrEdit")
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+@section Scripts{
+
+    @Scripts.Render("~/jsController/BankControllerMin")
+
+}

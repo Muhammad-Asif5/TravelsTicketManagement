@@ -1,0 +1,98 @@
+﻿@model IEnumerable<AMS.Models.Customer>
+
+@{
+    Layout = null;// "~/Views/Shared/_Layout.cshtml";
+}
+
+<table id="myTable" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Lookup)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cust_Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Company_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ZIP_Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fax)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int counter = 0;// Index start value
+            foreach (var item in Model)
+            {
+                <tr id="@item.Cust_ID">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Lookup)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cust_Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Company_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Contact_Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.State)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ZIP_Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fax)
+                    </td>
+                    <td>
+                        <button onclick="getById(this.id)" id="@item.Cust_ID" class="btn btn-primary">Edit</button>
+                        <button onclick="deleteById(this.id)" id="@item.Cust_ID" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                counter++;
+            }
+        }
+
+
+    </tbody>
+</table>
+

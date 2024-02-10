@@ -1,0 +1,90 @@
+﻿@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<style>
+</style>
+<link href="~/AdminAssets/myStyle.css" rel="stylesheet" />
+<br />
+<div class="row">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <span class="pull-left">Receiveable</span>
+                </h3>
+                <div class="form-inline float-sm-right">
+                    <div class="form-group  mr-2">
+                        <label>Date range: </label>
+                        <div class="input-group  ml-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control float-right" id="reservation">
+                        </div>
+                    </div>
+                    <div class="form-group mr-2">
+                        @Html.DropDownList("Air_ID", (List<SelectListItem>)ViewBag.AllAirLines,
+                                          "--Select Payable Code--", new { @onchange = "changePayableCodeAndStatus()", @required = "required", @class = "form-control" })
+                    </div>
+                    <div class="form-group mr-2">
+                        <select onchange="changePayableCodeAndStatus()" id="Pay_Status" name="Pay_Status" class="form-control">
+                            <option value="" selected disabled>--Select Paid/Unpaid--</option>
+                            <option value="all">All</option>
+                            <option value="1">Paid</option>
+                            <option value="0">Unpaid</option>
+                        </select>
+                    </div>
+                    <div class="form-group mr-2">
+                        <button onclick="viewReport()" class="btn btn-outline-primary">View</button>
+                    </div>
+                    <div class="form-group">
+                        <button id="btnDownload" class="btn btn-block btn-outline-secondary" onclick="tableToExcel('myTable_wrapper', 'Receiveable Report')"> <i class="fa fa-download"></i> Download</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div style="">
+                    <table id="myTable" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Invoice Number</th>
+                                <th>Invoice Date</th>
+                                <th>Ticket Number</th>
+                                <th>Description</th>
+                                <th>Routing</th>
+                                <th>Net Payable</th>
+                                <th>Paid2</th>
+                                <th>Balance</th>
+                                <th>Payable Code</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblbody"></tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Invoice Number</th>
+                                <th>Invoice Date</th>
+                                <th>Ticket Number</th>
+                                <th>Description</th>
+                                <th>Routing</th>
+                                <th>Net Payable</th>
+                                <th>Paid2</th>
+                                <th>Balance</th>
+                                <th>Payable Code</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    @Scripts.Render("~/jsController/PayableControllerMin")
+}

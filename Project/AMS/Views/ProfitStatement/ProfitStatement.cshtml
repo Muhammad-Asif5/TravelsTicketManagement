@@ -1,0 +1,398 @@
+﻿@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<link href="~/AdminAssets/myStyle.css" rel="stylesheet" />
+<br />
+<div class="card card-success ">
+    <div class="card-header">
+        <h3 class="card-title">Profit and Loss (P&L) Statement</h3>
+    </div>
+    <div class="card-body">
+        <form action="/ProfitStatement/GetTotalProfit" enctype="multipart/form-data" id="myForm">
+            <div class="row">
+                @*<div class="col-sm-12">
+                    <div class="position-relative p-3">
+                        <div class="ribbon-wrapper ribbon-lg">
+                            <div class="ribbon bg-info">
+                                Income Heads
+                            </div>
+                        </div>
+                        <div class="form-horizontal">
+                            <div class="form-group clearfix">
+                                <div class="icheck-success d-inline">
+                                    <input onclick="toggle(this);" class="InputChkbox" type="checkbox" id="114">
+                                    <label class="control-label" for="114">
+                                        Cargo Bags
+                                    </label>
+                                </div>
+                                <div class="icheck-success d-inline">
+                                    <input onclick="toggle(this);" class="InputChkbox" type="checkbox" id="115" name="115">
+                                    <label for="115">
+                                        Airwaybills
+                                    </label>
+                                </div>
+                                <div class="icheck-success d-inline">
+                                    <input onclick="toggle(this);" class="InputChkbox" type="checkbox" id="116">
+                                    <label for="116">
+                                        China Cargo
+                                    </label>
+                                </div>
+                                <div class="icheck-success d-inline">
+                                    <input class="InputChkbox" onclick="toggle(this);" type="checkbox" id="119">
+                                    <label for="119">
+                                        Vehicle
+                                    </label>
+                                </div>
+                                <div class="icheck-success d-inline">
+                                    <input class="InputChkbox" onclick="toggle(this);" type="checkbox" id="123">
+                                    <label for="123">
+                                        Horizon
+                                    </label>
+                                </div>
+                                <div class="icheck-success d-inline">
+                                    <input class="InputChkbox" onclick="toggle(this);" type="checkbox" id="125">
+                                    <label for="125">
+                                        Refund
+                                    </label>
+                                </div>
+                                <div class="icheck-success d-inline">
+                                    <input class="InputChkbox" onclick="toggle(this);" type="checkbox" id="126">
+                                    <label for="126">
+                                        Jeffery
+                                    </label>
+                                </div>
+                                <div class="icheck-success d-inline">
+                                    <input class="InputChkbox" onclick="toggle(this);" type="checkbox" id="132">
+                                    <label for="132">
+                                        Account
+                                    </label>
+                                </div>
+                                <div class="icheck-success d-inline">
+                                    <input id="checkAll" class="InputChkboxtop" type="checkbox" />
+                                    <label for="checkAll">
+                                        All ?
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                </div>*@
+                <div class="col-sm-12">
+                    
+                    <div class="form-inline">
+                        <div class="form-group  mr-2">
+                            <label>Date range: </label>
+                            <div class="input-group  ml-2">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="far fa-calendar-alt"></i>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control float-right" id="reservation">
+                            </div>
+                        </div>
+                        <div class="form-group mr-2">
+                            <button id="btnviewReport" onclick="getReport()" type="button" class="btn btn-outline-primary">View</button>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" id="btnDownload" class="btn btn-block btn-outline-secondary" onclick="tableToExcel('myTable' , 'P&L Statement')"> <i class="fa fa-download"></i> Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            @*<div class="card-header">
+                    <h3 class="card-title">
+                        <span class="pull-left">Profit and Loss (P&L) Statement</span>
+                    </h3>
+                </div>*@
+            <div class="card-body">
+                <table id="myTable" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Income Head</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/Scripts/ExportToExcel.js"></script>
+    <script>
+
+        
+        var totalIncomeHead = 0;
+        var totalExpenseHead = 0;
+        var profit = 0;
+
+        $(document).ready(function () {
+            $('#reservation').daterangepicker();
+        });
+
+        function getReport() {
+
+            var reservation = $("#reservation").val();
+            
+            var Dfrom = reservation.substring(0, 10);
+            var Dto = reservation.substring(13);
+            $.ajax({
+                type: "POST",
+                //url: "/ProfitStatement/GetTotalProfit?Dfrom=" + Dfrom + "&Dto=" + Dto + "&TotalCheck=" + TotalCheck + "",
+                url: "/ProfitStatement/GetTotalProfit",
+                //data: new FormData(oForm),
+                data: {
+                    Dfrom: Dfrom,
+                    Dto: Dto,
+                    //ExpCode: TotalInvoiceNoWithArray
+                },
+                beforeSend: function () {
+                    swal({
+                        title: " ",
+                        text: "Please Wait",
+                        //imageUrl: "/AdminAssets/Images/loader.gif",
+                        imageUrl: "/AdminAssets/Images/ajax-Load.gif",
+                        showCancelButton: false,
+                        showConfirmButton: false
+                    });
+                },
+                success: OnSuccess,
+                failure: function (response) {
+                    alert("Failure " + response.d);
+                },
+                complete: function (data) {
+                    //Expenses(reservation);
+                },
+                error: function (response) {
+                    alert("Error " + response.d);
+                }
+
+            });
+
+            //TotalInvoiceNoWithArray = ArrNoDupe(TotalInvoiceNoWithArray);
+            //if (TotalInvoiceNoWithArray.length > 0) {
+            //    var checkedValue = [];
+            //    for (var i = 0; i < TotalInvoiceNoWithArray.length; i++) {
+            //        checkedValue.push(TotalInvoiceNoWithArray[i]);
+            //    }
+            //    if (true) {
+
+            //    }
+
+
+            //} else {
+            //    $('.ui-pnotify').remove();
+            //    new PNotify({
+            //        title: 'INFO!',
+            //        text: "Please Check at least one",
+            //        type: 'info',
+            //        animation: 'slide',
+            //        delay: 3000,
+            //        top: "500px",
+            //        min_height: "16px",
+            //        animate_speed: 400,
+            //        text_escape: true,
+            //        //nonblock: {
+            //        //    nonblock: true,
+            //        //    nonblock_opacity: .1
+            //        //},
+            //        styling: 'bootstrap3',
+            //    });
+            //}
+
+        }
+
+        function OnSuccess(response) {
+            
+            totalIncomeHead = 0;
+            totalExpenseHead = 0;
+            profit = 0;
+            
+            //$("#myTable").empty();
+            $("table thead").empty();
+            $("table thead").append("<tr>" +
+                "<th>Income Head</th>" +
+                "<th>Amount</th>" +
+                "</tr>")
+            $("table tbody").empty();
+            if (response.success == true) {
+                swal.close();
+                totalIncomeHead = totalIncomeHead + response.data[0].Commission_Amount +
+                    response.data[0].VAT_Amount + response.data[0].Other_Cost +
+                    response.data[0].Customer_Penalty;
+
+                $("table tbody").append("<tr>" +
+                    "<td>Commission Amount</td>" +
+                    "<td style='text-align:right'>" + response.data[0].Commission_Amount + "</td>" +
+                    "</tr><tr>" +
+                    "<td>VAT Amount</td>" +
+                    "<td style='text-align:right'>" + response.data[0].VAT_Amount + "</td>" +
+                    "</tr>" +
+                    //"< tr> " +
+                    //"<td>Base Fare</td>" +
+                    //"<td>" + response.data[0].Base_Fare + "</td>" +
+                    //"</tr>" +
+                    //"<tr>" +
+                    //"<td>Tax</td>" +
+                    //"<td>" + response.data[0].Tax + "</td>" +
+                    //"</tr>" +
+                    "<tr>" +
+                    "<td>Other Cost </td>" +
+                    "<td style='text-align:right'>" + response.data[0].Other_Cost + "</td>" +
+                    "</tr>" +
+                    //"<tr>" +
+                    //"<td>AirLine Penalty</td>" +
+                    //"<td>" + response.data[0].AirLine_Penalty + "</td>" +
+                    //"</tr>" +
+                    "<tr>" +
+                    "<td>Customer Penalty</td>" +
+                    "<td style='text-align:right'>" + response.data[0].Customer_Penalty + "</td>" +
+                    "</tr>" +
+                    "<tr>" +
+                    "<td style='border-top:2px solid #111'><label>Total Income Head</label></td>" +
+                    "<td style='border-top:2px solid #111; text-align:right'><label>" + totalIncomeHead.toFixed(2) + "</label></td>" +
+                    "</tr>");
+
+                $("table tbody").append("<tr style='height:40px;'>" +
+                    "<td colspan='2'></td>" +
+                    "</tr > ");
+                /////////////////////// *** Expensses Heads ***///////////////////////
+
+                $("table tbody").append("<tr>" +
+                    "<td colspan='2'><label>Expense Heads</label></td>" +
+                    "</tr > ");
+
+                for (var i = 0; i < response.data2.length; i++) {
+                    totalExpenseHead = totalExpenseHead + response.data2[i].Amount;
+                    $("table tbody").append("<tr>" +
+                        "<td>" + response.data2[i].Account + "</td>" +
+                        "<td style='text-align:right'>" + response.data2[i].Amount + "</td>" +
+                        "</tr >");
+                }
+                $("table tbody").append("<tr>" +
+                    "<td style='border-top:2px solid #111'><label>Total Expenses Head</label></td>" +
+                    "<td style='border-top:2px solid #111;text-align:right'><label>" + totalExpenseHead.toFixed(2) + "</label></td>" +
+                    "</tr > ");
+
+
+                $("table tbody").append("<tr style='height:40px;'>" +
+                    "<td colspan='2'></td>" +
+                    "</tr > ");
+
+                profit = totalIncomeHead - totalExpenseHead;
+                $("table tbody").append("<tr>" +
+                    "<td style='border-top:2px solid #111'><label>Profit</label></td>" +
+                    "<td style='border-top:2px solid #111;text-align:right'><label>" + profit.toFixed(2) + "</label></td>" +
+                    "</tr > ");
+            } else {
+                swal("WARNING!", response.message, "warning");
+            }
+
+
+            //$("table thead").empty();
+            //$("table tbody").empty();
+            //$.ajax({
+            //    type: "POST",
+            //    url: "/ProfitStatement/LoadAllIncomeData",
+            //    data: {
+            //        Date: date,
+            //        StreamID: StreamID
+            //    },
+            //    success: function (data) {
+            //        if (data.success == true) {
+            //            $("table tbody").append("<tr>" +
+            //                "<td>1</td>"+
+            //                "<td>1</td>"+
+            //                "<td>1</td>"+
+            //                "<td>1</td>"+
+            //                "</tr>");
+            //        } else {
+            //            swal("WARNING!", data.message, "warning");
+            //        }
+            //    },
+            //    complete: function (data) {
+            //        Expenses(reservation);
+            //    },
+            //    error: function () {
+
+            //    }
+            //});
+        };
+
+        //var TotalInvoiceNoWithArray = [];
+        //function toggle(source) {
+
+        //    var ID = source.id;
+        //    var defaultCheck = source.checked;
+
+        //    if (defaultCheck == true) {
+        //        var isAllChecked = 0;
+
+        //        $(".InputChkbox").each(function () {
+        //            if (!this.checked)
+        //                isAllChecked = 1;
+        //        });
+
+        //        if (isAllChecked == 0) {
+        //            $("#checkAll").prop("checked", true);
+        //        }
+        //        TotalInvoiceNoWithArray.push(ID);
+        //        //TotalInvoiceNoWithArray.push({ id: ID, value: true });
+        //    }
+        //    else {
+        //        $("#checkAll").prop("checked", false);
+        //        var y = ArrNoDupe(TotalInvoiceNoWithArray);
+        //        var removeItem = source.id;
+        //        y = jQuery.grep(y, function (value) {
+        //            return value != removeItem;
+        //        });
+
+        //        TotalInvoiceNoWithArray = y;
+        //    }
+
+        //}
+        //$("#checkAll").change(function () {
+
+        //    TotalInvoiceNoWithArray = ArrNoDupe(TotalInvoiceNoWithArray);
+        //    if (this.checked) {
+        //        $(".InputChkbox").each(function () {
+        //            this.checked = true;
+        //            TotalInvoiceNoWithArray.push(this.id);
+        //            //TotalInvoiceNoWithArray.push({ id: this.id, value: true });
+        //        });
+        //    } else {
+
+        //        $(".InputChkbox").each(function () {
+        //            this.checked = false;
+        //            var itemtoRemove = TotalInvoiceNoWithArray[this.id];
+        //            TotalInvoiceNoWithArray.splice($.inArray(itemtoRemove, TotalInvoiceNoWithArray), 1);
+        //        });
+        //    }
+        //});
+
+        function ArrNoDupe(a) {
+            var temp = {};
+            for (var i = 0; i < a.length; i++)
+                temp[a[i]] = true;
+            var r = [];
+            for (var k in temp)
+                r.push(k);
+            return r;
+        }
+
+    </script>
+}

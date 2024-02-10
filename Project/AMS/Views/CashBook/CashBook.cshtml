@@ -1,0 +1,85 @@
+﻿@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<style>
+   
+</style>
+<link href="~/AdminAssets/myStyle.css" rel="stylesheet" />
+<br />
+<div class="row">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title" style="margin-top:10px;">
+                    <span class="pull-left">Cash Book</span>
+
+                </h3>
+                <div class="form-inline float-sm-right">
+                    <div class="form-group  mr-2">
+                        <span>Closing Balance: </span>
+                        <label id="ClosingBalance">@ViewBag.RemainingBalance</label>
+                    </div>
+                    <div class="form-group  mr-2">
+                        <label>Date range: </label>
+                        <div class="input-group  ml-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control float-right" id="reservation">
+                        </div>
+                    </div>
+                    <div class="form-group mr-2">
+                        <button onclick="viewReport()" class="btn btn-outline-primary">View</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div style="">
+                    <table id="myTable" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Receipt_Ref</th>
+                                <th>Payment_Ref</th>
+                                <th>Description</th>
+                                <th>Received_Paid</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                                <th>Balance</th>
+                                <th>AR Code</th>
+                                <th>AP Code</th>
+                                <th>EXP Code</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tblbody"></tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Date</th>
+                                <th>Receipt_Ref</th>
+                                <th>Payment_Ref</th>
+                                <th>Description</th>
+                                <th>Received_Paid</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                                <th>Balance</th>
+                                <th>AR Code</th>
+                                <th>AP Code</th>
+                                <th>EXP Code</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    @Scripts.Render("~/jsController/CashBookControllerMin")
+}

@@ -1,0 +1,816 @@
+﻿@{
+    <style>
+        .nav-sidebar .nav-header:not(:first-of-type) {
+            padding: 0.7rem 1rem .5rem;
+            text-transform: uppercase;
+        }
+    </style>
+}
+
+<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+
+
+    @{
+        if (ViewContext.RouteData.Values["Action"].ToString() == "Customer" ||
+             ViewContext.RouteData.Values["Action"].ToString() == "AP" ||
+             ViewContext.RouteData.Values["Action"].ToString() == "EXP" ||
+             ViewContext.RouteData.Values["Action"].ToString() == "Agent" ||
+             ViewContext.RouteData.Values["Action"].ToString() == "IStream" ||
+             ViewContext.RouteData.Values["Action"].ToString() == "Bank")
+        {
+            <li class="nav-header">INITIALIZE SETTING</li>
+            <li class="nav-item has-treeview menu-open">
+                <a href="javascript:;" class="nav-link active">
+                    <i class="nav-icon fa fa-cogs" aria-hidden="true"></i>
+                    <p>
+                        Setting
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    @if (User.IsInRole("Add New Customer") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "Customer")
+                        {
+                            <li class="nav-item">
+                                <a href="/all-customer" class="nav-link active">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Add New Customer</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/all-customer" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Add New Customer</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (User.IsInRole("Add New AP") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "AP")
+                        {
+                            <li class="nav-item">
+                                <a href="/all-airline" class="nav-link active">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Add New AP</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/all-airline" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Add New AP</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (User.IsInRole("Add New EXP") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "EXP")
+                        {
+                            <li class="nav-item">
+                                <a href="/all-expenses" class="nav-link active">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Add New EXP</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/all-expenses" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Add New EXP</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (User.IsInRole("Add New Agent") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "Agent")
+                        {
+                            <li class="nav-item">
+                                <a href="/all-agent" class="nav-link active">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Add New Agent</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/all-agent" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Add New Agent</p>
+                                </a>
+                            </li>
+                        }
+                    }
+                    @if (User.IsInRole("Add New Stream") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "IStream")
+                        {
+                            <li class="nav-item">
+                                <a href="/all-income" class="nav-link active">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Add New Stream</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/all-income" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Add New Stream</p>
+                                </a>
+                            </li>
+                        }
+                    }
+                    @if (User.IsInRole("Add New Stream") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "Bank")
+                        {
+                            <li class="nav-item">
+                                <a href="/all-Bank" class="nav-link active">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Add New Bank</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/all-Bank" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Add New Bank</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+
+
+
+
+                </ul>
+            </li>
+        }
+        else
+        {
+            if (User.IsInRole("Add New Customer") || User.IsInRole("Add New AP") ||
+                User.IsInRole("Add New EXP") || User.IsInRole("Add New Agent") ||
+                User.IsInRole("Add New Stream") || User.IsInRole("Add New Bank") || User.IsInRole("Admin"))
+            {
+                <li class="nav-header">INITIALIZE SETTING</li>
+                <li class="nav-item has-treeview ">
+                    <a href="javascript:;" class="nav-link ">
+                        <i class="nav-icon fa fa-cogs" aria-hidden="true"></i><p>
+                            Setting
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if (User.IsInRole("Add New Customer") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/all-customer" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Add New Customer</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Add New AP") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/all-airline" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Add New AP</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Add New EXP") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/all-expenses" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Add New EXP</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Add New Agent") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/all-agent" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Add New Agent</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Add New Stream") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/all-income" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Add New Stream</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Add New Bank") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/all-Bank" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Add New Bank</p>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+        }
+    }
+
+
+
+    @{
+
+        if (ViewContext.RouteData.Values["Action"].ToString() == "GenerateInvoice" ||
+            ViewContext.RouteData.Values["Action"].ToString() == "ConfirmReceiveable" ||
+            ViewContext.RouteData.Values["Action"].ToString() == "ConfirmPayable" ||
+            ViewContext.RouteData.Values["Action"].ToString() == "AmountReceiveable" ||
+            ViewContext.RouteData.Values["Action"].ToString() == "AmountPayable" ||
+            ViewContext.RouteData.Values["Action"].ToString() == "Refund")
+        {
+            <li class="nav-header">OPERATIONS</li>
+            <li class="nav-item has-treeview  menu-open">
+                <a href="javascript:;" class="nav-link active">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>
+                        Admin Operation
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview" style="padding-left:0.5rem !important">
+
+                    @if (User.IsInRole("Admin Invoice Generate") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "GenerateInvoice")
+                        {
+                            <li class="nav-item">
+                                <a href="/all-invoices" class="nav-link active">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Generate Invoice</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/all-invoices" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Generate Invoice</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (User.IsInRole("Admin Confirm Invoice") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "ConfirmReceiveable")
+                        {
+                            <li class="nav-item">
+                                <a href="/receive-amount" class="nav-link active">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Confirm Invoice</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/receive-amount" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Confirm Invoice</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (User.IsInRole("Admin Confirm Pay") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "ConfirmPayable")
+                        {
+                            <li class="nav-item">
+                                <a href="/pay-amount" class="nav-link active">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Confirm Payable</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/pay-amount" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Confirm Payable</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (User.IsInRole("Admin Refund") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "Refund")
+                        {
+                            <li class="nav-item">
+                                <a href="/invoice-refund" class="nav-link active">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Add New Refund</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/invoice-refund" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Add New Refund</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+
+                    @if (User.IsInRole("Generate AR Receipt") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "AmountReceiveable")
+                        {
+                            <li class="nav-item">
+                                <a href="/amount-receive" class="nav-link active">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Generate AR Receipt</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/amount-receive" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Generate AR Receipt</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (User.IsInRole("Generate AP-EXP Receipt") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "AmountPayable")
+                        {
+                            <li class="nav-item">
+                                <a href="/amount-pay" class="nav-link active">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Generate AP/EXP Receipt</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/amount-pay" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Generate AP/EXP Receipt</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+
+                </ul>
+
+            </li>
+        }
+        else
+        {
+            if (User.IsInRole("Admin Invoice Generate") || User.IsInRole("Admin Confirm Invoice") ||
+                User.IsInRole("Admin Confirm Pay") || User.IsInRole("Admin Refund") ||
+                User.IsInRole("Generate AR Receipt") || User.IsInRole("Generate AP-EXP Receipt") ||
+                User.IsInRole("Add Bank Receiveable") || User.IsInRole("Add Bank Payable") || User.IsInRole("Admin"))
+            {
+                <li class="nav-header">OPERATIONS</li>
+                <li class="nav-item has-treeview">
+                    <a href="javascript:;" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Admin Operation
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="padding-left:0.5rem !important">
+                        @if (User.IsInRole("Admin Invoice Generate") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/all-invoices" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Generate Invoice</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Admin Confirm Invoice") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/receive-amount" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Confirm Invoice</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Admin Confirm Pay") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/pay-amount" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Confirm Payable</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Admin Refund") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/invoice-refund" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Add New Refund</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Generate AR Receipt") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/amount-receive" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Generate AR Receipt</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Generate AP-EXP Receipt") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/amount-pay" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Generate AP/EXP Receipt</p>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </li>
+            }
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+    @{
+
+        if (ViewContext.RouteData.Values["Action"].ToString() == "InvoiceDetailsReport" ||
+             ViewContext.RouteData.Values["Action"].ToString() == "CashBook" ||
+             ViewContext.RouteData.Values["Action"].ToString() == "Receiveable" ||
+             ViewContext.RouteData.Values["Action"].ToString() == "Payable" ||
+             ViewContext.RouteData.Values["Action"].ToString() == "UPInvoice" ||
+             ViewContext.RouteData.Values["Action"].ToString() == "BStatement" ||
+             ViewContext.RouteData.Values["Action"].ToString() == "ARSummary" ||
+             ViewContext.RouteData.Values["Action"].ToString() == "APSummary" ||
+             ViewContext.RouteData.Values["Action"].ToString() == "ProfitStatement")
+        {
+
+            <li class="nav-header">ALL REPORTS</li>
+            <li class="nav-item has-treeview menu-open">
+                <a href="javascript:;" class="nav-link active">
+                    <i class="nav-icon fa fa-cogs" aria-hidden="true"></i>
+                    <p>
+                        Reports
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    @if (User.IsInRole("View Invoice Details") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "InvoiceDetailsReport")
+                        {
+                            <li class="nav-item">
+                                <a href="/GenerateInvoice/InvoiceDetailsReport" class="nav-link active">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Invoice Details</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/GenerateInvoice/InvoiceDetailsReport" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Invoice Details</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (User.IsInRole("View Unpaid Invoice") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "UPInvoice")
+                        {
+                            <li class="nav-item">
+                                <a href="/UPInvoice/UPInvoice" class="nav-link active">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Unpaid Invoice</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/UPInvoice/UPInvoice" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Unpaid Invoice</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (User.IsInRole("View Cash Book") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "CashBook")
+                        {
+                            <li class="nav-item">
+                                <a href="/CashBook/CashBook" class="nav-link active">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Cash Book</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/CashBook/CashBook" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Cash Book</p>
+                                </a>
+                            </li>
+                        }
+                    }
+                    @if (User.IsInRole("View Receiveable") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "Receiveable")
+                        {
+                            <li class="nav-item">
+                                <a href="/Receiveable/Receiveable" class="nav-link active">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Receiveable</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/Receiveable/Receiveable" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Receiveable</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (User.IsInRole("View Payable") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "Payable")
+                        {
+                            <li class="nav-item">
+                                <a href="/Payable/Payable" class="nav-link active">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Payable</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/Payable/Payable" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Payable</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (User.IsInRole("View Bank Statement") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "BStatement")
+                        {
+                            <li class="nav-item">
+                                <a href="/BStatement/BStatement" class="nav-link active">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Bank Statement</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/BStatement/BStatement" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Bank Statement</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (User.IsInRole("View AR Summary") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "ARSummary")
+                        {
+                            <li class="nav-item">
+                                <a href="/ARSummary/ARSummary" class="nav-link active">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>AR Summary</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/ARSummary/ARSummary" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>AR Summary</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (User.IsInRole("View AP Summary") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "APSummary")
+                        {
+                            <li class="nav-item">
+                                <a href="/APSummary/APSummary" class="nav-link active">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>AP Summary</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/APSummary/APSummary" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>AP Summary</p>
+                                </a>
+                            </li>
+                        }
+                    }
+
+                    @if (User.IsInRole("View Profit Statement") || User.IsInRole("Admin"))
+                    {
+                        if (ViewContext.RouteData.Values["Action"].ToString() == "ProfitStatement")
+                        {
+                            <li class="nav-item">
+                                <a href="/ProfitStatement/ProfitStatement" class="nav-link active">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Profit Statement</p>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a href="/ProfitStatement/ProfitStatement" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Profit Statement</p>
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </li>
+        }
+        else
+        {
+
+            if (User.IsInRole("View Invoice Details") || User.IsInRole("View Unpaid Invoice")
+                || User.IsInRole("View Cash Book") || User.IsInRole("View Receiveable")
+                || User.IsInRole("View Payable") || User.IsInRole("View Bank Statement")
+                || User.IsInRole("View AR Summary") || User.IsInRole("View AP Summary")
+                || User.IsInRole("View Profit Statement") || User.IsInRole("Admin"))
+            {
+                <li class="nav-header">ALL REPORTS</li>
+                <li class="nav-item has-treeview ">
+                    <a href="javascript:;" class="nav-link ">
+                        <i class="nav-icon fa fa-cogs" aria-hidden="true"></i><p>
+                            Reports
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if (User.IsInRole("View Invoice Details") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/GenerateInvoice/InvoiceDetailsReport" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Invoice Details</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("View Unpaid Invoice") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/UPInvoice/UPInvoice" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Unpaid Invoice</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("View Cash Book") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/CashBook/CashBook" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Cash Book</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("View Receiveable") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/Receiveable/Receiveable" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Receiveable</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("View Payable") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/Payable/Payable" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Payable</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("View Bank Statement") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/BStatement/BStatement" class="nav-link">
+                                    <i class="nav-icon fas fa-plus-circle"></i>
+                                    <p>Bank Statement</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("View AR Summary") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/ARSummary/ARSummary" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>AR Summary</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("View AP Summary") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/APSummary/APSummary" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>AP Summary</p>
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("View Profit Statement") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a href="/ProfitStatement/ProfitStatement" class="nav-link">
+                                    <i class="far fa-plus-square nav-icon"></i>
+                                    <p>Profit Statement</p>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+        }
+    }
+</ul>

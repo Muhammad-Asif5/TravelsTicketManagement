@@ -1,0 +1,86 @@
+﻿@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<br />
+<div class="row">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title" style="margin-top:10px;">
+                    <span class="pull-left">Please Refund Invoice Here</span>
+                </h3>
+                <div class="form-inline float-sm-right">
+                    <div class="form-group">
+                        <label>Select Ticket:</label>
+                        <select id="IxnvoiceNumber" onchange="invoiceChange(this.value)" class="form-control select2">
+                            <option value="" selected>--Select Ticket--</option>
+                            @foreach (var item2 in Model)
+                            {
+                                <option value="@item2.Invoice_Number">@item2.Ticket_Number</option>
+                            }
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                @*@Html.Action("AllInvoice")*@
+
+                <table id="myTable" class="table table-bordered table-hover">
+                    <thead>
+                        <tr role="row">
+                            <th></th>
+                            <th>Invoice Number</th>
+                            <th>Status</th>
+                            <th>Invoice Date</th>
+                            <th>Ticket Number</th>
+                            <th>Description</th>
+                            <th>Routing</th>
+                            <th>Departure Date</th>
+                            <th>Arrival Date</th>
+                            <th>Paid</th>
+                            <th>Invoice Amount</th>
+                            <th>Base Fare</th>
+                            <th>Tax</th>
+                            <th>Other Cost</th>
+                            <th>Net Payable</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button onclick="closeModal()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Action("AddOrEdit")
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+@section Scripts{
+    @*https://datatables.net/forums/discussion/48995/server-side-processing-asp-net-c-how-to-optimise-with-around-1-million-records*@
+    @*https://datatables.net/extensions/scroller/examples/initialisation/large_js_source.html*@
+    @*https://datatables.net/extensions/scroller/examples/initialisation/server-side_processing.html*@
+
+    @Scripts.Render("~/jsController/RefunInvControllerMin")
+}
+

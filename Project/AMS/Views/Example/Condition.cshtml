@@ -1,0 +1,222 @@
+﻿
+@{
+    Layout = null;
+    //Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<html>
+<head>
+    <title>Server-side processing</title>
+
+    <link href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/searchbuilder/1.0.1/css/searchBuilder.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/datetime/1.0.3/css/dataTables.dateTime.min.css" rel="stylesheet" />
+
+    <style>
+        .dataTables_filter {
+            display: none;
+        }
+
+        .example_filter {
+            display: none !important;
+        }
+
+        .dataTables_info {
+            display: none !important;
+        }
+
+        #example_paginate {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <h1>Server-side processing</h1>
+    <br>
+    <table id="example" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Invoice Number</th>
+                <th>Ticket Number</th>
+                <th>Description</th>
+                <th>Routing</th>
+                <th>Net Payable</th>
+                <th>Paid2</th>
+                <th>Balance</th>
+                <th>Payable Code</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+            <tr>
+                <th>Invoice Number</th>
+                <th>Ticket Number</th>
+                <th>Description</th>
+                <th>Routing</th>
+                <th>Net Payable</th>
+                <th>Paid2</th>
+                <th>Balance</th>
+                <th>Payable Code</th>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+
+</html>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/searchbuilder/1.0.1/js/dataTables.searchBuilder.min.js"></script>
+<script src="https://cdn.datatables.net/datetime/1.0.3/js/dataTables.dateTime.min.js"></script>
+<script src="//cdn.datatables.net/plug-ins/1.10.21/sorting/datetime-moment.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+      
+
+        //$('#example').DataTable({
+        //    // dom: 'Qlfrtip',
+        //    //dom: 'Bfrtip',
+        //    dom: 'Qlfrtip;Bfrtip',
+        //    //"dom": 'C&gt;"clear"&lt;lfrtip',
+        //    buttons: [
+        //        'copyHtml5',
+        //        'excelHtml5',
+        //        'csvHtml5',
+        //        'pdfHtml5'
+        //    ],
+
+        //});
+
+        $.ajax({
+                  "url": "@Url.Action("GetPayableByPCodeByDate","Payable")",
+                  "type": "GET",
+                  data: {
+                      pCode: "",
+                      pStatus: "all"
+                  },
+                  success: function (newData) {
+                      debugger
+                      //data.push(newData.CashBook);
+                      //for (var i = 0; i < newData.CashBook.length; i++) {
+                      //    data.push([i, i, i, i, i]);
+                      //}
+
+                      var table = $('#example').DataTable({
+                          data: newData.CashBook,
+                          paging: false,
+                          columns: [
+                              { "data": "Invoice_Number" },
+                              {
+                                  title: "Invoice Date",
+                                  data: "Invoice_Date",
+                                  render: function (d) {
+                                      if (d == null) {
+                                          return "";
+                                      } else {
+                                          return moment(d).format("DD/MMM/YYYY");
+                                      }
+                                  }
+                              },
+                              //{ "data": "Ticket_Number" },
+                              { "data": "Description" },
+                              { "data": "Routing" },
+                              { "data": "Net_Payable" },
+                              { "data": "Paid2" },
+                              { "data": "Balance" },
+                              { "data": "Payable_Code" },
+                          ],
+                          //initComplete: function () {
+                          //    // Apply the search
+                          //    this.api().columns([1]).every(function () {
+                          //        var that = this;
+                          //        $('input', this.footer()).on('keyup change clear', function () {
+                          //            if (that.search() !== this.value) {
+                          //                that.search(this.value).draw();
+                          //            }
+                          //        });
+                          //    });
+
+                          //    this.api().columns([2,3]).every(function () {
+                          //        var column = this;
+                          //        var select = $('<select><option value="">Select All</option></select>')
+                          //            .appendTo($(column.footer()).empty())
+                          //            .on('change', function () {
+                          //                var val = $.fn.dataTable.util.escapeRegex(
+                          //                    $(this).val()
+                          //                );
+
+                          //                column
+                          //                    .search(val ? '^' + val + '$' : '', true, false)
+                          //                    .draw();
+                          //            });
+
+                          //        column.data().unique().sort().each(function (d, j) {
+                          //            select.append('<option value="' + d + '">' + d + '</option>')
+                          //        });
+                          //    });
+                          //},
+                          "footerCallback": function (row, data, start, end, display) {
+
+                              var api = this.api(), data;
+                              asif = [];
+                              // Remove the formatting to get integer data for summation
+                              var intVal = function (i) {
+                                  return typeof i === 'string' ?
+                                      i.replace(/[\$,]/g, '') * 1 :
+                                      typeof i === 'number' ?
+                                          i : 0;
+                              };
+                              // Total over all pages
+                              //amount = api.column(5).data().reduce(function (a, b) {
+                              //    return intVal(a) + intVal(b);
+                              //}, 0);
+                              // Total over this page
+                              amount = api.column(5).data().reduce(function (a, b) {
+                                  return intVal(a) + intVal(b);
+                              }, 0);
+                              $(api.column(5).footer()).html(
+                                  '$ ' + amount.toFixed(2)
+                              );
+                              paid = api.column(6).data().reduce(function (a, b) {
+                                  return intVal(a) + intVal(b);
+                              }, 0);
+                              $(api.column(6).footer()).html(
+                                  '$ ' + paid.toFixed(2)
+                              );
+                              balance = api.column(4).data().reduce(function (a, b) {
+                                  return intVal(a) + intVal(b);
+                              }, 0);
+                              $(api.column(4).footer()).html(
+                                  '$ ' + balance.toFixed(2)
+                              );
+                          },
+                          dom: 'Qlfrtip;Bfrtip',
+                          buttons: [
+                              'copyHtml5',
+                              'excelHtml5',
+                              'csvHtml5',
+                              'pdfHtml5'
+                          ],
+                          deferRender: true,
+                          scrollY: 200,
+                          scrollCollapse: true,
+                          scroller: true,
+                          fixedHeader: true,
+                          scrollX: true,
+                      });
+                  }
+              });
+
+        
+    });
+</script>
+
+

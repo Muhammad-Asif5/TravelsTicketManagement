@@ -1,0 +1,189 @@
+﻿@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<style>
+    nav {
+        display: none !important;
+    }
+
+    aside {
+        display: none !important;
+    }
+
+    footer {
+        display: none !important;
+    }
+</style>
+<br />
+<div class="row">
+    <div class="col-12">
+        <div class="invoice p-3 mb-3" id="printableArea">
+
+            @*<div class="row">
+                    <div class="col-12">
+                        <h4>
+                            <i class="fas fa-globe"></i> INVOICE.
+                            <small  style="background:red; margin-right:100px;" class="float-right">Date: @DateTime.Now.ToString("dd-MMM-yyyy")</small>
+                        </h4>
+                    </div>
+                </div>*@
+            <div class="row invoice-info">
+                <div class="col-sm-12 invoice-col">
+                    <table class="" style="width:100%">
+                        <thead>
+                            <tr>
+                                <td colspan="2">
+                                    <h4><i class="fas fa-globe"></i> Cash/Bank Payment Voucher</h4>
+                                </td>
+                                <td><strong>Receipt Date:</strong></td>
+                                <td>
+                                    @ViewBag.Received_Paid_Date.ToString("dd-MMM-yyyy")
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="50" colspan="4">
+                                    <img src="http://erpadmin.brillanttravel.com/Logo/logo.png" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">N 1781, Sur O’avenue Kapenda, Quarter Makutano, Commune et Ville de Lubumbashi</td>
+                                <td><strong>Receipt #</strong></td>
+                                <td>@ViewBag.VID</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td></td>
+                                <td>@ViewBag.Net_Payable</td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td style="width:150px;"><strong>Customer Code:</strong></td>
+                                            <td colspan="3"><strong>@ViewBag.CustCode</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Customer Name:</strong></td>
+                                            <td colspan="3">@ViewBag.PayableCode</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Address:</strong></td>
+                                            <td colspan="3">@ViewBag.Account</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Paid To:</strong></td>
+                                            <td colspan="3">@ViewBag.Received_Paid</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Narration:</strong></td>
+                                            <td colspan="3">@ViewBag.Narration</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+
+                </div>
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table">
+                            
+                            <tr>
+                                <th colspan="2">
+                                    <div style="margin-top:20px;"></div>
+                                    Stamp & Signature:________________________
+                                    <br /><br /><br />
+                                    Received By:______________________________
+                                </th>
+                                <td><div style="margin-top:20px;"></div></td>
+                                <th style="text-align:right"><div style="margin-top:20px;"></div>
+                                Amount: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @ViewBag.Amount.ToString("N2")</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-print">
+                <div class="col-12">
+                    <a href="javascript:0" onclick="printDiv('printableArea')" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                    <button onclick="tableToExcel('printableArea', 'AP_EXP Receipt')" type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                        <i class="fas fa-download"></i> Generate Excel
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+    <script>
+
+        //var tableToExcel = (function () {
+        //    var uri = 'data:application/vnd.ms-excel;base64,'
+        //        , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+        //        //, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"> <head></head><body><table>{table}</table></body></html>'
+        //        , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+        //        , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+        //    return function (table, name) {
+        //        if (!table.nodeType) table = document.getElementById(table)
+        //        var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+        //        window.location.href = uri + base64(format(template, ctx))
+        //    }
+        //})()
+
+        function tableToExcel(table, name) {
+            var uri = 'data:application/vnd.ms-excel;base64,'
+                , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+                , base64 = function (s) {
+                    return window.btoa(unescape(encodeURIComponent(s)))
+                }, format = function (s, c) {
+                    return s.replace(/{(\w+)}/g, function (m, p) {
+                        return c[p];
+                    })
+                }
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+            var a = document.createElement('a');
+            a.href = uri + base64(format(template, ctx))
+            a.download = name + '.xls';
+            a.click();
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+
+        $("#btnPrint").click(function () {
+            window.print();
+        })
+                        //window.addEventListener("load", window.print());
+    </script>
+
+}
+
+
+
+

@@ -1,0 +1,100 @@
+﻿@model AMS.Models.Customer
+@{ Layout = null; }
+
+@using (Html.BeginForm("AddOrEdit", "Customer", FormMethod.Post,
+    new { enctype = "multipart/form-data", id = "myForm", @class = "form-horizontal", role = "form", autocomplete = "off" }))
+{
+<div class="row">
+    @Html.HiddenFor(x => x.Cust_ID)
+    <div class="col-sm-3">
+        <div class="form-group">
+
+            @Html.LabelFor(model => model.Cust_Code, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Cust_Code, new { htmlAttributes = new { @onkeyup = "CalculateLookUp(this.value)", @class = "form-control", @required = "required", placeholder = "Enter Customer Code", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "200" } })
+            @Html.ValidationMessageFor(model => model.Cust_Code, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Company_Name, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Company_Name, new { htmlAttributes = new { onkeyup = "CalculateLookUp(this.value)", @class = "form-control", @required = "required", placeholder = "Enter Company Name", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "200" } })
+            @Html.ValidationMessageFor(model => model.Company_Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Lookup, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Lookup, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control", @required = "required", placeholder = "Enter Lookup", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "200" } })
+            @Html.ValidationMessageFor(model => model.Lookup, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Contact_Name, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Contact_Name, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Contact Name", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "200" } })
+            @Html.ValidationMessageFor(model => model.Contact_Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Address" } })
+            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter City", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "150" } })
+            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter State", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "150" } })
+            @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ZIP_Code, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.ZIP_Code, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter ZIP Code", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "50" } })
+            @Html.ValidationMessageFor(model => model.ZIP_Code, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Phone", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "50" } })
+            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Email", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "200" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Fax, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Fax", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "200" } })
+            @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+
+</div>
+                <button type="submit" id="btnSave" class="btn btn-success">Add</button>
+                                <button type="submit" id="btnUpdate" class="btn btn-primary">Update</button>}
+
+
+<script>
+    var NextID = '@ViewBag.NextID';
+
+</script>
+

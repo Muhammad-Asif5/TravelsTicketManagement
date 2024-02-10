@@ -1,0 +1,65 @@
+﻿@model IEnumerable<AMS.Models.mvcModelDailyExpens>
+
+@{
+    Layout = null;// "~/Views/Shared/_Layout.cshtml";
+}
+
+<table id="myTable" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Exp_Code)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Account)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact_Name)
+            </th>
+            <th>
+                Category
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int counter = 0;// Index start value
+            foreach (var item in Model)
+            {
+                <tr id="@item.Exp_Code">
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.Exp_Code)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Account)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Contact_Name)
+                    </td>
+                    <td>
+                        @{
+                            if (item.Cat_ID == 1)
+                            {
+                                <label class="badge bg-success">AP</label>
+                            }
+                            else
+                            {
+                                <label class="badge bg-info">Daily Expenses</label>
+                            }
+                        }
+                    </td>
+                    <td>
+                        <button onclick="getById(this.id)" id="@item.Exp_Code" class="btn btn-primary btn-sm">Edit</button>
+                        <button onclick="deleteById(this.id)" id="@item.Exp_Code" class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
+                counter++;
+            }
+        }
+
+
+    </tbody>
+</table>
+

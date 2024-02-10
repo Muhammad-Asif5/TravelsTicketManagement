@@ -1,0 +1,69 @@
+﻿@model IEnumerable<AMS.Models.mvcModelAirLine>
+
+@{
+    Layout = null;// "~/Views/Shared/_Layout.cshtml";
+}
+
+<table id="myTable" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Payable_Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Payable_Supplier)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket_Commission)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VAT)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cat_ID)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int counter = 0;// Index start value
+            foreach (var item in Model)
+            {
+                <tr id="@item.Air_ID">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Payable_Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Payable_Supplier)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ticket_Commission)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VAT)
+                    </td>
+                    <td>
+                        @{
+                            if (item.Cat_ID == 1)
+                            {
+                                <label class="badge bg-success">AP</label>
+                            }
+                            else
+                            {
+                                <label class="badge bg-info">EXP</label>
+                            }
+                        }
+                    </td>
+                    <td>
+                        <button onclick="getById(this.id)" id="@item.Air_ID" class="btn btn-primary btn-sm">Edit</button>
+                        <button onclick="deleteById(this.id)" id="@item.Air_ID" class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
+                counter++;
+            }
+        }
+
+
+    </tbody>
+</table>

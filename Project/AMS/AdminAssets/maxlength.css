@@ -1,0 +1,38 @@
+﻿
+ /*MaxLength*/
+/*.label {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: bold;
+    line-height: 1;
+    color: #ffffff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}*/
+.label {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: bold;
+    line-height: 1;
+    color: #ffffff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+.label-success {
+    background-color: #5cb85c;
+}
+.label-danger {
+    background-color: #d9534f;
+}
+/*MaxLength End*/
+
+/*Datatable*/
+ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {background-color: #334a77;}
+
+

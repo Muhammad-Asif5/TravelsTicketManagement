@@ -1,0 +1,1511 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HorizonDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AcCat">
+          <Key>
+            <PropertyRef Name="CatID" />
+          </Key>
+          <Property Name="CatID" Type="smallint" Nullable="false" />
+          <Property Name="CatName" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Accounts">
+          <Key>
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="AccountID" Type="int" Nullable="false" />
+          <Property Name="AcNumber" Type="int" />
+          <Property Name="AcName" Type="nvarchar" MaxLength="20" />
+          <Property Name="CatID" Type="smallint" />
+          <Property Name="Balance_Amt" Type="money" />
+        </EntityType>
+        <EntityType Name="Agent">
+          <Key>
+            <PropertyRef Name="Agent_ID" />
+          </Key>
+          <Property Name="Agent_ID" Type="int" Nullable="false" />
+          <Property Name="Agent_Name" Type="varchar" MaxLength="50" />
+          <Property Name="Agent_Status" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="AirLines">
+          <Key>
+            <PropertyRef Name="Air_ID" />
+          </Key>
+          <Property Name="Air_ID" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="Payable_Code" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Payable_Supplier" Type="varchar" MaxLength="50" />
+          <Property Name="Ticket_Commission" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="VAT" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Cat_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Bank">
+          <Key>
+            <PropertyRef Name="Bank_ID" />
+          </Key>
+          <Property Name="Bank_ID" Type="int" Nullable="false" />
+          <Property Name="Bank_Name" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="bit" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="Cust_ID" />
+          </Key>
+          <Property Name="Cust_ID" Type="int" Nullable="false" />
+          <Property Name="Lookup" Type="varchar" MaxLength="200" />
+          <Property Name="Cust_Code" Type="varchar" MaxLength="200" />
+          <Property Name="Company_Name" Type="varchar" MaxLength="200" />
+          <Property Name="Contact_Name" Type="varchar" MaxLength="200" />
+          <Property Name="Address" Type="varchar(max)" />
+          <Property Name="City" Type="varchar" MaxLength="150" />
+          <Property Name="State" Type="varchar" MaxLength="150" />
+          <Property Name="ZIP_Code" Type="varchar" MaxLength="50" />
+          <Property Name="Phone" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="200" />
+          <Property Name="Fax" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="DailyExpenses">
+          <Key>
+            <PropertyRef Name="Exp_Code" />
+          </Key>
+          <Property Name="Exp_Code" Type="char" MaxLength="3" Nullable="false" />
+          <Property Name="Account" Type="varchar" MaxLength="150" />
+          <Property Name="Contact_Name" Type="varchar" MaxLength="150" />
+          <Property Name="Cat_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Expenses_Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="Payable_Code" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Income_Stream">
+          <Key>
+            <PropertyRef Name="Stream_ID" />
+          </Key>
+          <Property Name="Stream_ID" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="Stream_Name" Type="varchar" MaxLength="50" />
+          <Property Name="Stream_Status" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="Invoice_Details">
+          <Key>
+            <PropertyRef Name="Invoice_Number" />
+          </Key>
+          <Property Name="Invoice_Number" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Invoice_Date" Type="date" />
+          <Property Name="Ticket_Number" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="50" />
+          <Property Name="Routing" Type="varchar" MaxLength="50" />
+          <Property Name="Departure_Date" Type="datetime" />
+          <Property Name="Arrival_Date" Type="datetime" />
+          <Property Name="Paid" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Invoice_Amount" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Base_Fare" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Total_Value" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Tax" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Other_Cost" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Stream_ID" Type="char" MaxLength="2" />
+          <Property Name="Net_Payable" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Paid2" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Other_Ref" Type="nvarchar" MaxLength="250" />
+          <Property Name="Cust_Code" Type="int" />
+          <Property Name="Payable_Code" Type="char" MaxLength="2" />
+          <Property Name="Agent_ID" Type="int" />
+          <Property Name="Ticket_Commission" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Commission_Amount" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="VAT" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="VAT_Amount" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="TicketClass_ID" Type="int" />
+          <Property Name="Pay_Status" Type="char" MaxLength="1" />
+          <Property Name="ReceivePay_Status" Type="char" MaxLength="1" />
+          <Property Name="Ticket_Status" Type="char" MaxLength="2" />
+          <Property Name="Customer_Penalty" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="AirLine_Penalty" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="User_Name" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="TicketClass">
+          <Key>
+            <PropertyRef Name="TicketClass_ID" />
+          </Key>
+          <Property Name="TicketClass_ID" Type="int" Nullable="false" />
+          <Property Name="Ticket_Class" Type="varchar" MaxLength="50" />
+          <Property Name="Ticket_Class_Status" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="Voucher">
+          <Key>
+            <PropertyRef Name="VID" />
+          </Key>
+          <Property Name="VID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Bank_ID" Type="int" />
+          <Property Name="Bank_Cash_Receiveable" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="Payable_Code" Type="char" MaxLength="2" />
+          <Property Name="Exp_Code" Type="char" MaxLength="3" />
+          <Property Name="Cust_Code" Type="int" />
+          <Property Name="Received_Paid_Date" Type="date" />
+          <Property Name="AccountID" Type="int" />
+          <Property Name="DrCr" Type="nvarchar" MaxLength="2" />
+          <Property Name="Amount" Type="money" />
+          <Property Name="Narration" Type="varchar(max)" />
+          <Property Name="Received_Paid" Type="varchar" MaxLength="50" />
+          <Property Name="User_Name" Type="nvarchar" MaxLength="256" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'HorizonDB.dbo.V_Payable' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_Payable">
+          <Key>
+            <PropertyRef Name="Invoice_Number" />
+            <PropertyRef Name="Payable_Code" />
+            <PropertyRef Name="Air_ID" />
+          </Key>
+          <Property Name="Invoice_Number" Type="int" Nullable="false" />
+          <Property Name="Invoice_Date" Type="date" />
+          <Property Name="Ticket_Number" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="50" />
+          <Property Name="Routing" Type="varchar" MaxLength="50" />
+          <Property Name="Net_Payable" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Paid2" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Balance" Type="decimal" Precision="38" Scale="2" />
+          <Property Name="Payable_Supplier" Type="varchar" MaxLength="50" />
+          <Property Name="Payable_Code" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Air_ID" Type="char" MaxLength="2" Nullable="false" />
+          <Property Name="Pay_Status" Type="char" MaxLength="1" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'HorizonDB.dbo.V_Receiveable' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="V_Receiveable">
+          <Key>
+            <PropertyRef Name="Invoice_Number" />
+            <PropertyRef Name="Cust_ID" />
+          </Key>
+          <Property Name="Invoice_Number" Type="int" Nullable="false" />
+          <Property Name="Invoice_Date" Type="date" />
+          <Property Name="Ticket_Number" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="varchar" MaxLength="50" />
+          <Property Name="Routing" Type="varchar" MaxLength="50" />
+          <Property Name="Invoice_Amount" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Paid" Type="decimal" Precision="8" Scale="2" />
+          <Property Name="Balance" Type="decimal" Precision="38" Scale="2" />
+          <Property Name="Cust_Code" Type="varchar" MaxLength="200" />
+          <Property Name="Company_Name" Type="varchar" MaxLength="200" />
+          <Property Name="Contact_Name" Type="varchar" MaxLength="200" />
+          <Property Name="Address" Type="varchar(max)" />
+          <Property Name="Phone" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="200" />
+          <Property Name="Cust_ID" Type="int" Nullable="false" />
+          <Property Name="ReceivePay_Status" Type="char" MaxLength="1" />
+        </EntityType>
+        <Association Name="FK__Accounts__CatID__3E52440B">
+          <End Role="AcCat" Type="Self.AcCat" Multiplicity="0..1" />
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AcCat">
+              <PropertyRef Name="CatID" />
+            </Principal>
+            <Dependent Role="Accounts">
+              <PropertyRef Name="CatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AirLines_Expenses_Category">
+          <End Role="Expenses_Category" Type="Self.Expenses_Category" Multiplicity="1" />
+          <End Role="AirLines" Type="Self.AirLines" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Expenses_Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="AirLines">
+              <PropertyRef Name="Cat_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DailyExpenses_Expenses_Category">
+          <End Role="Expenses_Category" Type="Self.Expenses_Category" Multiplicity="1" />
+          <End Role="DailyExpenses" Type="Self.DailyExpenses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Expenses_Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="DailyExpenses">
+              <PropertyRef Name="Cat_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Details_Agent">
+          <End Role="Agent" Type="Self.Agent" Multiplicity="0..1" />
+          <End Role="Invoice_Details" Type="Self.Invoice_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="Agent_ID" />
+            </Principal>
+            <Dependent Role="Invoice_Details">
+              <PropertyRef Name="Agent_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Details_AirLines">
+          <End Role="AirLines" Type="Self.AirLines" Multiplicity="0..1" />
+          <End Role="Invoice_Details" Type="Self.Invoice_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AirLines">
+              <PropertyRef Name="Air_ID" />
+            </Principal>
+            <Dependent Role="Invoice_Details">
+              <PropertyRef Name="Payable_Code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Details_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Invoice_Details" Type="Self.Invoice_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Cust_ID" />
+            </Principal>
+            <Dependent Role="Invoice_Details">
+              <PropertyRef Name="Cust_Code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Details_Income_Stream">
+          <End Role="Income_Stream" Type="Self.Income_Stream" Multiplicity="0..1" />
+          <End Role="Invoice_Details" Type="Self.Invoice_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Income_Stream">
+              <PropertyRef Name="Stream_ID" />
+            </Principal>
+            <Dependent Role="Invoice_Details">
+              <PropertyRef Name="Stream_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Details_TicketClass">
+          <End Role="TicketClass" Type="Self.TicketClass" Multiplicity="0..1" />
+          <End Role="Invoice_Details" Type="Self.Invoice_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketClass">
+              <PropertyRef Name="TicketClass_ID" />
+            </Principal>
+            <Dependent Role="Invoice_Details">
+              <PropertyRef Name="TicketClass_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Voucher_Accounts">
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="0..1" />
+          <End Role="Voucher" Type="Self.Voucher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Accounts">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Voucher">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Voucher_AirLines">
+          <End Role="AirLines" Type="Self.AirLines" Multiplicity="0..1" />
+          <End Role="Voucher" Type="Self.Voucher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AirLines">
+              <PropertyRef Name="Air_ID" />
+            </Principal>
+            <Dependent Role="Voucher">
+              <PropertyRef Name="Payable_Code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Voucher_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Voucher" Type="Self.Voucher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Cust_ID" />
+            </Principal>
+            <Dependent Role="Voucher">
+              <PropertyRef Name="Cust_Code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Voucher_DailyExpenses">
+          <End Role="DailyExpenses" Type="Self.DailyExpenses" Multiplicity="0..1" />
+          <End Role="Voucher" Type="Self.Voucher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DailyExpenses">
+              <PropertyRef Name="Exp_Code" />
+            </Principal>
+            <Dependent Role="Voucher">
+              <PropertyRef Name="Exp_Code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_get_All_Invoice" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Dfrom" Type="datetime" Mode="In" />
+          <Parameter Name="Dto" Type="datetime" Mode="In" />
+          <Parameter Name="PayStatus" Type="char" Mode="In" />
+        </Function>
+        <Function Name="sp_get_Balance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="BankCashReceiveable" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_View_Amount_Payable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_View_Amount_Receiveable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGet_All_Invoice_Details" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGet_All_Invoice_DetailsByDateAndPayStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Dfrom" Type="datetime" Mode="In" />
+          <Parameter Name="Dto" Type="datetime" Mode="In" />
+          <Parameter Name="PayStatus" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spGet_AP_Summary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGet_AP_SummaryByDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FromDate" Type="datetime" Mode="In" />
+          <Parameter Name="ToDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="spGet_AR_Summary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGet_AR_SummaryByDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FromDate" Type="datetime" Mode="In" />
+          <Parameter Name="ToDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="spGet_BankOrCash" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="BankID" Type="int" Mode="In" />
+          <Parameter Name="FromDate" Type="datetime" Mode="In" />
+          <Parameter Name="ToDate" Type="datetime" Mode="In" />
+        </Function>
+        <EntityContainer Name="HorizonDBModelStoreContainer">
+          <EntitySet Name="AcCat" EntityType="Self.AcCat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Agent" EntityType="Self.Agent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AirLines" EntityType="Self.AirLines" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bank" EntityType="Self.Bank" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DailyExpenses" EntityType="Self.DailyExpenses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Expenses_Category" EntityType="Self.Expenses_Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Income_Stream" EntityType="Self.Income_Stream" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Invoice_Details" EntityType="Self.Invoice_Details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketClass" EntityType="Self.TicketClass" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Voucher" EntityType="Self.Voucher" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="V_Payable" EntityType="Self.V_Payable" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_Payable].[Invoice_Number] AS [Invoice_Number], 
+    [V_Payable].[Invoice_Date] AS [Invoice_Date], 
+    [V_Payable].[Ticket_Number] AS [Ticket_Number], 
+    [V_Payable].[Description] AS [Description], 
+    [V_Payable].[Routing] AS [Routing], 
+    [V_Payable].[Net_Payable] AS [Net_Payable], 
+    [V_Payable].[Paid2] AS [Paid2], 
+    [V_Payable].[Balance] AS [Balance], 
+    [V_Payable].[Payable_Supplier] AS [Payable_Supplier], 
+    [V_Payable].[Payable_Code] AS [Payable_Code], 
+    [V_Payable].[Air_ID] AS [Air_ID], 
+    [V_Payable].[Pay_Status] AS [Pay_Status]
+    FROM [dbo].[V_Payable] AS [V_Payable]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="V_Receiveable" EntityType="Self.V_Receiveable" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [V_Receiveable].[Invoice_Number] AS [Invoice_Number], 
+    [V_Receiveable].[Invoice_Date] AS [Invoice_Date], 
+    [V_Receiveable].[Ticket_Number] AS [Ticket_Number], 
+    [V_Receiveable].[Description] AS [Description], 
+    [V_Receiveable].[Routing] AS [Routing], 
+    [V_Receiveable].[Invoice_Amount] AS [Invoice_Amount], 
+    [V_Receiveable].[Paid] AS [Paid], 
+    [V_Receiveable].[Balance] AS [Balance], 
+    [V_Receiveable].[Cust_Code] AS [Cust_Code], 
+    [V_Receiveable].[Company_Name] AS [Company_Name], 
+    [V_Receiveable].[Contact_Name] AS [Contact_Name], 
+    [V_Receiveable].[Address] AS [Address], 
+    [V_Receiveable].[Phone] AS [Phone], 
+    [V_Receiveable].[Email] AS [Email], 
+    [V_Receiveable].[Cust_ID] AS [Cust_ID], 
+    [V_Receiveable].[ReceivePay_Status] AS [ReceivePay_Status]
+    FROM [dbo].[V_Receiveable] AS [V_Receiveable]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Accounts__CatID__3E52440B" Association="Self.FK__Accounts__CatID__3E52440B">
+            <End Role="AcCat" EntitySet="AcCat" />
+            <End Role="Accounts" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AirLines_Expenses_Category" Association="Self.FK_AirLines_Expenses_Category">
+            <End Role="Expenses_Category" EntitySet="Expenses_Category" />
+            <End Role="AirLines" EntitySet="AirLines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DailyExpenses_Expenses_Category" Association="Self.FK_DailyExpenses_Expenses_Category">
+            <End Role="Expenses_Category" EntitySet="Expenses_Category" />
+            <End Role="DailyExpenses" EntitySet="DailyExpenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Details_Agent" Association="Self.FK_Invoice_Details_Agent">
+            <End Role="Agent" EntitySet="Agent" />
+            <End Role="Invoice_Details" EntitySet="Invoice_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Details_AirLines" Association="Self.FK_Invoice_Details_AirLines">
+            <End Role="AirLines" EntitySet="AirLines" />
+            <End Role="Invoice_Details" EntitySet="Invoice_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Details_Customers" Association="Self.FK_Invoice_Details_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Invoice_Details" EntitySet="Invoice_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Details_Income_Stream" Association="Self.FK_Invoice_Details_Income_Stream">
+            <End Role="Income_Stream" EntitySet="Income_Stream" />
+            <End Role="Invoice_Details" EntitySet="Invoice_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Details_TicketClass" Association="Self.FK_Invoice_Details_TicketClass">
+            <End Role="TicketClass" EntitySet="TicketClass" />
+            <End Role="Invoice_Details" EntitySet="Invoice_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Voucher_Accounts" Association="Self.FK_Voucher_Accounts">
+            <End Role="Accounts" EntitySet="Accounts" />
+            <End Role="Voucher" EntitySet="Voucher" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Voucher_AirLines" Association="Self.FK_Voucher_AirLines">
+            <End Role="AirLines" EntitySet="AirLines" />
+            <End Role="Voucher" EntitySet="Voucher" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Voucher_Customers" Association="Self.FK_Voucher_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Voucher" EntitySet="Voucher" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Voucher_DailyExpenses" Association="Self.FK_Voucher_DailyExpenses">
+            <End Role="DailyExpenses" EntitySet="DailyExpenses" />
+            <End Role="Voucher" EntitySet="Voucher" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HorizonDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="sp_get_All_Invoice" ReturnType="Collection(HorizonDBModel.sp_get_All_Invoice_Result)">
+            <Parameter Name="Dfrom" Mode="In" Type="DateTime" />
+            <Parameter Name="Dto" Mode="In" Type="DateTime" />
+            <Parameter Name="PayStatus" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_get_Balance" ReturnType="Collection(Decimal)">
+          <Parameter Name="BankCashReceiveable" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_View_Amount_Payable" ReturnType="Collection(HorizonDBModel.sp_View_Amount_Payable_Result)" />
+          <FunctionImport Name="sp_View_Amount_Receiveable" ReturnType="Collection(HorizonDBModel.sp_View_Amount_Receiveable_Result)" />
+          <FunctionImport Name="spGet_All_Invoice_Details" ReturnType="Collection(HorizonDBModel.spGet_All_Invoice_Details_Result)" />
+          <FunctionImport Name="spGet_All_Invoice_DetailsByDateAndPayStatus" ReturnType="Collection(HorizonDBModel.spGet_All_Invoice_DetailsByDateAndPayStatus_Result)">
+            <Parameter Name="Dfrom" Mode="In" Type="DateTime" />
+            <Parameter Name="Dto" Mode="In" Type="DateTime" />
+            <Parameter Name="PayStatus" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGet_AP_Summary" ReturnType="Collection(HorizonDBModel.spGet_AP_Summary_Result)" />
+          <FunctionImport Name="spGet_AP_SummaryByDate" ReturnType="Collection(HorizonDBModel.spGet_AP_SummaryByDate_Result)">
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spGet_AR_Summary" ReturnType="Collection(HorizonDBModel.spGet_AR_Summary_Result)" />
+          <FunctionImport Name="spGet_AR_SummaryByDate" ReturnType="Collection(HorizonDBModel.spGet_AR_SummaryByDate_Result)">
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spGet_BankOrCash" ReturnType="Collection(HorizonDBModel.spGet_BankOrCash_Result)">
+            <Parameter Name="BankID" Mode="In" Type="Int32" />
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <EntitySet Name="AcCats" EntityType="HorizonDBModel.AcCat" />
+          <EntitySet Name="Accounts" EntityType="HorizonDBModel.Account" />
+          <EntitySet Name="Agents" EntityType="HorizonDBModel.Agent" />
+          <EntitySet Name="AirLines" EntityType="HorizonDBModel.AirLine" />
+          <EntitySet Name="Banks" EntityType="HorizonDBModel.Bank" />
+          <EntitySet Name="Customers" EntityType="HorizonDBModel.Customer" />
+          <EntitySet Name="DailyExpenses" EntityType="HorizonDBModel.DailyExpens" />
+          <EntitySet Name="Expenses_Category" EntityType="HorizonDBModel.Expenses_Category" />
+          <EntitySet Name="Income_Stream" EntityType="HorizonDBModel.Income_Stream" />
+          <EntitySet Name="Invoice_Details" EntityType="HorizonDBModel.Invoice_Details" />
+          <EntitySet Name="TicketClasses" EntityType="HorizonDBModel.TicketClass" />
+          <EntitySet Name="Vouchers" EntityType="HorizonDBModel.Voucher" />
+          <EntitySet Name="V_Payable" EntityType="HorizonDBModel.V_Payable" />
+          <EntitySet Name="V_Receiveable" EntityType="HorizonDBModel.V_Receiveable" />
+          <AssociationSet Name="FK__Accounts__CatID__3E52440B" Association="HorizonDBModel.FK__Accounts__CatID__3E52440B">
+            <End Role="AcCat" EntitySet="AcCats" />
+            <End Role="Account" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Voucher_Accounts" Association="HorizonDBModel.FK_Voucher_Accounts">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Voucher" EntitySet="Vouchers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Details_Agent" Association="HorizonDBModel.FK_Invoice_Details_Agent">
+            <End Role="Agent" EntitySet="Agents" />
+            <End Role="Invoice_Details" EntitySet="Invoice_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AirLines_Expenses_Category" Association="HorizonDBModel.FK_AirLines_Expenses_Category">
+            <End Role="Expenses_Category" EntitySet="Expenses_Category" />
+            <End Role="AirLine" EntitySet="AirLines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Details_AirLines" Association="HorizonDBModel.FK_Invoice_Details_AirLines">
+            <End Role="AirLine" EntitySet="AirLines" />
+            <End Role="Invoice_Details" EntitySet="Invoice_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Voucher_AirLines" Association="HorizonDBModel.FK_Voucher_AirLines">
+            <End Role="AirLine" EntitySet="AirLines" />
+            <End Role="Voucher" EntitySet="Vouchers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Details_Customers" Association="HorizonDBModel.FK_Invoice_Details_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Invoice_Details" EntitySet="Invoice_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Voucher_Customers" Association="HorizonDBModel.FK_Voucher_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Voucher" EntitySet="Vouchers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DailyExpenses_Expenses_Category" Association="HorizonDBModel.FK_DailyExpenses_Expenses_Category">
+            <End Role="Expenses_Category" EntitySet="Expenses_Category" />
+            <End Role="DailyExpens" EntitySet="DailyExpenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Voucher_DailyExpenses" Association="HorizonDBModel.FK_Voucher_DailyExpenses">
+            <End Role="DailyExpens" EntitySet="DailyExpenses" />
+            <End Role="Voucher" EntitySet="Vouchers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Details_Income_Stream" Association="HorizonDBModel.FK_Invoice_Details_Income_Stream">
+            <End Role="Income_Stream" EntitySet="Income_Stream" />
+            <End Role="Invoice_Details" EntitySet="Invoice_Details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Details_TicketClass" Association="HorizonDBModel.FK_Invoice_Details_TicketClass">
+            <End Role="TicketClass" EntitySet="TicketClasses" />
+            <End Role="Invoice_Details" EntitySet="Invoice_Details" />
+          </AssociationSet>
+          </EntityContainer>
+        <ComplexType Name="sp_get_All_Invoice_Result">
+          <Property Type="Int32" Name="Invoice_Number" Nullable="false" />
+          <Property Type="String" Name="ReceivePay_Status" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="Invoice_Date" Nullable="true" />
+          <Property Type="String" Name="Ticket_Number" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Routing" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="Departure_Date" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="Arrival_Date" Nullable="true" Precision="23" />
+          <Property Type="Decimal" Name="Paid" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Invoice_Amount" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Base_Fare" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Tax" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Other_Cost" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Net_Payable" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Paid2" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="String" Name="Other_Ref" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Cust_Code" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Payable_Code" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Payable_Supplier" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Agent_Name" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="Ticket_Commission" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Commission_Amount" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="VAT" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="VAT_Amount" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="String" Name="Ticket_Class" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Pay_Status" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="Ticket_Status" Nullable="true" MaxLength="2" />
+          <Property Type="String" Name="Stream_ID" Nullable="true" MaxLength="2" />
+          <Property Type="Int32" Name="Agent_ID" Nullable="true" />
+          <Property Type="Int32" Name="TicketClass_ID" Nullable="true" />
+          <Property Type="Decimal" Name="AirLine_Penalty" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Customer_Penalty" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="String" Name="User_Name" Nullable="true" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="sp_View_Amount_Payable_Result">
+          <Property Type="Int32" Name="Payment_Ref" Nullable="true" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="String" Name="Received_From" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Narration" Nullable="true" />
+          <Property Type="Decimal" Name="Cedit" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="Balance" Nullable="true" Precision="19" />
+          <Property Type="String" Name="Account" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Payable_Code" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="User_Name" Nullable="true" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="sp_View_Amount_Receiveable_Result">
+          <Property Type="Int32" Name="Receipt_Ref" Nullable="true" />
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="String" Name="Received_Paid" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Narration" Nullable="true" />
+          <Property Type="Decimal" Name="Debit" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="Balance" Nullable="true" Precision="19" />
+          <Property Type="String" Name="Cust_Code" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="User_Name" Nullable="true" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="spGet_All_Invoice_Details_Result">
+          <Property Type="String" Name="ReceivePay_Status" Nullable="true" MaxLength="1" />
+          <Property Type="Int32" Name="Invoice_Number" Nullable="false" />
+          <Property Type="String" Name="Ticket_Status" Nullable="true" MaxLength="2" />
+          <Property Type="DateTime" Name="Invoice_Date" Nullable="true" />
+          <Property Type="String" Name="Ticket_Number" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Routing" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="Departure_Date" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="Arrival_Date" Nullable="true" Precision="23" />
+          <Property Type="Decimal" Name="Paid" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Invoice_Amount" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Base_Fare" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Tax" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Other_Cost" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Net_Payable" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Paid2" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="String" Name="Other_Ref" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Cust_Code" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Payable_Code" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Payable_Supplier" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Agent_Name" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="Ticket_Commission" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Commission_Amount" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="VAT" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="VAT_Amount" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="String" Name="Ticket_Class" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Pay_Status" Nullable="true" MaxLength="1" />
+          <Property Type="Decimal" Name="Customer_Penalty" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="AirLine_Penalty" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="String" Name="User_Name" Nullable="true" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="spGet_All_Invoice_DetailsByDateAndPayStatus_Result">
+          <Property Type="String" Name="ReceivePay_Status" Nullable="true" MaxLength="1" />
+          <Property Type="Int32" Name="Invoice_Number" Nullable="false" />
+          <Property Type="String" Name="Ticket_Status" Nullable="true" MaxLength="2" />
+          <Property Type="DateTime" Name="Invoice_Date" Nullable="true" />
+          <Property Type="String" Name="Ticket_Number" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Routing" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="Departure_Date" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="Arrival_Date" Nullable="true" Precision="23" />
+          <Property Type="Decimal" Name="Paid" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Invoice_Amount" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Base_Fare" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Tax" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Other_Cost" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Net_Payable" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Paid2" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="String" Name="Other_Ref" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Cust_Code" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Payable_Code" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Payable_Supplier" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Agent_Name" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="Ticket_Commission" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="Commission_Amount" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="VAT" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="VAT_Amount" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="String" Name="Ticket_Class" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Pay_Status" Nullable="true" MaxLength="1" />
+          <Property Type="Decimal" Name="Customer_Penalty" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="Decimal" Name="AirLine_Penalty" Nullable="true" Precision="8" Scale="2" />
+          <Property Type="String" Name="User_Name" Nullable="true" MaxLength="256" />
+        </ComplexType>
+        <ComplexType Name="spGet_AP_Summary_Result">
+          <Property Type="String" Name="Payable_Supplier" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="Debit" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="Credit" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="Balance" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="spGet_AP_SummaryByDate_Result">
+          <Property Type="String" Name="Payable_Supplier" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="Debit" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="Credit" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="Balance" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="spGet_AR_Summary_Result">
+          <Property Type="String" Name="Cust_Code" Nullable="true" MaxLength="200" />
+          <Property Type="Decimal" Name="Debit" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="Credit" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="Balance" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="spGet_AR_SummaryByDate_Result">
+          <Property Type="String" Name="Cust_Code" Nullable="true" MaxLength="200" />
+          <Property Type="Decimal" Name="Debit" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="Credit" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="Balance" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="spGet_BankOrCash_Result">
+          <Property Type="DateTime" Name="Date" Nullable="true" />
+          <Property Type="Int32" Name="Receipt_Ref" Nullable="true" />
+          <Property Type="Int32" Name="Payment_Ref" Nullable="true" />
+          <Property Type="String" Name="Narration" Nullable="true" />
+          <Property Type="String" Name="Received_Paid" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="Credit" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="Debit" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="Balance" Nullable="true" Precision="19" />
+          <Property Type="String" Name="Cust_Code" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Payable_Code" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Account" Nullable="true" MaxLength="150" />
+        </ComplexType>
+        <EntityType Name="AcCat">
+          <Key>
+            <PropertyRef Name="CatID" />
+          </Key>
+          <Property Name="CatID" Type="Int16" Nullable="false" />
+          <Property Name="CatName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Accounts" Relationship="HorizonDBModel.FK__Accounts__CatID__3E52440B" FromRole="AcCat" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="AccountID" />
+          </Key>
+          <Property Name="AccountID" Type="Int32" Nullable="false" />
+          <Property Name="AcNumber" Type="Int32" />
+          <Property Name="AcName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CatID" Type="Int16" />
+          <Property Name="Balance_Amt" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="AcCat" Relationship="HorizonDBModel.FK__Accounts__CatID__3E52440B" FromRole="Account" ToRole="AcCat" />
+          <NavigationProperty Name="Vouchers" Relationship="HorizonDBModel.FK_Voucher_Accounts" FromRole="Account" ToRole="Voucher" />
+        </EntityType>
+        <EntityType Name="Agent">
+          <Key>
+            <PropertyRef Name="Agent_ID" />
+          </Key>
+          <Property Name="Agent_ID" Type="Int32" Nullable="false" />
+          <Property Name="Agent_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Agent_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Invoice_Details" Relationship="HorizonDBModel.FK_Invoice_Details_Agent" FromRole="Agent" ToRole="Invoice_Details" />
+        </EntityType>
+        <EntityType Name="AirLine">
+          <Key>
+            <PropertyRef Name="Air_ID" />
+          </Key>
+          <Property Name="Air_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="Payable_Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Payable_Supplier" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Ticket_Commission" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="VAT" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Cat_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Expenses_Category" Relationship="HorizonDBModel.FK_AirLines_Expenses_Category" FromRole="AirLine" ToRole="Expenses_Category" />
+          <NavigationProperty Name="Invoice_Details" Relationship="HorizonDBModel.FK_Invoice_Details_AirLines" FromRole="AirLine" ToRole="Invoice_Details" />
+          <NavigationProperty Name="Vouchers" Relationship="HorizonDBModel.FK_Voucher_AirLines" FromRole="AirLine" ToRole="Voucher" />
+        </EntityType>
+        <EntityType Name="Bank">
+          <Key>
+            <PropertyRef Name="Bank_ID" />
+          </Key>
+          <Property Name="Bank_ID" Type="Int32" Nullable="false" />
+          <Property Name="Bank_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Cust_ID" />
+          </Key>
+          <Property Name="Cust_ID" Type="Int32" Nullable="false" />
+          <Property Name="Lookup" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Cust_Code" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Company_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Contact_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ZIP_Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Fax" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Invoice_Details" Relationship="HorizonDBModel.FK_Invoice_Details_Customers" FromRole="Customer" ToRole="Invoice_Details" />
+          <NavigationProperty Name="Vouchers" Relationship="HorizonDBModel.FK_Voucher_Customers" FromRole="Customer" ToRole="Voucher" />
+        </EntityType>
+        <EntityType Name="DailyExpens">
+          <Key>
+            <PropertyRef Name="Exp_Code" />
+          </Key>
+          <Property Name="Exp_Code" Type="String" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="Account" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Contact_Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Cat_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Expenses_Category" Relationship="HorizonDBModel.FK_DailyExpenses_Expenses_Category" FromRole="DailyExpens" ToRole="Expenses_Category" />
+          <NavigationProperty Name="Vouchers" Relationship="HorizonDBModel.FK_Voucher_DailyExpenses" FromRole="DailyExpens" ToRole="Voucher" />
+        </EntityType>
+        <EntityType Name="Expenses_Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="Payable_Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AirLines" Relationship="HorizonDBModel.FK_AirLines_Expenses_Category" FromRole="Expenses_Category" ToRole="AirLine" />
+          <NavigationProperty Name="DailyExpenses" Relationship="HorizonDBModel.FK_DailyExpenses_Expenses_Category" FromRole="Expenses_Category" ToRole="DailyExpens" />
+        </EntityType>
+        <EntityType Name="Income_Stream">
+          <Key>
+            <PropertyRef Name="Stream_ID" />
+          </Key>
+          <Property Name="Stream_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="Stream_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Stream_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Invoice_Details" Relationship="HorizonDBModel.FK_Invoice_Details_Income_Stream" FromRole="Income_Stream" ToRole="Invoice_Details" />
+        </EntityType>
+        <EntityType Name="Invoice_Details">
+          <Key>
+            <PropertyRef Name="Invoice_Number" />
+          </Key>
+          <Property Name="Invoice_Number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Invoice_Date" Type="DateTime" Precision="0" />
+          <Property Name="Ticket_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Routing" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Departure_Date" Type="DateTime" Precision="3" />
+          <Property Name="Arrival_Date" Type="DateTime" Precision="3" />
+          <Property Name="Paid" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Invoice_Amount" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Base_Fare" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Total_Value" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Tax" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Other_Cost" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Stream_ID" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="Net_Payable" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Paid2" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Other_Ref" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Cust_Code" Type="Int32" />
+          <Property Name="Payable_Code" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="Agent_ID" Type="Int32" />
+          <Property Name="Ticket_Commission" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Commission_Amount" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="VAT" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="VAT_Amount" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="TicketClass_ID" Type="Int32" />
+          <Property Name="Pay_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="ReceivePay_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Ticket_Status" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="Customer_Penalty" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="AirLine_Penalty" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="User_Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Agent" Relationship="HorizonDBModel.FK_Invoice_Details_Agent" FromRole="Invoice_Details" ToRole="Agent" />
+          <NavigationProperty Name="AirLine" Relationship="HorizonDBModel.FK_Invoice_Details_AirLines" FromRole="Invoice_Details" ToRole="AirLine" />
+          <NavigationProperty Name="Customer" Relationship="HorizonDBModel.FK_Invoice_Details_Customers" FromRole="Invoice_Details" ToRole="Customer" />
+          <NavigationProperty Name="Income_Stream" Relationship="HorizonDBModel.FK_Invoice_Details_Income_Stream" FromRole="Invoice_Details" ToRole="Income_Stream" />
+          <NavigationProperty Name="TicketClass" Relationship="HorizonDBModel.FK_Invoice_Details_TicketClass" FromRole="Invoice_Details" ToRole="TicketClass" />
+        </EntityType>
+        <EntityType Name="TicketClass">
+          <Key>
+            <PropertyRef Name="TicketClass_ID" />
+          </Key>
+          <Property Name="TicketClass_ID" Type="Int32" Nullable="false" />
+          <Property Name="Ticket_Class" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Ticket_Class_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Invoice_Details" Relationship="HorizonDBModel.FK_Invoice_Details_TicketClass" FromRole="TicketClass" ToRole="Invoice_Details" />
+        </EntityType>
+        <EntityType Name="Voucher">
+          <Key>
+            <PropertyRef Name="VID" />
+          </Key>
+          <Property Name="VID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Bank_ID" Type="Int32" />
+          <Property Name="Bank_Cash_Receiveable" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Payable_Code" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="Exp_Code" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="Cust_Code" Type="Int32" />
+          <Property Name="Received_Paid_Date" Type="DateTime" Precision="0" />
+          <Property Name="AccountID" Type="Int32" />
+          <Property Name="DrCr" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Narration" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Received_Paid" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="User_Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Account" Relationship="HorizonDBModel.FK_Voucher_Accounts" FromRole="Voucher" ToRole="Account" />
+          <NavigationProperty Name="AirLine" Relationship="HorizonDBModel.FK_Voucher_AirLines" FromRole="Voucher" ToRole="AirLine" />
+          <NavigationProperty Name="Customer" Relationship="HorizonDBModel.FK_Voucher_Customers" FromRole="Voucher" ToRole="Customer" />
+          <NavigationProperty Name="DailyExpens" Relationship="HorizonDBModel.FK_Voucher_DailyExpenses" FromRole="Voucher" ToRole="DailyExpens" />
+        </EntityType>
+        <EntityType Name="V_Payable">
+          <Key>
+            <PropertyRef Name="Invoice_Number" />
+            <PropertyRef Name="Payable_Code" />
+            <PropertyRef Name="Air_ID" />
+          </Key>
+          <Property Name="Invoice_Number" Type="Int32" Nullable="false" />
+          <Property Name="Invoice_Date" Type="DateTime" Precision="0" />
+          <Property Name="Ticket_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Routing" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Net_Payable" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Paid2" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Balance" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="Payable_Supplier" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Payable_Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Air_ID" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="Pay_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="V_Receiveable">
+          <Key>
+            <PropertyRef Name="Invoice_Number" />
+            <PropertyRef Name="Cust_ID" />
+          </Key>
+          <Property Name="Invoice_Number" Type="Int32" Nullable="false" />
+          <Property Name="Invoice_Date" Type="DateTime" Precision="0" />
+          <Property Name="Ticket_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Routing" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Invoice_Amount" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Paid" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="Balance" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="Cust_Code" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Company_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Contact_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Cust_ID" Type="Int32" Nullable="false" />
+          <Property Name="ReceivePay_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__Accounts__CatID__3E52440B">
+          <End Type="HorizonDBModel.AcCat" Role="AcCat" Multiplicity="0..1" />
+          <End Type="HorizonDBModel.Account" Role="Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AcCat">
+              <PropertyRef Name="CatID" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="CatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Voucher_Accounts">
+          <End Type="HorizonDBModel.Account" Role="Account" Multiplicity="0..1" />
+          <End Type="HorizonDBModel.Voucher" Role="Voucher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="AccountID" />
+            </Principal>
+            <Dependent Role="Voucher">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Details_Agent">
+          <End Type="HorizonDBModel.Agent" Role="Agent" Multiplicity="0..1" />
+          <End Type="HorizonDBModel.Invoice_Details" Role="Invoice_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agent">
+              <PropertyRef Name="Agent_ID" />
+            </Principal>
+            <Dependent Role="Invoice_Details">
+              <PropertyRef Name="Agent_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AirLines_Expenses_Category">
+          <End Type="HorizonDBModel.Expenses_Category" Role="Expenses_Category" Multiplicity="1" />
+          <End Type="HorizonDBModel.AirLine" Role="AirLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Expenses_Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="AirLine">
+              <PropertyRef Name="Cat_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Details_AirLines">
+          <End Type="HorizonDBModel.AirLine" Role="AirLine" Multiplicity="0..1" />
+          <End Type="HorizonDBModel.Invoice_Details" Role="Invoice_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AirLine">
+              <PropertyRef Name="Air_ID" />
+            </Principal>
+            <Dependent Role="Invoice_Details">
+              <PropertyRef Name="Payable_Code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Voucher_AirLines">
+          <End Type="HorizonDBModel.AirLine" Role="AirLine" Multiplicity="0..1" />
+          <End Type="HorizonDBModel.Voucher" Role="Voucher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AirLine">
+              <PropertyRef Name="Air_ID" />
+            </Principal>
+            <Dependent Role="Voucher">
+              <PropertyRef Name="Payable_Code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Details_Customers">
+          <End Type="HorizonDBModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="HorizonDBModel.Invoice_Details" Role="Invoice_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Cust_ID" />
+            </Principal>
+            <Dependent Role="Invoice_Details">
+              <PropertyRef Name="Cust_Code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Voucher_Customers">
+          <End Type="HorizonDBModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="HorizonDBModel.Voucher" Role="Voucher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Cust_ID" />
+            </Principal>
+            <Dependent Role="Voucher">
+              <PropertyRef Name="Cust_Code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DailyExpenses_Expenses_Category">
+          <End Type="HorizonDBModel.Expenses_Category" Role="Expenses_Category" Multiplicity="1" />
+          <End Type="HorizonDBModel.DailyExpens" Role="DailyExpens" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Expenses_Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="DailyExpens">
+              <PropertyRef Name="Cat_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Voucher_DailyExpenses">
+          <End Type="HorizonDBModel.DailyExpens" Role="DailyExpens" Multiplicity="0..1" />
+          <End Type="HorizonDBModel.Voucher" Role="Voucher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DailyExpens">
+              <PropertyRef Name="Exp_Code" />
+            </Principal>
+            <Dependent Role="Voucher">
+              <PropertyRef Name="Exp_Code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Details_Income_Stream">
+          <End Type="HorizonDBModel.Income_Stream" Role="Income_Stream" Multiplicity="0..1" />
+          <End Type="HorizonDBModel.Invoice_Details" Role="Invoice_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Income_Stream">
+              <PropertyRef Name="Stream_ID" />
+            </Principal>
+            <Dependent Role="Invoice_Details">
+              <PropertyRef Name="Stream_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Details_TicketClass">
+          <End Type="HorizonDBModel.TicketClass" Role="TicketClass" Multiplicity="0..1" />
+          <End Type="HorizonDBModel.Invoice_Details" Role="Invoice_Details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketClass">
+              <PropertyRef Name="TicketClass_ID" />
+            </Principal>
+            <Dependent Role="Invoice_Details">
+              <PropertyRef Name="TicketClass_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HorizonDBModelStoreContainer" CdmEntityContainer="Entities">
+          <FunctionImportMapping FunctionImportName="sp_get_All_Invoice" FunctionName="HorizonDBModel.Store.sp_get_All_Invoice">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HorizonDBModel.sp_get_All_Invoice_Result">
+                <ScalarProperty Name="Invoice_Number" ColumnName="Invoice_Number" />
+                <ScalarProperty Name="ReceivePay_Status" ColumnName="ReceivePay_Status" />
+                <ScalarProperty Name="Invoice_Date" ColumnName="Invoice_Date" />
+                <ScalarProperty Name="Ticket_Number" ColumnName="Ticket_Number" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Routing" ColumnName="Routing" />
+                <ScalarProperty Name="Departure_Date" ColumnName="Departure_Date" />
+                <ScalarProperty Name="Arrival_Date" ColumnName="Arrival_Date" />
+                <ScalarProperty Name="Paid" ColumnName="Paid" />
+                <ScalarProperty Name="Invoice_Amount" ColumnName="Invoice_Amount" />
+                <ScalarProperty Name="Base_Fare" ColumnName="Base_Fare" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Other_Cost" ColumnName="Other_Cost" />
+                <ScalarProperty Name="Net_Payable" ColumnName="Net_Payable" />
+                <ScalarProperty Name="Paid2" ColumnName="Paid2" />
+                <ScalarProperty Name="Other_Ref" ColumnName="Other_Ref" />
+                <ScalarProperty Name="Cust_Code" ColumnName="Cust_Code" />
+                <ScalarProperty Name="Payable_Code" ColumnName="Payable_Code" />
+                <ScalarProperty Name="Payable_Supplier" ColumnName="Payable_Supplier" />
+                <ScalarProperty Name="Agent_Name" ColumnName="Agent_Name" />
+                <ScalarProperty Name="Ticket_Commission" ColumnName="Ticket_Commission" />
+                <ScalarProperty Name="Commission_Amount" ColumnName="Commission_Amount" />
+                <ScalarProperty Name="VAT" ColumnName="VAT" />
+                <ScalarProperty Name="VAT_Amount" ColumnName="VAT_Amount" />
+                <ScalarProperty Name="Ticket_Class" ColumnName="Ticket_Class" />
+                <ScalarProperty Name="Pay_Status" ColumnName="Pay_Status" />
+                <ScalarProperty Name="Ticket_Status" ColumnName="Ticket_Status" />
+                <ScalarProperty Name="Stream_ID" ColumnName="Stream_ID" />
+                <ScalarProperty Name="Agent_ID" ColumnName="Agent_ID" />
+                <ScalarProperty Name="TicketClass_ID" ColumnName="TicketClass_ID" />
+                <ScalarProperty Name="AirLine_Penalty" ColumnName="AirLine_Penalty" />
+                <ScalarProperty Name="Customer_Penalty" ColumnName="Customer_Penalty" />
+                <ScalarProperty Name="User_Name" ColumnName="User_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_get_Balance" FunctionName="HorizonDBModel.Store.sp_get_Balance" />
+          <FunctionImportMapping FunctionImportName="sp_View_Amount_Payable" FunctionName="HorizonDBModel.Store.sp_View_Amount_Payable">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HorizonDBModel.sp_View_Amount_Payable_Result">
+                <ScalarProperty Name="Payment_Ref" ColumnName="Payment_Ref" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Received_From" ColumnName="Received From" />
+                <ScalarProperty Name="Narration" ColumnName="Narration" />
+                <ScalarProperty Name="Cedit" ColumnName="Cedit" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="Payable_Code" ColumnName="Payable_Code" />
+                <ScalarProperty Name="User_Name" ColumnName="User_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_View_Amount_Receiveable" FunctionName="HorizonDBModel.Store.sp_View_Amount_Receiveable">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HorizonDBModel.sp_View_Amount_Receiveable_Result">
+                <ScalarProperty Name="Receipt_Ref" ColumnName="Receipt_Ref" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Received_Paid" ColumnName="Received_Paid" />
+                <ScalarProperty Name="Narration" ColumnName="Narration" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Cust_Code" ColumnName="Cust_Code" />
+                <ScalarProperty Name="User_Name" ColumnName="User_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGet_All_Invoice_Details" FunctionName="HorizonDBModel.Store.spGet_All_Invoice_Details">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HorizonDBModel.spGet_All_Invoice_Details_Result">
+                <ScalarProperty Name="ReceivePay_Status" ColumnName="ReceivePay_Status" />
+                <ScalarProperty Name="Invoice_Number" ColumnName="Invoice_Number" />
+                <ScalarProperty Name="Ticket_Status" ColumnName="Ticket_Status" />
+                <ScalarProperty Name="Invoice_Date" ColumnName="Invoice_Date" />
+                <ScalarProperty Name="Ticket_Number" ColumnName="Ticket_Number" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Routing" ColumnName="Routing" />
+                <ScalarProperty Name="Departure_Date" ColumnName="Departure_Date" />
+                <ScalarProperty Name="Arrival_Date" ColumnName="Arrival_Date" />
+                <ScalarProperty Name="Paid" ColumnName="Paid" />
+                <ScalarProperty Name="Invoice_Amount" ColumnName="Invoice_Amount" />
+                <ScalarProperty Name="Base_Fare" ColumnName="Base_Fare" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Other_Cost" ColumnName="Other_Cost" />
+                <ScalarProperty Name="Net_Payable" ColumnName="Net_Payable" />
+                <ScalarProperty Name="Paid2" ColumnName="Paid2" />
+                <ScalarProperty Name="Other_Ref" ColumnName="Other_Ref" />
+                <ScalarProperty Name="Cust_Code" ColumnName="Cust_Code" />
+                <ScalarProperty Name="Payable_Code" ColumnName="Payable_Code" />
+                <ScalarProperty Name="Payable_Supplier" ColumnName="Payable_Supplier" />
+                <ScalarProperty Name="Agent_Name" ColumnName="Agent_Name" />
+                <ScalarProperty Name="Ticket_Commission" ColumnName="Ticket_Commission" />
+                <ScalarProperty Name="Commission_Amount" ColumnName="Commission_Amount" />
+                <ScalarProperty Name="VAT" ColumnName="VAT" />
+                <ScalarProperty Name="VAT_Amount" ColumnName="VAT_Amount" />
+                <ScalarProperty Name="Ticket_Class" ColumnName="Ticket_Class" />
+                <ScalarProperty Name="Pay_Status" ColumnName="Pay_Status" />
+                <ScalarProperty Name="Customer_Penalty" ColumnName="Customer_Penalty" />
+                <ScalarProperty Name="AirLine_Penalty" ColumnName="AirLine_Penalty" />
+                <ScalarProperty Name="User_Name" ColumnName="User_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGet_All_Invoice_DetailsByDateAndPayStatus" FunctionName="HorizonDBModel.Store.spGet_All_Invoice_DetailsByDateAndPayStatus">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HorizonDBModel.spGet_All_Invoice_DetailsByDateAndPayStatus_Result">
+                <ScalarProperty Name="ReceivePay_Status" ColumnName="ReceivePay_Status" />
+                <ScalarProperty Name="Invoice_Number" ColumnName="Invoice_Number" />
+                <ScalarProperty Name="Ticket_Status" ColumnName="Ticket_Status" />
+                <ScalarProperty Name="Invoice_Date" ColumnName="Invoice_Date" />
+                <ScalarProperty Name="Ticket_Number" ColumnName="Ticket_Number" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Routing" ColumnName="Routing" />
+                <ScalarProperty Name="Departure_Date" ColumnName="Departure_Date" />
+                <ScalarProperty Name="Arrival_Date" ColumnName="Arrival_Date" />
+                <ScalarProperty Name="Paid" ColumnName="Paid" />
+                <ScalarProperty Name="Invoice_Amount" ColumnName="Invoice_Amount" />
+                <ScalarProperty Name="Base_Fare" ColumnName="Base_Fare" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Other_Cost" ColumnName="Other_Cost" />
+                <ScalarProperty Name="Net_Payable" ColumnName="Net_Payable" />
+                <ScalarProperty Name="Paid2" ColumnName="Paid2" />
+                <ScalarProperty Name="Other_Ref" ColumnName="Other_Ref" />
+                <ScalarProperty Name="Cust_Code" ColumnName="Cust_Code" />
+                <ScalarProperty Name="Payable_Code" ColumnName="Payable_Code" />
+                <ScalarProperty Name="Payable_Supplier" ColumnName="Payable_Supplier" />
+                <ScalarProperty Name="Agent_Name" ColumnName="Agent_Name" />
+                <ScalarProperty Name="Ticket_Commission" ColumnName="Ticket_Commission" />
+                <ScalarProperty Name="Commission_Amount" ColumnName="Commission_Amount" />
+                <ScalarProperty Name="VAT" ColumnName="VAT" />
+                <ScalarProperty Name="VAT_Amount" ColumnName="VAT_Amount" />
+                <ScalarProperty Name="Ticket_Class" ColumnName="Ticket_Class" />
+                <ScalarProperty Name="Pay_Status" ColumnName="Pay_Status" />
+                <ScalarProperty Name="Customer_Penalty" ColumnName="Customer_Penalty" />
+                <ScalarProperty Name="AirLine_Penalty" ColumnName="AirLine_Penalty" />
+                <ScalarProperty Name="User_Name" ColumnName="User_Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGet_AP_Summary" FunctionName="HorizonDBModel.Store.spGet_AP_Summary">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HorizonDBModel.spGet_AP_Summary_Result">
+                <ScalarProperty Name="Payable_Supplier" ColumnName="Payable_Supplier" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGet_AP_SummaryByDate" FunctionName="HorizonDBModel.Store.spGet_AP_SummaryByDate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HorizonDBModel.spGet_AP_SummaryByDate_Result">
+                <ScalarProperty Name="Payable_Supplier" ColumnName="Payable_Supplier" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGet_AR_Summary" FunctionName="HorizonDBModel.Store.spGet_AR_Summary">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HorizonDBModel.spGet_AR_Summary_Result">
+                <ScalarProperty Name="Cust_Code" ColumnName="Cust_Code" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGet_AR_SummaryByDate" FunctionName="HorizonDBModel.Store.spGet_AR_SummaryByDate">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HorizonDBModel.spGet_AR_SummaryByDate_Result">
+                <ScalarProperty Name="Cust_Code" ColumnName="Cust_Code" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGet_BankOrCash" FunctionName="HorizonDBModel.Store.spGet_BankOrCash">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="HorizonDBModel.spGet_BankOrCash_Result">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Receipt_Ref" ColumnName="Receipt_Ref" />
+                <ScalarProperty Name="Payment_Ref" ColumnName="Payment_Ref" />
+                <ScalarProperty Name="Narration" ColumnName="Narration" />
+                <ScalarProperty Name="Received_Paid" ColumnName="Received_Paid" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Cust_Code" ColumnName="Cust_Code" />
+                <ScalarProperty Name="Payable_Code" ColumnName="Payable_Code" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="AcCats">
+            <EntityTypeMapping TypeName="HorizonDBModel.AcCat">
+              <MappingFragment StoreEntitySet="AcCat">
+                <ScalarProperty Name="CatName" ColumnName="CatName" />
+                <ScalarProperty Name="CatID" ColumnName="CatID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="HorizonDBModel.Account">
+              <MappingFragment StoreEntitySet="Accounts">
+                <ScalarProperty Name="Balance_Amt" ColumnName="Balance_Amt" />
+                <ScalarProperty Name="CatID" ColumnName="CatID" />
+                <ScalarProperty Name="AcName" ColumnName="AcName" />
+                <ScalarProperty Name="AcNumber" ColumnName="AcNumber" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Agents">
+            <EntityTypeMapping TypeName="HorizonDBModel.Agent">
+              <MappingFragment StoreEntitySet="Agent">
+                <ScalarProperty Name="Agent_Status" ColumnName="Agent_Status" />
+                <ScalarProperty Name="Agent_Name" ColumnName="Agent_Name" />
+                <ScalarProperty Name="Agent_ID" ColumnName="Agent_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AirLines">
+            <EntityTypeMapping TypeName="HorizonDBModel.AirLine">
+              <MappingFragment StoreEntitySet="AirLines">
+                <ScalarProperty Name="Cat_ID" ColumnName="Cat_ID" />
+                <ScalarProperty Name="VAT" ColumnName="VAT" />
+                <ScalarProperty Name="Ticket_Commission" ColumnName="Ticket_Commission" />
+                <ScalarProperty Name="Payable_Supplier" ColumnName="Payable_Supplier" />
+                <ScalarProperty Name="Payable_Code" ColumnName="Payable_Code" />
+                <ScalarProperty Name="Air_ID" ColumnName="Air_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Banks">
+            <EntityTypeMapping TypeName="HorizonDBModel.Bank">
+              <MappingFragment StoreEntitySet="Bank">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Bank_Name" ColumnName="Bank_Name" />
+                <ScalarProperty Name="Bank_ID" ColumnName="Bank_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="HorizonDBModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="ZIP_Code" ColumnName="ZIP_Code" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Contact_Name" ColumnName="Contact_Name" />
+                <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
+                <ScalarProperty Name="Cust_Code" ColumnName="Cust_Code" />
+                <ScalarProperty Name="Lookup" ColumnName="Lookup" />
+                <ScalarProperty Name="Cust_ID" ColumnName="Cust_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DailyExpenses">
+            <EntityTypeMapping TypeName="HorizonDBModel.DailyExpens">
+              <MappingFragment StoreEntitySet="DailyExpenses">
+                <ScalarProperty Name="Cat_ID" ColumnName="Cat_ID" />
+                <ScalarProperty Name="Contact_Name" ColumnName="Contact_Name" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="Exp_Code" ColumnName="Exp_Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Expenses_Category">
+            <EntityTypeMapping TypeName="HorizonDBModel.Expenses_Category">
+              <MappingFragment StoreEntitySet="Expenses_Category">
+                <ScalarProperty Name="Payable_Code" ColumnName="Payable_Code" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Income_Stream">
+            <EntityTypeMapping TypeName="HorizonDBModel.Income_Stream">
+              <MappingFragment StoreEntitySet="Income_Stream">
+                <ScalarProperty Name="Stream_Status" ColumnName="Stream_Status" />
+                <ScalarProperty Name="Stream_Name" ColumnName="Stream_Name" />
+                <ScalarProperty Name="Stream_ID" ColumnName="Stream_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Invoice_Details">
+            <EntityTypeMapping TypeName="HorizonDBModel.Invoice_Details">
+              <MappingFragment StoreEntitySet="Invoice_Details">
+                <ScalarProperty Name="User_Name" ColumnName="User_Name" />
+                <ScalarProperty Name="AirLine_Penalty" ColumnName="AirLine_Penalty" />
+                <ScalarProperty Name="Customer_Penalty" ColumnName="Customer_Penalty" />
+                <ScalarProperty Name="Ticket_Status" ColumnName="Ticket_Status" />
+                <ScalarProperty Name="ReceivePay_Status" ColumnName="ReceivePay_Status" />
+                <ScalarProperty Name="Pay_Status" ColumnName="Pay_Status" />
+                <ScalarProperty Name="TicketClass_ID" ColumnName="TicketClass_ID" />
+                <ScalarProperty Name="VAT_Amount" ColumnName="VAT_Amount" />
+                <ScalarProperty Name="VAT" ColumnName="VAT" />
+                <ScalarProperty Name="Commission_Amount" ColumnName="Commission_Amount" />
+                <ScalarProperty Name="Ticket_Commission" ColumnName="Ticket_Commission" />
+                <ScalarProperty Name="Agent_ID" ColumnName="Agent_ID" />
+                <ScalarProperty Name="Payable_Code" ColumnName="Payable_Code" />
+                <ScalarProperty Name="Cust_Code" ColumnName="Cust_Code" />
+                <ScalarProperty Name="Other_Ref" ColumnName="Other_Ref" />
+                <ScalarProperty Name="Paid2" ColumnName="Paid2" />
+                <ScalarProperty Name="Net_Payable" ColumnName="Net_Payable" />
+                <ScalarProperty Name="Stream_ID" ColumnName="Stream_ID" />
+                <ScalarProperty Name="Other_Cost" ColumnName="Other_Cost" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="Total_Value" ColumnName="Total_Value" />
+                <ScalarProperty Name="Base_Fare" ColumnName="Base_Fare" />
+                <ScalarProperty Name="Invoice_Amount" ColumnName="Invoice_Amount" />
+                <ScalarProperty Name="Paid" ColumnName="Paid" />
+                <ScalarProperty Name="Arrival_Date" ColumnName="Arrival_Date" />
+                <ScalarProperty Name="Departure_Date" ColumnName="Departure_Date" />
+                <ScalarProperty Name="Routing" ColumnName="Routing" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Ticket_Number" ColumnName="Ticket_Number" />
+                <ScalarProperty Name="Invoice_Date" ColumnName="Invoice_Date" />
+                <ScalarProperty Name="Invoice_Number" ColumnName="Invoice_Number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketClasses">
+            <EntityTypeMapping TypeName="HorizonDBModel.TicketClass">
+              <MappingFragment StoreEntitySet="TicketClass">
+                <ScalarProperty Name="Ticket_Class_Status" ColumnName="Ticket_Class_Status" />
+                <ScalarProperty Name="Ticket_Class" ColumnName="Ticket_Class" />
+                <ScalarProperty Name="TicketClass_ID" ColumnName="TicketClass_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vouchers">
+            <EntityTypeMapping TypeName="HorizonDBModel.Voucher">
+              <MappingFragment StoreEntitySet="Voucher">
+                <ScalarProperty Name="User_Name" ColumnName="User_Name" />
+                <ScalarProperty Name="Received_Paid" ColumnName="Received_Paid" />
+                <ScalarProperty Name="Narration" ColumnName="Narration" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="DrCr" ColumnName="DrCr" />
+                <ScalarProperty Name="AccountID" ColumnName="AccountID" />
+                <ScalarProperty Name="Received_Paid_Date" ColumnName="Received_Paid_Date" />
+                <ScalarProperty Name="Cust_Code" ColumnName="Cust_Code" />
+                <ScalarProperty Name="Exp_Code" ColumnName="Exp_Code" />
+                <ScalarProperty Name="Payable_Code" ColumnName="Payable_Code" />
+                <ScalarProperty Name="Bank_Cash_Receiveable" ColumnName="Bank_Cash_Receiveable" />
+                <ScalarProperty Name="Bank_ID" ColumnName="Bank_ID" />
+                <ScalarProperty Name="VID" ColumnName="VID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_Payable">
+            <EntityTypeMapping TypeName="HorizonDBModel.V_Payable">
+              <MappingFragment StoreEntitySet="V_Payable">
+                <ScalarProperty Name="Pay_Status" ColumnName="Pay_Status" />
+                <ScalarProperty Name="Air_ID" ColumnName="Air_ID" />
+                <ScalarProperty Name="Payable_Code" ColumnName="Payable_Code" />
+                <ScalarProperty Name="Payable_Supplier" ColumnName="Payable_Supplier" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Paid2" ColumnName="Paid2" />
+                <ScalarProperty Name="Net_Payable" ColumnName="Net_Payable" />
+                <ScalarProperty Name="Routing" ColumnName="Routing" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Ticket_Number" ColumnName="Ticket_Number" />
+                <ScalarProperty Name="Invoice_Date" ColumnName="Invoice_Date" />
+                <ScalarProperty Name="Invoice_Number" ColumnName="Invoice_Number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="V_Receiveable">
+            <EntityTypeMapping TypeName="HorizonDBModel.V_Receiveable">
+              <MappingFragment StoreEntitySet="V_Receiveable">
+                <ScalarProperty Name="ReceivePay_Status" ColumnName="ReceivePay_Status" />
+                <ScalarProperty Name="Cust_ID" ColumnName="Cust_ID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Contact_Name" ColumnName="Contact_Name" />
+                <ScalarProperty Name="Company_Name" ColumnName="Company_Name" />
+                <ScalarProperty Name="Cust_Code" ColumnName="Cust_Code" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="Paid" ColumnName="Paid" />
+                <ScalarProperty Name="Invoice_Amount" ColumnName="Invoice_Amount" />
+                <ScalarProperty Name="Routing" ColumnName="Routing" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Ticket_Number" ColumnName="Ticket_Number" />
+                <ScalarProperty Name="Invoice_Date" ColumnName="Invoice_Date" />
+                <ScalarProperty Name="Invoice_Number" ColumnName="Invoice_Number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

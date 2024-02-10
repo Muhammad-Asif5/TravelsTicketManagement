@@ -1,0 +1,44 @@
+﻿@model AMS.Models.Bank
+@{ Layout = null; }
+
+@using (Html.BeginForm("AddOrEdit", "Bank", FormMethod.Post,
+    new { enctype = "multipart/form-data", id = "myForm", @class = "form-horizontal", role = "form", autocomplete = "off" }))
+{
+<div class="row">
+    @Html.HiddenFor(x => x.Bank_ID)
+
+    @*<div class="col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Bank_ID, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Bank_ID, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Bank ID" } })
+                @Html.ValidationMessageFor(model => model.Bank_ID, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Bank_Name, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Bank_Name, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Bank Name", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "50" } })
+            @Html.ValidationMessageFor(model => model.Bank_Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.Status,
+                                                                                                                                                                                             new List<SelectListItem> {new SelectListItem { Value = "" , Text = "--Select Status--",Selected=true },
+                                            new SelectListItem { Value = "true" , Text = "Active" },
+                                            new SelectListItem { Value = "false" , Text = "Close" }}, new { @class = "form-control select2", @required = "required" })
+            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+</div>
+                <button type="submit" id="btnSave" class="btn btn-success">Add</button>
+                                <button type="submit" id="btnUpdate" class="btn btn-primary">Update</button>}
+
+
+<script>
+    var NextID = '@ViewBag.NextID';
+
+</script>
+

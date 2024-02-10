@@ -1,0 +1,467 @@
+﻿@using Microsoft.AspNet.Identity
+
+@{
+    Layout = null;
+
+}
+<!DOCTYPE html>
+<html>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Admin Brillant Travel</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="~/Logo/logo.png" />
+    
+
+    <link href="~/AdminAssets/plugins/icheck-bootstrap/icheck-bootstrap.min.css" rel="stylesheet" />
+    @Styles.Render("~/AdminAssets/css")
+    @Styles.Render("~/Datepicker/css")
+    @Styles.Render("~/datatablesResponsive/css")
+
+    @Styles.Render("~/AdminAssets1/css")
+    <!-- Select2 -->
+    @Styles.Render("~/select2/css")
+    @Styles.Render("~/buttonsDataTables/css")
+
+    @Styles.Render("~/pnotify/css")
+    @Styles.Render("~/adminlte/css")
+    <!-- summernote -->
+    @*<link href="~/AdminAssets/plugins/summernote/summernote-bs4.css" rel="stylesheet" />*@
+    @Styles.Render("~/googleapis/css")
+    @Styles.Render("~/SweetalertSpinerAndMaxlength/css")
+
+    <style type="text/css">
+        .nav-treeview {
+            border-left: .2rem solid;
+            border-color: #fff;
+        }
+
+        .nav-pills .nav-link {
+            border-radius: 0;
+        }
+
+        .nav-sidebar .nav-item > .nav-link {
+            margin-bottom: 0.1rem;
+        }
+
+        table thead, tbody, button {
+            font-size: 8pt !important;
+        }
+
+        #myTable_filter input {
+            font-size: 8pt;
+        }
+
+        .dataTables_scroll input {
+            font-size: 8pt;
+        }
+    </style>
+
+    @Styles.Render("~/AdminAssets/css/daterangepicker")
+
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div id="loading"></div>
+    <!-- Site wrapper -->
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="/dashboard" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#"><div id="google_translate_element"></div></a>
+                </li>
+
+                @*<li class="nav-item d-none d-sm-inline-block">
+                        <a href="#" class="nav-link">Contact</a>
+                    </li>*@
+            </ul>
+
+
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+
+                <!-- Messages Dropdown Menu -->
+                <!-- Notifications Dropdown Menu -->
+                @if (User.IsInRole("Admin") == true)
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench" aria-hidden="true"></i> Manage User
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            <span class="dropdown-item dropdown-header">Account Setting</span>
+                            <div class="dropdown-divider"></div>
+                            <a href="/Admin/CreateUser" class="dropdown-item">
+                                <i class="fas fa-user mr-2"></i> Add New User
+                            </a>
+
+                        </div>
+                    </li>
+                }
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-user" aria-hidden="true"></i> Logout
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <span class="dropdown-item dropdown-header">Profile</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="/Account/ChangePassword" class="dropdown-item">
+                            <i class="fas fa-lock mr-2"></i> Change Password
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/Account/LogOff" class="dropdown-item">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </a>
+
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Sidebar -->
+            <span></span>
+            <div class="sidebar">
+                <!-- Sidebar user (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="~/AdminAssets/dist/img/avatar.png" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="javascript:;" class="d-block">Welcome, @User.Identity.Name</a>
+                    </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    @Html.Partial("_menu")
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+
+
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            @*<section class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1>Fixed Layout</h1>
+                            </div>
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="#">Layout</a></li>
+                                    <li class="breadcrumb-item active">Fixed Layout</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>*@
+
+            <!-- Main content -->
+            <section class="content">
+
+                <div class="container-fluid">
+                    @RenderBody()
+
+                </div>
+            </section>
+
+        </div>
+
+        <footer class="main-footer">
+            <div class="float-right d-none d-sm-block">
+                <b>Version</b> 1.0
+            </div>
+            <strong>
+                Copyright &copy; @DateTime.Now.Year <a href="javascript:0">
+                    Brillant Travel Account Management System
+                </a>.
+            </strong> All rights
+            reserved.
+        </footer>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+
+
+
+    @Scripts.Render("~/AdminAssets/jquery")
+    @Scripts.Render("~/AdminAssets/Datepicker/jquery")
+    @Scripts.Render("~/AdminAssets/datatables/jquery")
+
+    @*<script src="//cdn.datatables.net/select/1.2.3/js/select.bootstrap4.min.js"></script>*@
+    <script src="//cdn.datatables.net/select/1.2.3/js/dataTables.select.min.js"></script>
+
+    <script>
+
+        var $loading = $('#loading').hide();
+
+        $(document).ajaxStart(function () {
+            //swal({
+            //    title: " ",
+            //    text: "Please Wait",
+            //    imageUrl: "/Images/ajax-Load.gif",
+            //    showCancelButton: false,
+            //    showConfirmButton: false
+            //});
+
+            $loading.show();
+            //$("#btnView").prop("disabled", true);
+        }).ajaxStop(function () {
+            //swal.close();
+            $loading.hide();
+            //setTimeout(function () {
+            //    $("#btnView").prop("disabled", false);
+            //}, 1000);
+
+        });
+    </script>
+
+    @Scripts.Render("~/AdminAssets/js/daterangepicker")
+    @Scripts.Render("~/AdminAssets/js/DatatableButton")
+    @RenderSection("Scripts", required: false)
+
+    @*<script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+            }
+        </script>
+
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>*@
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'en',  layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+    <script>
+
+
+        // MaxLength
+        (function (theme, $) {
+
+            theme = theme || {};
+
+            var instanceName = '__maxlength';
+
+            var PluginMaxLength = function ($el, opts) {
+                return this.initialize($el, opts);
+            };
+
+            PluginMaxLength.defaults = {
+                alwaysShow: true,
+                placement: 'top',
+                warningClass: 'label label-success bottom-left',
+                limitReachedClass: 'label label-danger bottom-left'
+
+                //placement: 'bottom-left',
+                //warningClass: 'label label-success bottom-left',
+                //limitReachedClass: 'label label-danger bottom-left'
+            };
+
+            PluginMaxLength.prototype = {
+                initialize: function ($el, opts) {
+                    if ($el.data(instanceName)) {
+                        return this;
+                    }
+
+                    this.$el = $el;
+
+                    this
+                        .setData()
+                        .setOptions(opts)
+                        .build();
+
+                    return this;
+                },
+
+                setData: function () {
+                    this.$el.data(instanceName, this);
+
+                    return this;
+                },
+
+                setOptions: function (opts) {
+                    this.options = $.extend(true, {}, PluginMaxLength.defaults, opts);
+
+                    return this;
+                },
+
+                build: function () {
+                    this.$el.maxlength(this.options);
+
+                    return this;
+                }
+            };
+
+            // expose to scope
+            $.extend(theme, {
+                PluginMaxLength: PluginMaxLength
+            });
+
+            // jquery plugin
+            $.fn.themePluginMaxLength = function (opts) {
+                return this.each(function () {
+                    var $this = $(this);
+
+                    if ($this.data(instanceName)) {
+                        return $this.data(instanceName);
+                    } else {
+                        return new PluginMaxLength($this, opts);
+                    }
+
+                });
+            }
+
+        }).apply(this, [window.theme, jQuery]);
+
+
+        // Data Tables - Config
+        (function ($) {
+
+            'use strict';
+
+            // we overwrite initialize of all datatables here
+            // because we want to use select2, give search input a bootstrap look
+            // keep in mind if you overwrite this fnInitComplete somewhere,
+            // you should run the code inside this function to keep functionality.
+            //
+            // there's no better way to do this at this time :(
+            if ($.isFunction($.fn['dataTable'])) {
+
+                $.extend(true, $.fn.dataTable.defaults, {
+                    sDom: "<'row datatables-header form-inline'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>r><'table-responsive't><'row datatables-footer'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>",
+                    oLanguage: {
+                        sLengthMenu: '_MENU_ records per page',
+                        sProcessing: '<i class="fa fa-spinner fa-spin"></i> Loading'
+                    },
+                    fnInitComplete: function (settings, json) {
+                        // select 2
+                        if ($.isFunction($.fn['select2'])) {
+                            $('.dataTables_length select', settings.nTableWrapper).select2({
+                                minimumResultsForSearch: -1
+                            });
+                        }
+
+                        var options = $('table', settings.nTableWrapper).data('plugin-options') || {};
+
+                        // search
+                        var $search = $('.dataTables_filter input', settings.nTableWrapper);
+
+                        $search
+                            .attr({
+                                placeholder: typeof options.searchPlaceholder !== 'undefined' ? options.searchPlaceholder : 'Search'
+                            })
+                            .addClass('form-control');
+
+                        if ($.isFunction($.fn.placeholder)) {
+                            $search.placeholder();
+                        }
+                    }
+                });
+
+            }
+
+        }).apply(this, [jQuery]);
+
+
+    </script>
+
+    <script>
+
+        // MaxLength
+        (function ($) {
+
+            'use strict';
+
+            if ($.isFunction($.fn['maxlength'])) {
+
+                $(function () {
+                    $('[data-plugin-maxlength]').each(function () {
+                        var $this = $(this),
+                            opts = {};
+
+                        var pluginOptions = $this.data('plugin-options');
+                        if (pluginOptions)
+                            opts = pluginOptions;
+
+                        $this.themePluginMaxLength(opts);
+                    });
+                });
+
+            }
+
+        }).apply(this, [jQuery]);
+
+
+
+        // TextArea AutoSize
+        (function ($) {
+
+            'use strict';
+
+            if ($.isFunction($.fn['autosize'])) {
+
+                $(function () {
+                    $('[data-plugin-textarea-autosize]').each(function () {
+                        var $this = $(this),
+                            opts = {};
+
+                        var pluginOptions = $this.data('plugin-options');
+                        if (pluginOptions)
+                            opts = pluginOptions;
+
+                        $this.themePluginTextAreaAutoSize(opts);
+                    });
+                });
+
+            }
+
+        }).apply(this, [jQuery]);
+
+        $("input[data-bootstrap-switch]").each(function () {
+            $(this).bootstrapSwitch('state', $(this).prop('checked'));
+        });
+
+
+    </script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+﻿@model AMS.Models.Agent
+@{ Layout = null; }
+
+@using (Html.BeginForm("AddOrEdit", "Agent", FormMethod.Post,
+    new { enctype = "multipart/form-data", id = "myForm", @class = "form-horizontal", role = "form", autocomplete = "off" }))
+{
+<div class="row">
+    @Html.HiddenFor(x => x.Agent_ID)
+
+    @*<div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Agent_ID, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Agent_ID, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Agent ID" } })
+            @Html.ValidationMessageFor(model => model.Agent_ID, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Agent_Name, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Agent_Name, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Agent Name", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "50" } })
+            @Html.ValidationMessageFor(model => model.Agent_Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Agent_Status, htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.Agent_Status,
+                                                                                                                                                                                        new List<SelectListItem> {new SelectListItem { Value = "" , Text = "--Select Status--",Selected=true },
+                                            new SelectListItem { Value = "1" , Text = "Active" },
+                                            new SelectListItem { Value = "0" , Text = "Close" }}, new { @class = "form-control select2", @required = "required" })
+            @Html.ValidationMessageFor(model => model.Agent_Status, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+</div>
+                <button type="submit" id="btnSave" class="btn btn-success">Add</button>
+                                <button type="submit" id="btnUpdate" class="btn btn-primary">Update</button>
+}
+
+
+<script>
+    var NextID = '@ViewBag.NextID';
+
+</script>
+

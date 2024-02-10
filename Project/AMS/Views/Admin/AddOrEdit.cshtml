@@ -1,0 +1,63 @@
+﻿@model AMS.Models.mvcUserViewModel
+@{ Layout = null; }
+
+@using (Html.BeginForm("AddOrEdit", "Admin", FormMethod.Post,
+    new { enctype = "multipart/form-data", id = "myForm", @class = "form-horizontal", role = "form", autocomplete = "off" }))
+{
+<div class="row">
+    <input type="text" name="UserId" hidden id="UserId" value="" />
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Username" } })
+            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Email" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Mobile Number" } })
+            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Password", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "50" } })
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", @required = "required", placeholder = "Enter Confirm Password", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "50" } })
+            @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @*<div class="col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Stream_Status, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.Stream_Status,
+                                                                                                                                                                                                      new List<SelectListItem> {new SelectListItem { Value = "" , Text = "--Select Status--",Selected=true },
+                                                new SelectListItem { Value = "1" , Text = "Active" },
+                                                new SelectListItem { Value = "0" , Text = "Close" }}, new { @class = "form-control select2", @required = "required" })
+                @Html.ValidationMessageFor(model => model.Stream_Status, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+</div>
+                <button type="submit" id="btnSave" class="btn btn-success">Add</button>
+                                <button type="submit" id="btnUpdate" class="btn btn-primary">Update</button>
+}
+
+
+
+
+

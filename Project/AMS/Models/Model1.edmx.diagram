@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="95a58b84dbd34310a601ee446ee299aa" Name="Diagram1" ZoomLevel="101">
+        <EntityTypeShape EntityType="HorizonDBModel.AcCat" Width="1.5" PointX="3.75" PointY="24" />
+        <EntityTypeShape EntityType="HorizonDBModel.Account" Width="1.5" PointX="6" PointY="23.625" />
+        <EntityTypeShape EntityType="HorizonDBModel.Agent" Width="1.5" PointX="3" PointY="3.625" />
+        <EntityTypeShape EntityType="HorizonDBModel.AirLine" Width="1.5" PointX="3" PointY="8" />
+        <EntityTypeShape EntityType="HorizonDBModel.Bank" Width="1.5" PointX="5.75" PointY="2" />
+        <EntityTypeShape EntityType="HorizonDBModel.Customer" Width="1.5" PointX="3" PointY="18.25" />
+        <EntityTypeShape EntityType="HorizonDBModel.DailyExpens" Width="1.5" PointX="3" PointY="11.5" />
+        <EntityTypeShape EntityType="HorizonDBModel.Expenses_Category" Width="1.5" PointX="0.75" PointY="9.875" />
+        <EntityTypeShape EntityType="HorizonDBModel.Income_Stream" Width="1.5" PointX="3" PointY="15.25" />
+        <EntityTypeShape EntityType="HorizonDBModel.Invoice_Details" Width="1.5" PointX="5.25" PointY="5.375" />
+        <EntityTypeShape EntityType="HorizonDBModel.TicketClass" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="HorizonDBModel.Voucher" Width="1.5" PointX="8.25" PointY="8.625" />
+        <EntityTypeShape EntityType="HorizonDBModel.V_Payable" Width="1.5" PointX="7.75" PointY="2" />
+        <EntityTypeShape EntityType="HorizonDBModel.V_Receiveable" Width="1.5" PointX="9.75" PointY="2" />
+        <AssociationConnector Association="HorizonDBModel.FK__Accounts__CatID__3E52440B" />
+        <AssociationConnector Association="HorizonDBModel.FK_Voucher_Accounts" />
+        <AssociationConnector Association="HorizonDBModel.FK_Invoice_Details_Agent" />
+        <AssociationConnector Association="HorizonDBModel.FK_AirLines_Expenses_Category" />
+        <AssociationConnector Association="HorizonDBModel.FK_Invoice_Details_AirLines" />
+        <AssociationConnector Association="HorizonDBModel.FK_Voucher_AirLines" />
+        <AssociationConnector Association="HorizonDBModel.FK_Invoice_Details_Customers" />
+        <AssociationConnector Association="HorizonDBModel.FK_Voucher_Customers" />
+        <AssociationConnector Association="HorizonDBModel.FK_DailyExpenses_Expenses_Category" />
+        <AssociationConnector Association="HorizonDBModel.FK_Voucher_DailyExpenses" />
+        <AssociationConnector Association="HorizonDBModel.FK_Invoice_Details_Income_Stream" />
+        <AssociationConnector Association="HorizonDBModel.FK_Invoice_Details_TicketClass" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

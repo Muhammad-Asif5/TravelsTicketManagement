@@ -1,0 +1,764 @@
+﻿body.main {
+    margin: 8px auto auto auto;
+    text-align: left;
+    background: url(../images/theme/royalblue/page-top-blue-line.jpg) repeat-x left top transparent;
+    background-color: #f2f2ff;
+    font-family: Calibri;
+    font-size: 12pt;
+    font-weight: normal;
+    font-style: normal;
+    color: #37383c;
+    padding: auto;
+}
+
+body.login-body {
+    margin: auto;
+    text-align: left;
+    background-color: #f2f2ff;
+    font-family: Calibri;
+    font-size: 12pt;
+    font-weight: normal;
+    font-style: normal;
+    color: #37383c;
+    padding: auto;
+}
+/*----- Tables ------*/
+table {
+    border-style: none;
+    border-color: inherit;
+    border-width: 0px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    border: 0;
+}
+
+    table td {
+        padding: 0px;
+    }
+
+        table td.pad {
+            padding: 5px;
+        }
+
+        table td.headgreymid {
+            background: url(../images/theme/royalblue/header-grey-top-bg.jpg) repeat-x left top transparent;
+            height: 40px;
+            vertical-align: middle;
+            padding: auto;
+            margin: 0px;
+        }
+
+        table td.headgreyleft {
+            background: url(../images/theme/royalblue/header-grey-top-left.jpg) no-repeat left top transparent;
+            height: 40px;
+            width: 9px;
+        }
+
+        table td.headgreyright {
+            background: url(../images/theme/royalblue/header-grey-top-right.jpg) no-repeat right top transparent;
+            height: 40px;
+            width: 9px;
+        }
+
+        table td.headcolormid {
+            background: url(../images/theme/royalblue/header-blue-top-bg.jpg) repeat-x left top transparent;
+            height: 8px;
+        }
+
+        table td.headcolorleft {
+            background: url(../images/theme/royalblue/header-blue-top-left.jpg) repeat-y left top transparent;
+            height: 8px;
+            width: 9px;
+        }
+
+        table td.headcolorright {
+            background: url(../images/theme/royalblue/header-blue-top-right.jpg) repeat-y right top transparent;
+            height: 8px;
+            width: 9px;
+        }
+
+        table td.bodymid {
+            background-color: #fbfbfb;
+        }
+
+        table td.bodyleft {
+            background: url(../images/theme/royalblue/body-left.jpg) repeat-y left top transparent;
+            width: 9px;
+        }
+
+        table td.bodyright {
+            background: url(../images/theme/royalblue/body-right.jpg) repeat-y right top transparent;
+            width: 9px;
+        }
+
+        table td.footertoplinemid {
+            background-color: #cdd2e4;
+            height: 1px;
+        }
+
+        table td.footertoplineleft {
+            background: url(../images/theme/royalblue/footer-top-line-left.jpg) no-repeat left top transparent;
+            width: 9px;
+            height: 1px;
+        }
+
+        table td.footertoplineright {
+            background: url(../images/theme/royalblue/footer-top-line-right.jpg) no-repeat right top transparent;
+            width: 9px;
+            height: 1px;
+        }
+
+        table td.footermid {
+            background: url(../images/theme/royalblue/footer-bg.jpg) repeat-x left top transparent;
+            height: 50px;
+            font-family: Segoe UI;
+            font-size: 10px;
+            color: #8d8f94;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        table td.footerleft {
+            background: url(../images/theme/royalblue/footer-left.jpg) no-repeat left top transparent;
+            width: 9px;
+            height: 50px;
+        }
+
+        table td.footerright {
+            background: url(../images/theme/royalblue/footer-right.jpg) no-repeat right top transparent;
+            width: 9px;
+            height: 50px;
+        }
+
+    table.sidemenutbl {
+        padding: 0px;
+        border: 0px;
+        border-style: none;
+        text-align: center;
+    }
+
+        table.sidemenutbl td {
+            padding: 0px 5px 5px 5px;
+            border-bottom: 1px;
+            border-bottom-color: #e0e7f7;
+            border-bottom-style: solid;
+            text-align: left;
+        }
+
+    table.itemlist th {
+        padding: 5px 5px 5px 5px;
+        border-bottom: 2px solid #e0e7f7;
+        border-top: 2px solid #e0e7f7;
+        font-family: Calibri;
+        font-size: 11pt;
+        font-weight: bold;
+        font-style: normal;
+        color: #37383c;
+        background-color: #e0e7f7;
+    }
+
+    table.itemlist td {
+        padding: 3px 3px 3px 3px;
+        border-bottom: 1px;
+        border-bottom-color: #e0e7f7;
+        border-bottom-style: solid;
+        font-family: Calibri;
+        font-size: 11pt;
+        font-weight: normal;
+        font-style: normal;
+        color: #37383c;
+    }
+
+    table.itemlist tr:hover {
+        background-color: #FFFF99;
+    }
+
+    table.itemlist td.hidden {
+        display: none;
+    }
+
+    table.itemlist th.hidden {
+        display: none;
+    }
+
+    table.itemlistnohead td {
+        padding: 3px 3px 3px 3px;
+        border-top: 1px;
+        border-top-color: #e0e7f7;
+        border-top-style: solid;
+        border-bottom: 1px;
+        border-bottom-color: #e0e7f7;
+        border-bottom-style: solid;
+        font-family: Calibri;
+        font-size: 11pt;
+        font-weight: normal;
+        font-style: normal;
+        color: #37383c;
+    }
+
+    table.helpmenu td {
+        padding: 10px 6px 10px 6px;
+        border-bottom: 1px;
+        border-bottom-color: #e0e7f7;
+        border-bottom-style: solid;
+        font-family: Calibri;
+        font-size: 11pt;
+        font-weight: normal;
+        font-style: normal;
+        color: #37383c;
+    }
+
+    table.controllist td {
+        padding: 3px 3px 3px 3px;
+        border-bottom-style: none;
+        font-family: Calibri;
+        font-size: 11pt;
+        font-weight: normal;
+        font-style: normal;
+        color: #37383c;
+        width: 33%;
+        border-bottom-color: inherit;
+        border-bottom-width: 0px;
+    }
+
+    table.controls td {
+        padding: 3px 3px 3px 3px;
+        border-bottom-style: none;
+        font-family: Calibri;
+        font-size: 11pt;
+        font-weight: normal;
+        font-style: normal;
+        color: #37383c;
+        border-bottom-color: inherit;
+        border-bottom-width: 0px;
+    }
+
+/*----- div ------*/
+div {
+}
+
+.overflow {
+    overflow: auto;
+}
+
+.mainweb {
+    border-width: 1px;
+    border-style: none;
+    border-bottom-color: Black;
+    background: url(../images/theme/royalblue/integcubes-logo-bg.png) no-repeat left top transparent;
+    padding: 8px 0px 0px 0px;
+    text-align: right;
+    vertical-align: middle;
+    margin: 0px auto auto auto;
+    width: 1000px;
+}
+
+.orstext {
+    border-width: 0px;
+    border-style: none;
+    background: url(../images/theme/royalblue/mors-head.jpg) repeat-x left top transparent;
+    padding: auto;
+    height: 34px;
+    width: 423px;
+}
+
+.orglogo {
+    background-color: #ffffff;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #c5c5e0;
+    padding: auto;
+    text-align: center;
+    vertical-align: middle;
+    height: 75px;
+    width: 400px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+}
+
+.groupbox {
+    background-color: #fbfbfb;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #e0e7f7;
+    padding: auto;
+    margin: 0;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+}
+
+.msgbox {
+    background-color: #eeeeee;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d0cdcd;
+    padding: 3px;
+    margin: 0;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.msgbox-err {
+    background: url(../images/theme/royalblue/msg-sign-err.jpg) no-repeat left top transparent;
+    background-color: #eeeeee;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d0cdcd;
+    padding: 2px 3px 3px 25px;
+    margin: 0;
+    font-family: Segoe UI;
+    font-size: 10pt;
+    color: #ce3e0a;
+    text-align: left;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.msgbox-ok {
+    background: url(../images/theme/royalblue/msg-sign-ok.jpg) no-repeat left top transparent;
+    background-color: #eeeeee;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d0cdcd;
+    padding: 2px 3px 3px 25px;
+    margin: 0;
+    font-family: Segoe UI;
+    font-size: 10pt;
+    color: #699716;
+    text-align: left;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.msgbox-info {
+    background: url(../images/theme/royalblue/msg-sign-inform.jpg) no-repeat left top transparent;
+    background-color: #eeeeee;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d0cdcd;
+    padding: 2px 3px 3px 25px;
+    margin: 0;
+    font-family: Segoe UI;
+    font-size: 10pt;
+    color: #2a73b2;
+    text-align: left;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.msgbox-warn {
+    background: url(../images/theme/royalblue/msg-sign-warn.jpg) no-repeat left top transparent;
+    background-color: #eeeeee;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d0cdcd;
+    padding: 2px 3px 3px 25px;
+    margin: 0;
+    font-family: Segoe UI;
+    font-size: 10pt;
+    color: #b66b0a;
+    text-align: left;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.progress {
+    background: url(../images/theme/royalblue/progress.gif) no-repeat left center transparent;
+    background-color: #c6d2e9;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #98a9d3;
+    padding: 1px 2px 2px 25px;
+    margin: 0;
+    font-family: Segoe UI;
+    font-size: 10pt;
+    color: #2d50c0;
+    text-align: left;
+}
+
+.groupbox-head {
+    background: url(../images/theme/royalblue/group-box-head.jpg) repeat-x left top transparent;
+    border-style: none;
+    padding: 2px 0px 0px 5px;
+    height: 27px;
+    font-family: Segoe UI;
+    font-size: 12pt;
+    font-weight: normal;
+    color: #fbfbfb;
+    text-align: left;
+    vertical-align: middle;
+    margin: auto;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.groupbox-large {
+    background-color: #fbfbfb;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #e0e7f7;
+    padding: auto;
+    margin: 0;
+    width: 700px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+}
+
+.groupbox-medium {
+    background-color: #fbfbfb;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #e0e7f7;
+    padding: auto;
+    margin: 0;
+    width: 550px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+}
+
+.groupbox-small {
+    background-color: #fbfbfb;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #e0e7f7;
+    padding: auto;
+    margin: 0;
+    width: 400px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+}
+
+.groupbox-x-small {
+    background-color: #fbfbfb;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #e0e7f7;
+    padding: auto;
+    margin: 0;
+    width: 300px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+}
+
+.groupbox-content-normal {
+    padding: 5px 5px 5px 5px;
+    text-align: left;
+}
+
+.groupbox-content {
+    padding: 5px 5px 5px 5px;
+    text-align: left;
+    font-family: Segoe UI;
+    font-size: 10pt;
+    text-decoration: none;
+    color: #37383c;
+}
+
+.sidebar {
+    border-width: 0px;
+    border-style: none;
+    padding: 12px 12px 12px 8px;
+    vertical-align: middle;
+    margin: auto;
+    width: 210px;
+    vertical-align: top;
+}
+
+.groupbox-sidemenubox {
+    width: 100%;
+    background-color: #fbfbfb;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #e0e7f7;
+    padding: auto;
+    margin: 0px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+}
+
+.maincontent {
+    padding: 15px 5px 5px 5px;
+    text-align: justify;
+}
+
+div.screen-centered {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 45em;
+    height: 30em;
+    margin-top: -15em; /*set to a negative number 1/2 of your height*/
+    margin-left: -23em; /*set to a negative number 1/2 of your width*/
+    border: 0px none #ccc;
+}
+
+
+/*----- font ------*/
+font {
+    font-family: Calibri;
+    font-size: 12pt;
+    font-weight: normal;
+    font-style: normal;
+    color: #37383c;
+}
+
+    font.login {
+        font-family: Calibri;
+        font-size: 11pt;
+        font-weight: normal;
+        font-style: normal;
+        color: #3fa23c;
+    }
+
+    font.pnllogin {
+        font-family: Calibri;
+        font-size: 11pt;
+        font-weight: normal;
+        font-style: normal;
+        color: #a10a15;
+    }
+
+    font.pagehead {
+        font-family: Segoe UI;
+        font-size: 14pt;
+        font-weight: bold;
+        color: #2b4ebc;
+    }
+
+    font.pagehead2 {
+        font-family: Segoe UI;
+        font-size: 10pt;
+        font-weight: bold;
+        color: #8d8f94;
+    }
+
+    font.pagehead-login {
+        font-family: Segoe UI;
+        font-size: 14pt;
+        font-weight: bold;
+        color: #3fa23c;
+    }
+
+    font.pagehead-pnlogin {
+        font-family: Segoe UI;
+        font-size: 14pt;
+        font-weight: bold;
+        color: #a10a15;
+    }
+
+    font.error {
+        padding: 0px;
+        font-family: Segoe UI;
+        font-size: 10pt;
+        color: #ce3e0a;
+    }
+
+    font.loading {
+        padding: 0px;
+        font-family: Segoe UI;
+        font-size: 8px;
+        font-style: italic;
+        color: #999999;
+    }
+
+    font.eg {
+        padding: 0px;
+        font-family: Segoe UI;
+        font-size: 10px;
+        font-style: normal;
+        color: #999999;
+    }
+
+/*----- heading ------*/
+h1 {
+    font-family: Segoe UI;
+    font-size: 12pt;
+    font-weight: bold;
+    color: #2b4ebc;
+}
+
+h2 {
+    font-family: Segoe UI;
+    font-size: 11pt;
+    font-weight: bold;
+    color: #8d8f94;
+}
+
+h3 {
+    font-family: Segoe UI;
+    font-size: 10pt;
+    font-weight: bold;
+    color: #2b4ebc;
+}
+
+/*----- hyperlink ------*/
+a:link {
+    font-family: Calibri;
+    font-size: 12pt;
+    color: #2b4ebc;
+    text-decoration: none;
+}
+
+a:hover {
+    font-family: Calibri;
+    font-size: 12pt;
+    color: #2b4ebc;
+    text-decoration: none;
+}
+
+a:active {
+    font-family: Calibri;
+    font-size: 12pt;
+    color: #2b4ebc;
+    text-decoration: none;
+}
+
+a:visited {
+    font-family: Calibri;
+    font-size: 12pt;
+    color: #2b4ebc;
+    text-decoration: none;
+}
+
+a.sidebarlink:link {
+    font-family: Segoe UI;
+    font-size: 10pt;
+    text-decoration: none;
+    color: #6a6d76;
+}
+
+a.sidebarlink:hover {
+    font-family: Segoe UI;
+    font-size: 10pt;
+    text-decoration: none;
+    color: #6a6d76;
+}
+
+a.sidebarlink:active {
+    font-family: Segoe UI;
+    font-size: 10pt;
+    text-decoration: none;
+    color: #6a6d76;
+}
+
+a.sidebarlink:visited {
+    font-family: Segoe UI;
+    font-size: 10pt;
+    text-decoration: none;
+    color: #6a6d76;
+}
+
+a.footerlink:link {
+    font-family: Segoe UI;
+    font-size: 10px;
+    color: #2b4ebc;
+    text-decoration: none;
+}
+
+a.footerlink:hover {
+    font-family: Segoe UI;
+    font-size: 10px;
+    color: #2b4ebc;
+    text-decoration: none;
+}
+
+a.footerlink:active {
+    font-family: Segoe UI;
+    font-size: 10px;
+    color: #2b4ebc;
+    text-decoration: none;
+}
+
+a.footerlink:visited {
+    font-family: Segoe UI;
+    font-size: 10px;
+    color: #2b4ebc;
+    text-decoration: none;
+}
+
+/*----- modal popup ------*/
+.modalPopup {
+    background-color: transparent;
+    border-width: 0px;
+    border-style: none;
+    padding: 0px;
+}
+
+.modalBackground {
+    background-color: #92929a;
+    filter: alpha(opacity=85);
+    opacity: 0.85;
+    z-index: -1;
+}
+
+.hide {
+    float: right;
+    margin: 1px 5px 0;
+    background: url(../images/theme/royalblue/form-close-btn.jpg) no-repeat left top transparent;
+    overflow: hidden;
+    cursor: pointer;
+    font-size: 10pt;
+    width: 20px;
+    height: 21px;
+}
+
+
+/*----- form controls ------*/
+.normalbtn {
+    border: 1px solid #f7f7f7;
+    padding: 0px 3px 0px 3px;
+    font-size: 10pt;
+    color: #ffffff;
+    font-family: Segoe UI;
+    background-image: url('../images/theme/royalblue/group-box-head.jpg');
+    margin: 0px 0px 0px 0px;
+    vertical-align: middle;
+    text-align: center;
+    height: 25px;
+}
+
+.normaltextbox {
+    border: 1px solid #a3add1;
+    padding: 3px 3px 3px 3px;
+    background-image: url(../images/theme/royalblue/text-box-bg.jpg);
+    background-repeat: repeat-x;
+}
+
+.check-radio {
+    outline: #cccccc solid 1;
+}
+
+.dtp .ajax__calendar_container {
+    border: 1px solid #e0e7f7;
+    background-color: White;
+    font-size: 8pt;
+    color: #37383c;
+}
+
+.dtp .ajax__calendar_header {
+    background-color: White;
+    font-size: 8pt;
+    font-weight: bold;
+    color: #37383c;
+}
+
+.patient-info {
+    padding: 0px 25px 0px 0px;
+    font-size: 12pt;
+    font-weight: bold;
+    color: Maroon;
+}

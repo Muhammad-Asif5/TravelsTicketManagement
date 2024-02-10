@@ -1,0 +1,227 @@
+﻿@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+    var status = ViewBag.Ticket_Status;
+}
+<style>
+    nav {
+        display: none !important;
+    }
+
+    aside {
+        display: none !important;
+    }
+
+    footer {
+        display: none !important;
+    }
+</style>
+<br />
+<div class="row">
+    <div class="col-12">
+        <div class="invoice p-3 mb-3" id="printableArea" >
+
+            @*<div class="row">
+                <div class="col-12">
+                    <h4>
+                        <i class="fas fa-globe"></i> INVOICE.
+                        <small  style="background:red; margin-right:100px;" class="float-right">Date: @DateTime.Now.ToString("dd-MMM-yyyy")</small>
+                    </h4>
+                </div>
+            </div>*@
+            <div class="row invoice-info">
+                <div class="col-sm-12 invoice-col">
+                    <table class="" style="width:100%">
+                        <thead>
+                            <tr>
+                                <td colspan="2">
+                                    @if (status == "03")
+                                    {
+                                        <h4><i class="fas fa-globe"></i> Refund INVOICE.</h4>
+                                    }
+                                    else
+                                    {
+                                        <h4><i class="fas fa-globe"></i> INVOICE.</h4>
+                                    }
+
+                                </td>
+                                <td><strong>Invoice Date:</strong></td>
+                                <td>
+                                    @ViewBag.Invoice_Date.ToString("dd-MMM-yyyy")
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" height="50">
+                                    <img src="http://erpadmin.brillanttravel.com/Logo/logo.png" />
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">N 1781, Sur O’avenue Kapenda, Quarter Makutano, Commune et Ville de Lubumbashi</td>
+                                <td><strong>Invoice #</strong></td>
+                                <td>@ViewBag.Invoice_Number</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td><strong>Cust Code:</strong> </td>
+                                <td>@ViewBag.Cust_Code</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td><strong>Ref #</strong></td>
+                                <td>@ViewBag.Other_Ref</td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4">
+                                    <table style="width:100%">
+                                        <tr>
+                                            <td style="width:150px;"><strong>Bill To:</strong></td>
+                                            <td colspan="3"><strong>@ViewBag.Cust_Code</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Customer Name:</td>
+                                            <td colspan="3">@ViewBag.Contact_Name</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Address</td>
+                                            <td colspan="3">@ViewBag.Address</td>
+                                        </tr>
+                                        <tr>
+                                            <td>City:</td>
+                                            <td colspan="3">@ViewBag.City</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phone:</td>
+                                            <td colspan="3">@ViewBag.Phone</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Date of Issuance</th>
+                                                <th>Description</th>
+                                                <th>Ticket Number</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>@ViewBag.Invoice_Date.ToString("dd-MMM-yyyy")</td>
+                                                <td>@ViewBag.Description</td>
+                                                <td>@ViewBag.Ticket_Number</td>
+                                                <td style="text-align:right">$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@ViewBag.Invoice_Amount</td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+
+                </div>
+                <div class="col-4">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td><strong>Subtotal:</strong></td>
+                                @*<th style="width:50%">Subtotal:</th>*@
+                                <td  style="text-align:right"><strong>$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @ViewBag.Invoice_Amount</strong></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-print">
+                <div class="col-12">
+                    <a href="javascript:0" onclick="printDiv('printableArea')" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                    <button onclick="tableToExcel('printableArea', 'Invoice')" type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                        <i class="fas fa-download"></i> Generate Excel
+                    </button>
+                </div>
+            </div>
+
+                      
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+    <script>
+
+        //var tableToExcel = (function () {
+        //    var uri = 'data:application/vnd.ms-excel;base64,'
+        //        , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+        //        //, template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"> <head></head><body><table>{table}</table></body></html>'
+        //        , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+        //        , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+        //    return function (table, name) {
+        //        if (!table.nodeType) table = document.getElementById(table)
+        //        var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+        //        window.location.href = uri + base64(format(template, ctx))
+        //    }
+        //})()
+
+        function tableToExcel(table, name) {
+            var uri = 'data:application/vnd.ms-excel;base64,'
+                , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+                , base64 = function (s) {
+                    return window.btoa(unescape(encodeURIComponent(s)))
+                }, format = function (s, c) {
+                    return s.replace(/{(\w+)}/g, function (m, p) {
+                        return c[p];
+                    })
+                }
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+            var a = document.createElement('a');
+            a.href = uri + base64(format(template, ctx))
+            a.download = name + '.xls';
+            a.click();
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        function printDiv(divName) {
+            debugger
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+
+        $("#btnPrint").click(function () {
+            window.print();
+        })
+                    //window.addEventListener("load", window.print());
+    </script>
+
+}
+
+
+
+

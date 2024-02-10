@@ -1,0 +1,109 @@
+﻿@model IEnumerable<AMS.Models.mvcModelsAmountReceiveable>
+
+@{
+    Layout = null;// "~/Views/Shared/_Layout.cshtml";
+}
+@*<style>
+        th {
+            font-size: 12px;
+        }
+
+        td {
+            font-size: 12px;
+        }
+    </style>*@
+<table id="myTable" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                Receipt Ref
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Received_Paid_Date)
+            </th>
+            <th>
+                   Description
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Received_Paid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+            <th>
+                AR Code
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int counter = 0;// Index start value
+            foreach (var item in Model)
+            {
+                <tr id="@item.VID">
+                    <td>
+
+                        <button class="btn btn-success btn-sm" onclick="ViewReportData(@item.VID)">Cash Receipt Voucher</button>
+                        <button onclick="getById(this.id)" id="@item.VID" class="btn btn-primary btn-sm">Edit</button>
+                        <button onclick="deleteById(this.id)" id="@item.VID" class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.VID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Received_Paid_Date)
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.Narration)
+                        </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Received_Paid)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CustName)
+                    </td>
+
+                </tr>
+                counter++;
+            }
+        }
+
+
+    </tbody>
+</table>
+
+@section Scripts{
+
+    <script>
+        function changePayable_Code(val) {
+            //alert(val);
+            if (val != "") {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/GenerateInvoice/GetPayAbleCommission",
+                    data: { PCode: val },
+                    success: function (TicketCommission) {
+                        $("#Ticket_Commission").val(TicketCommission);
+                        var CommissionAmount = (($("#Base_Fare").val() * TicketCommission) / 100);
+                        $("#Commission_Amount").val(CommissionAmount);
+
+                        var NetPayable = $("#Invoice_Amount").val() - $("#Other_Cost").val() - CommissionAmount;
+
+                        $("#Net_Payable").val(NetPayable.toFixed(2));
+
+                    }
+                })
+            }
+
+
+        }
+    </script>
+
+}
+

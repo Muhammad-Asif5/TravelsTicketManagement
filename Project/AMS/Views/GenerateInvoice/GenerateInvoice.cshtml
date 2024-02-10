@@ -1,0 +1,1186 @@
+﻿@{
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet" />
+<link href="~/Content/Print/PrintPreview.css" rel="stylesheet" />
+<link href="~/Content/Print/modal.css" rel="stylesheet" />
+<style>
+    .invoice table tbody tr:last-child td {
+        font-size: 12pt;
+    }
+</style>
+<br />
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title" style="margin-top:10px;">
+                    @if (User.IsInRole("Add New Record") || User.IsInRole("Admin"))
+                    {
+                        <button type="button" class="btn btn-success" id="AddBtn">
+                            <i class="fas fa-plus"></i> Add New Invoice
+                        </button>
+                    }
+                    else
+                    {
+                        <span class="pull-left">All Invoices</span>
+                    }
+                </h3>
+
+                <div class="form-inline float-sm-right">
+                    <div class="form-group  mr-2">
+                        <label>Date range: </label>
+                        <div class="input-group  ml-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control float-right" id="reservation">
+                        </div>
+                    </div>
+                    <div class="form-group mr-2">
+                        <button onclick="viewReportByDate()" class="btn btn-outline-primary">View</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                @*@Html.Action("AllInvoice")*@
+
+                <table id="myTable" class="table table-bordered table-hover">
+                    <thead>
+                        <tr role="row">
+                            <th></th>
+                            <th>Invoice Number</th>
+                            <th>Status</th>
+                            <th>Invoice Date</th>
+                            <th>Ticket Number</th>
+                            <th>Description</th>
+                            <th>Routing</th>
+                            <th>Departure Date</th>
+                            <th>Arrival Date</th>
+                            <th>Paid</th>
+                            <th>Invoice Amount</th>
+                            <th>Base Fare</th>
+                            <th>Tax</th>
+                            <th>Other Cost</th>
+                            <th>Net Payable</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Action("AddOrEdit")
+            </div>
+
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div id="printPreviewModal">
+    <div class="modal " id="printModal" data-keyboard="false" data-backdrop="static" style="">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content" style="background-color: rgba(0,0,0,0.85);">
+                <div class="modal-header">
+                    <h4 class="modal-title">Print Preview</h4>
+                    <a onclick="printButton()" style="cursor: pointer; font-weight: bold; padding: 10px; position: absolute; top: 2px; right: 36px; z-index: 100; color: #fff;" href="javascript:0"><i class="fas fa-print"></i> Print</a>
+                    <label for="mpo-modal-controller" class="mpo-modal-close" data-dismiss="modal">&times;</label>
+                </div>
+                <div class="modal-body">
+                    <div id="table-wrapper">
+                        <div id="table-scroll">
+                            <div style="background-color: #fff;padding:5px; border-radius:5px;">
+                                <div id="printArea">
+                                    <div id="invoice">
+                                        <div class="invoice overflow-auto">
+                                            <div style="min-width: 600px">
+                                                <header id="header">
+                                                    <div class="row">
+                                                        <div class="col col-xs-8">
+                                                            <a><img src="~/Logo/logo.png" data-holder-rendered="true" /></a>
+                                                            <div>N 1781, Sur O’avenue Kapenda, Quarter Makutano, Commune et Ville de Lubumbashi</div>
+                                                        </div>
+                                                        <div class="col col-xs-4 company-details">
+                                                            <div class="date"><b>Invoice Date:</b> 10-Apr-2021</div>
+                                                        </div>
+                                                    </div>
+                                                </header>
+                                                <main>
+                                                    <div class="row contacts">
+                                                        <div class="col-sm-8 invoice-to">
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <div class="text-gray-light"><b>BILL TO:</b></div>
+                                                                </div>
+                                                                <div class="col-sm-9">
+                                                                    <div class="text-gray-light"><b><span id="CustCode"></span></b></div>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <div class="text-gray-light">Customer Name:</div>
+                                                                </div>
+                                                                <div class="col-sm-9">
+                                                                    <span id="ContactName"></span>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <div class="text-gray-light">Address:</div>
+                                                                </div>
+                                                                <div class="col-sm-9">
+                                                                    <span id="Address"></span>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <div class="text-gray-light">City:</div>
+                                                                </div>
+                                                                <div class="col-sm-9">
+                                                                    <span id="City"></span>
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <div class="text-gray-light">Phone:</div>
+                                                                </div>
+                                                                <div class="col-sm-9">
+                                                                    <span id="Phone"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4 invoice-details">
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <b>INVOICE#</b>
+                                                                </div>
+                                                                <div class="col-sm-6" style="text-align: left;">
+                                                                    <h5 class="invoice-id"><span id="InvoiceID"></span></h5>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <b>Cust Code:</b>
+                                                                </div>
+                                                                <div class="col-sm-6" style="text-align: left;">
+                                                                    <span id="Cust_Code"></span>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <b>Ref#</b>
+                                                                </div>
+                                                                <div class="col-sm-6" style="text-align: left;">
+                                                                    <span id="OtherRef"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <table border="0" cellspacing="0" cellpadding="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Date of Issuance</th>
+                                                                <th class="text-left">Description</th>
+                                                                <th class="text-right">Ticket Number</th>
+                                                                <th class="text-right">TOTAL</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tblBody"></tbody>
+                                                        @*<tbody>
+                                                                <tr>
+                                                                    <td class="no">10-Apr-2021</td>
+                                                                    <td class="text-left"><h3>Website Design</h3>Creating a recognizable design solution based on the company's existing visual identity</td>
+                                                                    <td class="unit">1234</td>
+                                                                    <td class="total">$10.00</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="no">13-Apr-2021</td>
+                                                                    <td class="text-left"><h3>Website Design</h3>Creating a recognizable design solution based on the company's existing visual identity</td>
+                                                                    <td class="unit">0989</td>
+                                                                    <td class="total">$1,200.00</td>
+                                                                </tr>
+                                                            </tbody>*@
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td colspan="2"></td>
+                                                                <td>SUBTOTAL</td>
+                                                                <td>$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="SubTotal"></span></td>
+                                                            </tr>
+                                                            @*<tr>
+                                                                <td colspan="2"></td>
+                                                                <td>TAX 25%</td>
+                                                                <td>$1,300.00</td>
+                                                            </tr>*@
+                                                            <tr>
+                                                                <td colspan="2"></td>
+                                                                <td>GRAND TOTAL</td>
+                                                                <td>$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span id="GrandTotal"></span></td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                    <div class="thanks">
+                                                        <div class="notices">
+                                                            <div class="notice">Thank you for your business!</div>
+                                                        </div>
+                                                    </div>
+                                                </main>
+                                                <footer>
+                                                    Invoice was created on a computer and is valid without the signature and seal.
+                                                </footer>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+    @*@Scripts.Render("~/jsController/GInvoiceControllerMin")*@
+
+    <script type="text/javascript">
+
+        function printButton() {
+            let htmlToPrint = $("#invoice").html();
+
+            var doPrint = '';
+            let printHTML = "";
+            printHTML = (document.getElementById("invoice")).innerHTML;
+
+            var display_setting = "toolbar=yes, location=no, direction=yes, menubar=yes,";
+            display_setting += "scrollbar=yes, width=850, height=800, left=50";
+            doPrint = window.open("", "", display_setting);
+            doPrint.document.open();
+            doPrint.document.write('<html><head>');
+            doPrint.document.write("<title>Invoice</title>");
+            doPrint.document.write('<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" media="print" />');
+            doPrint.document.write("<style>*{font-size:13px;}#invoice {padding:10px 20px;}.invoice {position: relative;background-color: #FFF;min-height: 680px;}header {padding: 10px 0;margin-bottom: 20px;border-bottom: 2px solid #3989c6}.contacts {margin-bottom: 20px}.invoice-to {text-align: left}.invoice-details {text-align: right}.invoice-id {margin-top: 0;color: #3989c6}main {padding-bottom: 20px}.thanks {margin-top: -100px;font-size: 2em;margin-bottom: 50px}.notices {padding-left: 6px;border-left: 6px solid #3989c6}.notice {font-size: 13px}table {width: 100%;border-collapse: collapse;border-spacing: 0;margin-bottom: 20px; }table td , table  th {padding: 15px;background: #eee;border-bottom: 1px solid #fff}table  th {white-space: nowrap;font-weight: 400;font-size: 16px}table  td h3 {margin: 0;font-weight: 400;color: #3989c6;font-size: 1.2em  }table  .qty,  table .total, table  .unit {text-align: right;font-size: 1.2em}table  .no {color: #fff;font-size: 1.6em;background: #3989c6}table .unit {background: #ddd}table  .total {background: #3989c6;color: #fff}table tbody tr:last-child td {border: none}table tfoot td {background: 0 0;border-bottom: none;white-space: nowrap;text-align: right;padding: 10px 20px;font-size: 1.2em;border-top: 1px solid #aaa}table tfoot tr:first-child td {border-top: none}table tfoot tr:last-child td {color: #3989c6;font-size: 1.4em;border-top: 1px solid #3989c6;}table tfoot tr td:first-child {border: none}footer {width: 100%;text-align: center;color: #777;border-top: 1px solid #aaa;padding: 8px 0}body{-webkit-print-color-adjust:exact;}</style>");
+            doPrint.document.write('<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet" />');
+            doPrint.document.write('</head><body  onLoad="self.print(); self.close(); " ');
+            doPrint.document.write(printHTML);
+            doPrint.document.write("</body></html>");
+            doPrint.document.close();
+
+
+        }
+
+        $(document).keydown(function (event) {
+            if (event.ctrlKey == true && (event.which == '80')) { //cntrl + p
+                event.preventDefault();
+                printAssessment();
+            }
+        });
+
+        function printAssessment() {
+            printButton();
+        }
+
+        function ViewReportData(id) {
+            $("#printModal").modal('show');
+            $.ajax({
+                type: "POST",
+                url: "GenerateInvoice/GetInvoice",
+                data: { InvNo: id },
+                success: function (data) {
+                    debugger
+                    $("#InvoiceID").text(data.data[0].Invoice_Number);
+                    $("#CustCode").text(data.data[0].Cust_Code);
+                    $("#ContactName").text(data.data[0].Contact_Name);
+                    $("#Address").text(data.data[0].Address);
+                    $("#City").text(data.data[0].City);
+                    $("#OtherRef").text(data.data[0].Other_Ref);
+                    $("#Phone").text(data.data[0].Phone);
+                    $("#SubTotal").text(data.data[0].Invoice_Amount);
+                    $("#GrandTotal").text(data.data[0].Invoice_Amount);
+
+                    var milli = data.data[0].Invoice_Date.replace(/\/Date\((-?\d+)\)\//, '$1');
+                    var date = new Date(parseInt(milli));
+
+                    const formattedDate = date.toLocaleDateString('en-GB', {
+                        day: 'numeric', month: 'short', year: 'numeric'
+                    }).replace(/ /g, '-');
+
+                    $("#tblBody").empty();
+                    $("#tblBody").append("<tr>" +
+                        "<td class='no'>" + formattedDate + "</td>" +
+                        "<td class='text-left'>" + data.data[0].Description + "</td>" +
+                        "<td class='unit'>" + data.data[0].Ticket_Number + "</td>" +
+                        "<td  class='total'>" + data.data[0].Invoice_Amount + "</td>" +
+                        "</tr>")
+                },
+                error: function () {
+
+                }
+            })
+        }
+
+    </script>
+
+    <script>
+
+        //$('#Routing').inputmask('****-****-****', { 'placeholder': 'ABCD-EFGH-IJKL' })
+        //$('#Routing').inputmask('****-****-****')
+
+        $('#reservation').daterangepicker()
+
+        $('.select2').select2({
+            theme: 'bootstrap4'
+        });
+
+        function viewReportByDate() {
+
+            var reservation = $("#reservation").val();
+            var Dfrom = reservation.substring(0, 10);
+            var Dto = reservation.substring(13);
+
+            $.ajax({
+                type: "POST",
+                url: "/GenerateInvoice/GetAllInvoiceByDate",
+                data: {
+                    Dfrom: Dfrom,
+                    Dto: Dto,
+                },
+                success: function (data) {
+
+                    if (data.success == true) {
+                        $('#myTable').DataTable().destroy();
+                        $("table tbody").empty();
+                        if (data.r.length > 0) {
+
+                            $('#myTable').DataTable({
+
+                                data: data.r,
+                                columns: [
+                                    {
+                                        "data": "Invoice_Number", "width": "250px", "orderable": false, render: function (data, type, row, meta) {
+                                            return '<button class="btn btn-success btn-sm" id="' + data + '" onclick="ViewReportData(this.id)">Generate Invoice</button> <button onclick="getById(this.id)" id="' + data + '" class="btn btn-primary btn-sm">Edit</button> <button onclick="deleteById(this.id)" id="' + data + '" class="btn btn-danger btn-sm">Delete</button>';
+                                        }
+                                    },
+                                    { "data": "Invoice_Number" },
+                                    {
+                                        "data": "ReceivePay_Status", render: function (data, type, row, meta) {
+
+                                            if (row.ReceivePay_Status == "1" && row.Pay_Status == "1" && row.Ticket_Status == "01") {
+                                                return '<label class="badge bg-success">Complete</label>';
+                                            }
+                                            if (row.ReceivePay_Status == "1" && row.Pay_Status == "1" && row.Ticket_Status == "03") {
+                                                return '<label class="badge bg-info">Refund/Complete</label>';
+                                            }
+                                            if (row.ReceivePay_Status == "1" && row.Pay_Status == "1" && row.Ticket_Status == "02") {
+                                                return '<label class="badge bg-info">Exchange</label>';
+                                            }
+                                            if (row.ReceivePay_Status != "1" && row.Pay_Status != "1") {
+                                                return '<label class="badge bg-danger">Pending</label>';
+                                            }
+                                            if (row.ReceivePay_Status == "1" && row.Pay_Status != "1") {
+                                                return '<label class="badge bg-danger">Not Paid</label>';
+                                            }
+                                            if (row.ReceivePay_Status != "1" && row.Pay_Status == "1") {
+                                                return '<label class="badge bg-danger">Not Received</label>';
+                                            }
+                                            else
+                                                return '-';
+                                        }
+                                    },
+                                    {
+                                        title: "Invoice Date",
+                                        data: "Invoice_Date",
+                                        render: function (d) {
+                                            if (d == null) {
+                                                return "";
+                                            } else {
+                                                return moment(d).format("DD/MMM/YYYY");
+                                            }
+                                        }
+                                    },
+
+                                    { "data": "Ticket_Number" },
+                                    { "data": "Description" },
+                                    { "data": "Routing" },
+                                    {
+                                        title: "Departure Date",
+                                        data: "Departure_Date",
+                                        render: function (d) {
+                                            if (d == null) {
+                                                return "";
+                                            } else {
+                                                return moment(d).format("DD/MMM/YYYY");
+                                            }
+                                        }
+                                    },
+                                    {
+                                        title: "Arrival Date",
+                                        data: "Arrival_Date",
+                                        render: function (d) {
+                                            if (d == null) {
+                                                return "";
+                                            } else {
+                                                return moment(d).format("DD/MMM/YYYY");
+                                            }
+                                        }
+                                    },
+                                    { "data": "Paid" },
+                                    {
+                                        'data': 'Invoice_Amount',
+                                        'render': function (salary) {
+                                            return '$ ' + salary;
+                                        }
+                                    },
+                                    { "data": "Base_Fare" },
+                                    { "data": "Tax" },
+                                    { "data": "Other_Cost" },
+                                    { "data": "Net_Payable" },
+                                ],
+
+                                "fnCreatedRow": function (nRow, aData, iDataIndex) {
+                                    var rowID = aData.Invoice_Number;
+                                    $(nRow).attr('id', rowID);
+                                },
+
+
+                                scrollCollapse: true,
+                                "scrollX": true,
+                                select: true,
+                                scrollY: '50vh',
+                                "order": [1, "DESC"],
+
+                                "language": {
+                                    search: '',
+
+                                },
+                                "bLengthChange": false,
+                                "bScrollCollapse": true,
+                                "processing": true,
+                                "sPaginationType": "full_numbers",
+
+                                "oLanguage": {
+                                    "sEmptyTable": "No data found, Please click on <b>Add New Invoice</b> Button"
+                                }
+                            });
+                            $('.dataTables_filter input').attr("placeholder", "Search Invoice");
+                        }
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function (er) {
+                    alert(er);
+                }
+            })
+
+        }
+
+        function ViewReportData1(id) {
+
+            if (id != null) {
+
+                var url = "CReceiptVoucher/CReceiptVoucher?InvNo=" + id;
+
+                var windowName = "_blank";
+                var windowHeight = window.innerHeight;
+                var windowWidth = window.innerWidth;
+                document.body.style.height = windowHeight + "px";
+                newwindow = window.open(url, windowName, 'width=940,height=' + windowHeight + '');
+
+                if (window.focus) { newwindow.focus() }
+
+                return false;
+            } else {
+                alert(0);
+            }
+        }
+
+        function Calculate_Invoice_Amount(val) {
+            var BaseFare = $("#Base_Fare").val();
+            var TotalValue = $("#Total_Value").val();
+            var totalvalue = TotalValue - BaseFare;
+            $("#Tax").val(totalvalue.toFixed(2));
+            var Tax = $("#Tax").val();
+
+            var OtherCost = $("#Other_Cost").val();
+            if (val != "") {
+                var InvoiceAmount = parseFloat(BaseFare) + parseFloat(Tax) + parseFloat(OtherCost);
+                $("#Invoice_Amount").val(InvoiceAmount.toFixed(2));
+
+                var CommissionAmount = (($("#Base_Fare").val() * $("#Ticket_Commission").val()) / 100);
+
+                var Ticket_Commission = $("#Ticket_Commission").val();
+                if (Ticket_Commission != "") {
+                    var VAT = $("#VAT").val();
+                    $("#Commission_Amount").val(CommissionAmount);
+                    var VATAmount = CommissionAmount * (VAT / 100);
+                    $("#VAT_Amount").val(VATAmount.toFixed(2));
+
+                    var NetPayable = $("#Invoice_Amount").val() - $("#Other_Cost").val() - $("#VAT_Amount").val() - CommissionAmount;
+                    $("#Net_Payable").val(NetPayable.toFixed(2));
+                } else {
+                    var NetPayable = $("#Invoice_Amount").val() - $("#Other_Cost").val() - CommissionAmount;
+                    $("#Net_Payable").val(NetPayable.toFixed(2));
+                }
+            }
+        }
+
+        function changePayable_Code(val) {
+
+            if (val != "") {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/GenerateInvoice/GetPayAbleCommission",
+                    data: { PCode: val },
+                    success: function (data) {
+
+                        $("#Ticket_Commission").val(data.Ticket_Commission);
+                        var CommissionAmount = (($("#Base_Fare").val() * (data.Ticket_Commission)) / 100);
+                        $("#Commission_Amount").val(CommissionAmount);
+                        $("#VAT").val(data.VAT);
+
+                        var VATAmount = CommissionAmount * (data.VAT / 100);
+                        $("#VAT_Amount").val(VATAmount.toFixed(2));
+
+                        var NetPayable = $("#Invoice_Amount").val() - $("#Other_Cost").val() - $("#VAT_Amount").val() - CommissionAmount;
+                        $("#Net_Payable").val(NetPayable.toFixed(2));
+
+                    }
+                })
+            }
+        }
+
+        $("#AddBtn").click(function () {
+
+            resetDatafromFrom();
+
+            $("#btnSave").show();
+            $("#btnUpdate").hide();
+
+            $("#myModal .modal-title").text("Add New Invoice Details");
+            $("#myModal").modal('show');
+            $("#myModal .modal-header").removeClass('bg-primary');
+            $("#myModal .modal-header").addClass('bg-success');
+
+        });
+
+        function getById(id) {
+            resetDatafromFrom();
+
+            $.ajax({
+                type: "POST",
+                url: "/GenerateInvoice/GetDataById",
+                data: { id: id },
+                success: function (data) {
+                    if (data == "") {
+                        swal("WARNING!", "You cannot edit this info / No Permission or Session Expired", "warning");
+                    } else {
+                        if (data[0].Pay_Status == "1" || data[0].ReceivePay_Status == "1") {
+                            $("#MistakenEdit").show();
+                        } else {
+                            $("#MistakenEdit").hide();
+                        }
+                        $("#Payable_Code").val(data[0].Payable_Code);
+                        $("#Invoice_Number").val(data[0].Invoice_Number);
+                        var nDate = ConvertDate(data[0].Invoice_Date);
+                        $("#Invoice_Date").val(nDate);
+                        var dDate = ConvertDate(data[0].Departure_Date);
+                        $("#Departure_Date").val(dDate);
+                        var aDate = ConvertDate(data[0].Arrival_Date);
+                        $("#Arrival_Date").val(aDate);
+
+                        $("#Ticket_Number").val(data[0].Ticket_Number);
+                        $("#Description").val(data[0].Description);
+                        $("#Routing").val(data[0].Routing);
+
+                        $("#Invoice_Amount").val(data[0].Invoice_Amount);
+                        $("#ZIP_Code").val(data[0].ZIP_Code);
+                        $("#Base_Fare").val(data[0].Base_Fare);
+                        $("#Tax").val(data[0].Tax);
+                        $("#Other_Cost").val(data[0].Other_Cost);
+                        $("#Stream_ID").val(data[0].Stream_ID).trigger('change');
+
+                        $("#Other_Ref").val(data[0].Other_Ref);
+                        $("#Cust_Code").val(data[0].Cust_Code).trigger('change');
+                        $("#Ticket_Status").val(data[0].Ticket_Status).trigger('change');
+
+                        $("#Agent_ID").val(data[0].Agent_ID).trigger('change');
+                        $("#TicketClass_ID").val(data[0].TicketClass_ID).trigger('change');
+
+                        $("#Ticket_Commission").val(data[0].Ticket_Commission);
+                        $("#VAT").val(data[0].VAT);
+                        $("#Commission_Amount").val(data[0].Commission_Amount);
+                        $("#VAT_Amount").val(data[0].VAT_Amount);
+                        $("#Net_Payable").val(data[0].Net_Payable);
+                        $("#Paid").val(data[0].Paid);
+                        $("#Paid2").val(data[0].Paid2);
+                        $("#Total_Value").val(data[0].Total_Value);
+
+
+                        $("#btnSave").hide();
+                        $("#btnUpdate").show();
+
+                        $("#myModal .modal-title").text("Update Invoice Details");
+                        $("#myModal").modal('show');
+                        $("#myModal .modal-header").addClass('bg-primary');
+                        $("#myModal .modal-header").removeClass('bg-success');
+                    }
+
+                },
+                error: function (error) {
+                    swal("Error!", error, "error");
+                }
+            });
+
+        }
+        function deleteById(id) {
+
+            var table = $('#myTable').DataTable();
+
+            var rowData = table.row("#" + id).data();
+
+            var empId = rowData.Agent_Name;
+
+            var forAlert = empId;
+
+            swal({
+                title: "Are you sure?",
+                text: "Your will not be able to recover " + forAlert + " Invoice Data!",
+
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel plx!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/GenerateInvoice/DeleteDataByID",
+                            data: { id: id },
+                            success: function (data) {
+
+                                if (data.success) {
+
+                                    if (data.Delete == "Delete") {
+                                        var table = $('#myTable').DataTable();
+                                        index = table.row('#' + id);
+                                        var temp = table.row(index[0]).data();
+                                        table.row(index[0]).remove().draw();
+
+
+                                        swal("Deleted!", data.message, "success");
+                                        setTimeout(function () {
+                                            swal.close();
+                                        }, 1000);
+                                    } else {
+                                        swal("WARNING!", data.message, "warning");
+                                    }
+
+
+                                } else {
+                                    swal("WARNING!", "You cannot edit this info / No Permission or Session Expired", "warning");
+
+                                }
+                            },
+                            error: function (error) {
+                                swal("Error!", error, "error");
+                            }
+                        });
+                    }
+                    else {
+                        swal("Cancelled", "Your file is safe :)", "error");
+                    }
+                });
+
+        }
+        $("#btnUpdate").click(function (e) {
+
+            if ($("#myForm").valid()) {
+                var oForm = document.forms["myForm"];
+
+
+                var ajaxConfig = {
+                    type: "POST",
+                    url: oForm.action,
+                    data: new FormData(oForm),
+                    success: function (data) {
+
+                        if (data.success) {
+
+                            var table = $("#myTable").DataTable();
+
+                            $('#myModal').modal('hide');
+
+                            index = table.row('#' + oForm["Invoice_Number"].value); //1234126
+                            var temp = table.row(index[0]).data();
+                            temp["Invoice_Date"] = oForm["Invoice_Date"].value;
+                            temp["Ticket_Number"] = oForm["Ticket_Number"].value;
+                            temp["Description"] = oForm["Description"].value;
+                            temp["Routing"] = oForm["Routing"].value;
+                            temp["Departure_Date"] = oForm["Departure_Date"].value;
+                            temp["Arrival_Date"] = oForm["Arrival_Date"].value;
+
+                            temp["Invoice_Amount"] = oForm["Invoice_Amount"].value;
+                            temp["Base_Fare"] = oForm["Base_Fare"].value;
+                            temp["Tax"] = oForm["Tax"].value;
+                            temp["Other_Cost"] = oForm["Other_Cost"].value;
+                            temp["Net_Payable"] = oForm["Net_Payable"].value;
+
+                            table.row(index[0]).data(temp).draw(false);
+
+
+                            $('.ui-pnotify').remove();
+                            new PNotify({
+                                title: 'SUCCESS!',
+                                text: data.message,
+                                type: 'success',
+                                animation: 'slide',
+                                delay: 3000,
+                                top: "500px",
+                                min_height: "16px",
+                                animate_speed: 400,
+                                text_escape: true,
+
+                                styling: 'bootstrap3',
+                            });
+                        }
+                        else if (data == "") {
+                            swal("EXPIRED!", "Session Expired, Login Again", "warning");
+                        }
+                        else {
+                            swal("Error!", data.message, "error");
+                        }
+                    },
+                    error: function (error) {
+                        swal("Error!", error, "error");
+                    }
+                }
+                if ($("form").attr('enctype') == "multipart/form-data") {
+                    ajaxConfig["contentType"] = false,
+                        ajaxConfig["processData"] = false;
+                }
+                $.ajax(ajaxConfig);
+                return false;
+            }
+
+        });
+
+        $("#btnSave").click(function () {
+
+            var oForm = document.forms["myForm"];
+
+            if ($("#myForm").valid()) {
+
+                var ajaxConfig = {
+                    type: "POST",
+                    url: oForm.action,
+                    data: new FormData(oForm),
+                    success: function (data) {
+                        
+                        var table = $("#myTable").DataTable();
+                        if (data.success == true) {
+                            if (data.message.substring(0, 6) == "Ticket") {
+                                swal("WARNING!", data.message, "warning");
+                            }
+                            else {
+                                $('#myModal').modal('hide');
+                                var rowIndex = table.row.add({
+                                    "Invoice_Number": '<button class="btn btn-success btn-sm"  id="' + data.NextID + '" onclick="ViewReportData(this.id)">Generate Invoice</button> <button onclick="getById(this.id)" id="' + data.NextID + '" class="btn btn-primary btn-sm">Edit</button> <button id="' + data.NextID + '" class="btn btn-danger btn-sm" onclick="deleteById(id)">Delete</button>',
+                                    "Invoice_Number": data.NextID,
+                                    "ReceivePay_Status": '<label class="badge bg-danger">Pending</label>',
+                                    "Invoice_Date": oForm["Invoice_Date"].value,
+                                    "Ticket_Number": $("#Ticket_Number").val(),
+                                    "Description": oForm["Description"].value,
+                                    "Routing": oForm["Routing"].value,
+                                    "": oForm["Departure_Date"].value,
+                                    "": oForm["Arrival_Date"].value,
+                                    "Paid": '0',
+                                    "Invoice_Amount": oForm["Invoice_Amount"].value,
+                                    "Base_Fare": oForm["Base_Fare"].value,
+                                    "Tax": oForm["Tax"].value,
+                                    "Other_Cost": oForm["Other_Cost"].value,
+                                    "Net_Payable": oForm["Net_Payable"].value
+                                }).draw(false);
+                                var row = $('#myTable').dataTable().fnGetNodes(rowIndex);
+                                $(row).attr('id', data.NextID);
+                                $('.ui-pnotify').remove();
+                                new PNotify({
+                                    title: 'SUCCESS!',
+                                    text: data.message,
+                                    type: 'success',
+                                    animation: 'slide',
+                                    delay: 3000,
+                                    top: "500px",
+                                    min_height: "16px",
+                                    animate_speed: 400,
+                                    text_escape: true,
+
+                                    styling: 'bootstrap3',
+                                });
+                            }
+
+                        }
+                        else if (data == "") {
+                            swal("EXPIRED!", "Session Expired, Login Again", "warning");
+                        }
+                        else {
+                            swal("Error!", data.message, "error");
+                        }
+                    },
+                    error: function (error) {
+                        swal("Error!", error, "error");
+                    }
+                }
+                if ($("form").attr('enctype') == "multipart/form-data") {
+                    ajaxConfig["contentType"] = false,
+                        ajaxConfig["processData"] = false;
+                }
+                $.ajax(ajaxConfig);
+                return false;
+            }
+        });
+
+        function resetDatafromFrom() {
+            $("#MistakenEdit").hide();
+
+            $("select").val("").trigger('change');
+            $("#myForm")[0].reset();
+            $(".form-control.is-invalid").removeClass('is-invalid');
+
+            $("#Invoice_Number").val(0);
+            $("#Base_Fare").val(0);
+            $("#Total_Value").val(0);
+            $("#Tax").val(0);
+            $("#Other_Cost").val(0);
+
+        }
+
+        $(document).ready(function () {
+
+            $("#MistakenEdit").hide();
+            myDatatable();
+
+
+            $("#Invoice_Date").datepicker({
+                format: 'd/M/yyyy',
+                todayBtn: "linked",
+                daysOfWeekHighlighted: "5",
+                calendarWeeks: true,
+                autoclose: true,
+                todayHighlight: true,
+                startDate: "15-12-2016",
+                endDate: "15-12-2032"
+            });
+
+            $("#Departure_Date").datepicker({
+                format: 'd/M/yyyy',
+                todayBtn: "linked",
+                daysOfWeekHighlighted: "5",
+                calendarWeeks: true,
+                autoclose: true,
+                todayHighlight: true,
+                startDate: "15-12-2016",
+                endDate: "15-12-2032"
+            });
+            $("#Arrival_Date").datepicker({
+                format: 'd/M/yyyy',
+                todayBtn: "linked",
+                daysOfWeekHighlighted: "5",
+                calendarWeeks: true,
+                autoclose: true,
+                todayHighlight: true,
+                startDate: "15-12-2016",
+                endDate: "15-12-2032"
+            });
+
+            $("#btnUpdate").hide();
+
+            $('#myForm').validate({
+                rules: {
+                    Invoice_Number: {
+                        required: true,
+                    }, Invoice_Date: {
+                        required: true,
+                    }
+
+                    , Base_Fare: {
+                        required: true,
+                    }, Tax: {
+                        required: true,
+                    }, Other_Cost: {
+                        required: true,
+                    }, Stream_ID: {
+                        required: true,
+                    }, Cust_Code: {
+                        required: true,
+                    }, Ticket_Status: {
+                        required: true,
+                    }, Payable_Code: {
+                        required: true,
+                    }, Agent_ID: {
+                        required: true,
+                    }, TicketClass_ID: {
+                        required: true,
+                    }
+
+                    , Invoice_Amount: {
+                        required: true,
+                    }, Ticket_Commission: {
+                        required: true,
+                    }, Commission_Amount: {
+                        required: true,
+                    }, Net_Payable: {
+                        required: true,
+                    }
+
+                },
+                messages: {
+                    Invoice_Number: {
+                        required: "Please Enter Invoice Number"
+                    },
+                    Invoice_Date: {
+                        required: "Please Enter Invoice Date"
+                    }, Ticket_Number: {
+                        required: "Please Enter Ticket Number"
+                    }, Description: {
+                        required: "Please Enter Description "
+                    }, Routing: {
+                        required: "Please Enter Routing"
+                    }, Departure_Date: {
+                        required: "Please Enter Departure Date"
+                    }, Arrival_Date: {
+                        required: "Please Enter Arrival Date "
+                    }, Base_Fare: {
+                        required: "Please Enter Base Fare"
+                    }, Tax: {
+                        required: "Please Enter Tax"
+                    }, Other_Cost: {
+                        required: "Please Enter Other Cost"
+                    }, Stream_ID: {
+                        required: "Please Enter Stream ID"
+                    }, Cust_Code: {
+                        required: "Please Select Customer"
+                    }, Ticket_Status: {
+                        required: "Please Select Ticket Status"
+                    }, Payable_Code: {
+                        required: "Please Select Payable Code"
+                    }, Agent_ID: {
+                        required: "Please Select Agent"
+                    }, TicketClass_ID: {
+                        required: "Please Select Ticket Class"
+                    }, Other_Ref: {
+                        required: "Please Enter Other Reference"
+                    }, Invoice_Amount: {
+                        required: "Please Enter Invoice Amount"
+                    }, Ticket_Commission: {
+                        required: "Please Enter Ticket Commission"
+                    }, Commission_Amount: {
+                        required: "Please Enter Commission Amount"
+                    }, Net_Payable: {
+                        required: "Please Enter Net Payable"
+                    }
+
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
+
+        });
+
+        function myDatatable() {
+
+            $.ajax({
+                type: "GET",
+                url: "/GenerateInvoice/GetAllInvoice",
+                data: {},
+                success: function (data) {
+
+                    $('#myTable').DataTable({
+
+                        data: data.r,
+                        columns: [
+                            {
+                                "data": "Invoice_Number", "width": "230px", "orderable": false, render: function (data, type, row, meta) {
+                                    return '<button class="btn btn-success btn-sm" id="' + data + '" onclick="ViewReportData(this.id)">Generate Invoice</button> <button onclick="getById(this.id)" id="' + data + '" class="btn btn-primary btn-sm">Edit</button> <button onclick="deleteById(this.id)" id="' + data + '" class="btn btn-danger btn-sm">Delete</button>';
+                                }
+                            },
+                            { "data": "Invoice_Number" },
+                            {
+                                "data": "ReceivePay_Status", render: function (data, type, row, meta) {
+
+                                    if (row.ReceivePay_Status == "1" && row.Pay_Status == "1" && row.Ticket_Status == "01") {
+                                        return '<label class="badge bg-success">Complete</label>';
+                                    }
+                                    if (row.ReceivePay_Status == "1" && row.Pay_Status == "1" && row.Ticket_Status == "03") {
+                                        return '<label class="badge bg-info">Refund/Complete</label>';
+                                    }
+                                    if (row.ReceivePay_Status == "1" && row.Pay_Status == "1" && row.Ticket_Status == "02") {
+                                        return '<label class="badge bg-info">Exchange</label>';
+                                    }
+                                    if (row.ReceivePay_Status == "0" && row.Pay_Status == "0") {
+                                        return '<label class="badge bg-danger">Pending</label>';
+                                    }
+                                    if (row.ReceivePay_Status == "1" && row.Pay_Status == "0") {
+                                        return '<label class="badge bg-danger">Not Paid</label>';
+                                    }
+                                    if (row.ReceivePay_Status == "0" && row.Pay_Status == "1") {
+                                        return '<label class="badge bg-danger">Not Received</label>';
+                                    }
+                                    else
+                                        return '-';
+                                }
+                            },
+                            {
+                                title: "Invoice Date",
+                                data: "Invoice_Date",
+                                render: function (d) {
+                                    if (d == null) {
+                                        return "";
+                                    } else {
+                                        return moment(d).format("DD/MMM/YYYY");
+                                    }
+                                }
+                            },
+
+                            { "data": "Ticket_Number" },
+                            { "data": "Description" },
+                            { "data": "Routing" },
+                            {
+                                title: "Departure Date",
+                                data: "Departure_Date",
+                                render: function (d) {
+                                    if (d == null) {
+                                        return "";
+                                    } else {
+                                        return moment(d).format("DD/MMM/YYYY");
+                                    }
+                                }
+                            },
+                            {
+                                title: "Arrival Date",
+                                data: "Arrival_Date",
+                                render: function (d) {
+                                    if (d == null) {
+                                        return "";
+                                    } else {
+                                        return moment(d).format("DD/MMM/YYYY");
+                                    }
+                                }
+                            },
+                            { "data": "Paid" },
+                            {
+                                'data': 'Invoice_Amount',
+                                'render': function (salary) {
+                                    return '$ ' + salary;
+                                }
+                            },
+                            { "data": "Base_Fare" },
+                            { "data": "Tax" },
+                            { "data": "Other_Cost" },
+                            { "data": "Net_Payable" },
+                        ],
+
+                        "fnCreatedRow": function (nRow, aData, iDataIndex) {
+                            var rowID = aData.Invoice_Number;
+                            $(nRow).attr('id', rowID);
+                        },
+                        scrollCollapse: true,
+                        "scrollX": true,
+                        select: true,
+                        scrollY: '50vh',
+                        "order": [1, "DESC"],
+
+                        "language": {
+                            search: '',
+
+                        },
+                        "bLengthChange": false,
+                        "bScrollCollapse": true,
+                        "processing": true,
+
+                        "sPaginationType": "full_numbers",
+
+                        "oLanguage": {
+                            "sEmptyTable": "No data found, Please click on <b>Add New Invoice</b> Button"
+                        }
+                    });
+                    $('.dataTables_filter input').attr("placeholder", "Search Invoice");
+                }
+                , error: function (er) {
+
+                    alert("Error! " + er);
+                }
+            });
+        }
+
+        function ConvertDate(value) {
+
+            if (value == null) {
+                return "";
+            }
+            else {
+                var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                ];
+                var pattern = /Date\(([^)]+)\)/;
+                var results = pattern.exec(value);
+                var dt = new Date(parseFloat(results[1]));
+                var completedate = dt.getDate() + "/" + monthNames[dt.getMonth()] + "/" + dt.getFullYear();
+
+                return completedate;
+            }
+        }
+
+        function ToJavaScriptDate(value) {
+            if (value == null) {
+                return "";
+            }
+            else {
+                var pattern = /Date\(([^)]+)\)/;
+                var results = pattern.exec(value);
+                var date = new Date(parseFloat(results[1]));
+
+                var year = date.getFullYear();
+
+                var month = (1 + date.getMonth()).toString();
+                month = month.length > 1 ? month : '0' + month;
+
+                var day = date.getDate().toString();
+                day = day.length > 1 ? day : '0' + day;
+
+                return month + '/' + day + '/' + year;
+            }
+
+        }
+
+    </script>
+
+}
+

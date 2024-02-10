@@ -1,0 +1,171 @@
+﻿@model IEnumerable<AMS.Models.mvcModelsInvoice_Details>
+
+@{
+    Layout = null;// "~/Views/Shared/_Layout.cshtml";
+}
+@*<style>
+    th {
+        font-size: 12px;
+    }
+
+    td {
+        font-size: 12px;
+    }
+</style>*@
+<table id="myTable" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Invoice_Number)
+            </th>
+            <th>Status</th>
+            @*<th>Paid Status</th>
+            <th>Refund Status</th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.Invoice_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket_Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Routing)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Departure_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Arrival_Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Paid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Invoice_Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Base_Fare)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tax)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Other_Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Net_Payable)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int counter = 0;// Index start value
+            foreach (var item in Model)
+            {
+                <tr id="@item.Invoice_Number">
+
+                    <td>
+                        @*<a class="btn btn-success btn-sm" href='@Url.Action("exportReport")?InvoiceNo=@item.Invoice_Number'>Generate Invoice</a>*@
+                        <button class="btn btn-success btn-sm" onclick="ViewReportData(@item.Invoice_Number)">Generate Invoice</button>
+                        <button onclick="getById(this.id)" id="@item.Invoice_Number" class="btn btn-primary btn-sm">Edit</button>
+                        <button onclick="deleteById(this.id)" id="@item.Invoice_Number" class="btn btn-danger btn-sm">Delete</button>
+                        @*<a  href="/CReceiptVoucher/CReceiptVoucher?VID=@item.Invoice_Number" id="@item.Invoice_Number" class="btn btn-success btn-sm">Generate Invoice</a>*@
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Invoice_Number)
+                    </td>
+                    <td>
+                        @if (item.ReceivePay_Status == "1" && item.Pay_Status == "1" && item.Ticket_Status == "01")
+                        {
+                            <label class="badge bg-success">Complete</label>
+                        }
+                        @if (item.ReceivePay_Status == "1" && item.Pay_Status == "1" && item.Ticket_Status == "03")
+                        {
+                            <label class="badge bg-info">Refund/Complete</label>
+                        }
+                        @if (item.ReceivePay_Status != "1" && item.Pay_Status != "1")
+                        {
+                            <label class="badge bg-danger">Pending</label>
+                        }
+                        @if (item.ReceivePay_Status == "1" && item.Pay_Status != "1")
+                        {
+                            <label class="badge bg-danger">Not Paid</label>
+                        }
+                        @if (item.ReceivePay_Status != "1" && item.Pay_Status == "1")
+                        {
+                            <label class="badge bg-danger">Not Received</label>
+                        }
+
+
+
+                    </td>
+                    @*<td>
+                        @if (item.Pay_Status == "1")
+                        {
+                            <label class="badge bg-success">Paid</label>
+                        }
+                        else
+                        {
+                            <label class="badge bg-danger">Not Paid</label>
+                        }
+                    </td>
+                    <td>
+                        @if (item.Ticket_Status == "01")
+                        {
+                            <label class="badge bg-success">Sale</label>
+                        }
+                        else
+                        {
+                            <label class="badge bg-info">Refund</label>
+                        }
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Invoice_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ticket_Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Routing)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Departure_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Arrival_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Paid)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Invoice_Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Base_Fare)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tax)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Other_Cost)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Net_Payable)
+                    </td>
+
+                </tr>
+                counter++;
+            }
+        }
+
+
+    </tbody>
+</table>
+

@@ -1,0 +1,285 @@
+﻿@model AMS.Models.mvcModelsInvoice_Details
+@{ Layout = null; }
+
+@using (Html.BeginForm("AddOrEdit", "GenerateInvoice", FormMethod.Post,
+    new { enctype = "multipart/form-data", id = "myForm", @class = "form-horizontal", role = "form", autocomplete = "off" }))
+{
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="row">
+                @Html.HiddenFor(x => x.Invoice_Number)
+                @*<div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Invoice_Number, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Invoice_Number, new { htmlAttributes = new { @tabindex = "2", @class = "form-control", @required = "required", placeholder = "Enter Invoice Number" } })
+                        @Html.ValidationMessageFor(model => model.Invoice_Number, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Invoice_Date, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Invoice_Date, new { htmlAttributes = new { @tabindex = "3", @class = "form-control", @required = "required", placeholder = "DD/MM/yyyy" } })
+                        @Html.ValidationMessageFor(model => model.Invoice_Date, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Ticket_Number, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Ticket_Number, new { htmlAttributes = new { @tabindex = "4", @class = "form-control", placeholder = "Enter Ticket Number", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "50" } })
+                        @Html.ValidationMessageFor(model => model.Ticket_Number, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @tabindex = "5", @class = "form-control", placeholder = "Enter Passenger Name", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "50" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+
+                        @Html.LabelFor(model => model.Routing, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Routing, new { htmlAttributes = new { @tabindex = "6", @class = "form-control", placeholder = "Enter Routing", data_plugin_maxlength = "data-plugin-maxlength", maxlength = "50", style = "text-transform: uppercase" } })
+                        @Html.ValidationMessageFor(model => model.Routing, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Departure_Date, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Departure_Date, new { htmlAttributes = new { @tabindex = "7", @class = "form-control", placeholder = "Enter Departure" } })
+                        @Html.ValidationMessageFor(model => model.Departure_Date, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Arrival_Date, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Arrival_Date, new { htmlAttributes = new { @tabindex = "8", @class = "form-control", placeholder = "Enter Arrival" } })
+                        @Html.ValidationMessageFor(model => model.Arrival_Date, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Base_Fare, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Base_Fare, new
+                        {
+                            htmlAttributes = new
+                            {
+                                @tabindex = "9",
+                                @type = "number",
+                                @value = "0",
+                                @onkeyup = "Calculate_Invoice_Amount(this.value)",
+                                @class = "form-control",
+                                placeholder = "Enter Base Fare"
+                            }
+                        })
+                        @Html.ValidationMessageFor(model => model.Base_Fare, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Total_Value, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Total_Value, new
+                        {
+                            htmlAttributes = new
+                            {
+                                @tabindex = "10",
+                                @type = "number",
+                                @value = "0",
+                                @onkeyup = "Calculate_Invoice_Amount(this.value)",
+                                @class = "form-control",
+                                placeholder = "Enter Base Fare"
+                            }
+                        })
+                        @Html.ValidationMessageFor(model => model.Total_Value, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Tax, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Tax, new
+                        {
+                            htmlAttributes = new
+                            {
+                                @oninput = "this.value = Math.abs(this.value)",
+                                @type = "number",
+                       @onkeyup = "Calculate_Invoice_Amount(this.value)",
+                                @class = "form-control",
+                                placeholder = "Enter Tax"
+                            }
+                        })
+                        @Html.ValidationMessageFor(model => model.Tax, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Other_Cost, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Other_Cost, new
+                   {
+                       htmlAttributes = new
+                       {
+                           @tabindex = "11",
+                           @type = "number",
+                           @onkeyup = "Calculate_Invoice_Amount(this.value)",
+                           @class = "form-control",
+                           placeholder = "Enter Other_Cost"
+                       }
+                   })
+                        @Html.ValidationMessageFor(model => model.Other_Cost, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Stream_ID, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.Stream_ID, ViewBag.listIncome_Stream as SelectList, "--Select Stream--", new { @tabindex = "12", @class = "form-control select2", @required = "required" })
+                        @Html.ValidationMessageFor(model => model.Stream_ID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Cust_Code, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.Cust_Code, ViewBag.Customers as SelectList, "--Select Customer Code--", new { @tabindex = "13", @class = "form-control select2", @required = "required" })
+                        @Html.ValidationMessageFor(model => model.Cust_Code, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Ticket_Status, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.Ticket_Status,
+                                                                                                                                                                                          new List<SelectListItem> {new SelectListItem { Value = "" , Text = "--Select Ticket Status--",Selected=true },
+                                                new SelectListItem { Value = "01" , Text = "Sale" },
+                                                new SelectListItem { Value = "03" , Text = "Refund" },
+                                                new SelectListItem { Value = "02" , Text = "Exchange" },
+                                                new SelectListItem { Value = "04" , Text = "N/A" }
+                                                                                                      }, new { @tabindex = "14", @class = "form-control select2", @required = "required" })
+                        @Html.ValidationMessageFor(model => model.Ticket_Status, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Payable_Code, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownList("Payable_Code", (List<SelectListItem>)ViewBag.AllAirLine,
+                                               "--Select Payable Code--", new { @tabindex = "15", @required = "required", @class = "form-control", @onchange = "changePayable_Code(this.value)" })
+
+                        @Html.ValidationMessageFor(model => model.Payable_Code, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Agent_ID, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.Agent_ID, ViewBag.AllAgent as SelectList, "--Select Agent--", new { @tabindex = "16", @class = "form-control select2", @required = "required" })
+                        @Html.ValidationMessageFor(model => model.Agent_ID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TicketClass_ID, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.TicketClass_ID,
+                                                                                                                                                                                          new List<SelectListItem> {new SelectListItem { Value = "" , Text = "--Select Ticket Status--",Selected=true },
+                                                new SelectListItem { Value = "1" , Text = "Business" },
+                                                new SelectListItem { Value = "2" , Text = "Economy" },
+                                                new SelectListItem { Value = "3" , Text = "N/A" }}, new { @tabindex = "17", @class = "form-control select2", @required = "required" })
+                        @Html.ValidationMessageFor(model => model.TicketClass_ID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Other_Ref, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Other_Ref, new
+                        {
+                            htmlAttributes = new
+                            {
+                                @tabindex = "18",
+                                @class = "form-control",
+                                placeholder = "Enter Other Ref",
+                                data_plugin_maxlength = "data-plugin-maxlength",
+                                maxlength = "200"
+                            }
+                        })
+                        @Html.ValidationMessageFor(model => model.Tax, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label style="font-size:14px; color:red;" for="Invoice_Amount">Invoice Amount:</label>
+                </div>
+                <div class="col-sm-6">
+                    <input type="text" name="Invoice_Amount" readonly id="Invoice_Amount" value="" class="col-sm-12" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label style="font-size:14px; color:red;" for="Ticket_Commission">Ticket Commission:</label>
+                </div>
+                <div class="col-sm-6">
+                    <input type="text" name="Ticket_Commission" readonly id="Ticket_Commission" value="" class="col-sm-12" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label style="font-size:14px; color:red;" for="VAT">VAT %:</label>
+                </div>
+                <div class="col-sm-6">
+                    <input type="number" name="VAT" readonly id="VAT" value="" class="col-sm-12" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label style="font-size:14px; color:red;" for="Commission_Amount">Commiss Amount:</label>
+                </div>
+                <div class="col-sm-6">
+                    <input type="text" name="Commission_Amount" readonly id="Commission_Amount" value="" class="col-sm-12" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label style="font-size:14px; color:red;" for="VAT_Amount">VAT Amount:</label>
+                </div>
+                <div class="col-sm-6">
+                    <input type="text" name="VAT_Amount" readonly id="VAT_Amount" value="" class="col-sm-12" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label style="font-size:14px; color:red;" for="Net_Payable">Net Payable:</label>
+                </div>
+                <div class="col-sm-6">
+                    <input type="text" name="Net_Payable" readonly id="Net_Payable" value="" class="col-sm-12" />
+                </div>
+            </div>
+            <hr />
+            <div id="MistakenEdit" style="margin-bottom:10px; border: 1px solid #226f0f; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);  padding: 5px;border-radius: 5px">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label style="font-size:14px;margin-top: 10px;" for="Paid">Paid:</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            @Html.EditorFor(model => model.Paid, new { htmlAttributes = new { @type = "number", @tabindex = "100", @class = "form-control", placeholder = "Enter Paid" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label style="font-size:14px;margin-top: 10px;" for="Paid2">Paid2:</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            @Html.EditorFor(model => model.Paid2, new { htmlAttributes = new { @type = "number", @tabindex = "100", @class = "form-control", placeholder = "Enter Paid2" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <button tabindex="19" type="submit" id="btnSave" class="btn btn-success">Add</button>
+    <button tabindex="19" type="submit" id="btnUpdate" class="btn btn-primary">Update</button>
+}
+
+
