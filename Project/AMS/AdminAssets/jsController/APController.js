@@ -1,272 +1,273 @@
 ﻿
-    $("#AddBtn").click(function () {
-        resetDatafromFrom();
+$("#AddBtn").click(function () {
+    resetDatafromFrom();
 
-            $("#btnSave").show();
-            $("#btnUpdate").hide();
+    $("#btnSave").show();
+    $("#btnUpdate").hide();
 
-            $(".modal-title").text("Add New AP");
-            $("#myModal").modal('show');
-            $(".modal-header").removeClass('bg-primary');
-            $(".modal-header").addClass('bg-success');
+    $(".modal-title").text("Add New AP");
+    $("#myModal").modal('show');
+    $(".modal-header").removeClass('bg-primary');
+    $(".modal-header").addClass('bg-success');
 
+});
+
+function getById(id) {
+    resetDatafromFrom();
+
+    $.ajax({
+        type: "POST",
+        url: "/AP/GetDataById",
+        data: { id: id },
+        success: function (data) {
+            if (data == "") {
+                swal("WARNING!", "You cannot edit this info / No Permission", "warning");
+            }
+            else {
+                $("#Air_ID").val(data[0].Air_ID);
+                $("#Payable_Code").val(data[0].Payable_Code);
+                $("#Payable_Code").prop('readonly', true);
+
+                $("#Payable_Supplier").val(data[0].Payable_Supplier);
+                $("#Ticket_Commission").val(data[0].Ticket_Commission);
+                $("#VAT").val(data[0].VAT);
+                $("#Cat_ID").val(data[0].Cat_ID);
+
+
+                $("#btnSave").hide();
+                $("#btnUpdate").show();
+
+                $(".modal-title").text("Update Agent");
+                $("#myModal").modal('show');
+                $(".modal-header").addClass('bg-primary');
+                $(".modal-header").removeClass('bg-success');
+            }
+        }
+    });
+
+}
+function deleteById(id) {
+    progid = [];
+    var table = $('#myTable').DataTable();
+
+    var rowData = table.row("#" + id).data();
+
+    var empId = rowData[1];
+    var ename = rowData[2];
+    var forAlert = empId + ", " + ename;
+
+    swal({
+        title: "Are you sure?",
+        text: "Your will not be able to recover " + forAlert + " Data!",
+        //text: forAlert,
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel plx!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    },
+        function (isConfirm) {
+            if (isConfirm) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/AP/DeleteDataByID",
+                    data: { id: id },
+                    success: function (data) {
+
+                        if (data.success) {
+
+                            if (data.Delete == "Delete") {
+                                var table = $('#myTable').DataTable();
+                                index = table.row('#' + id);
+                                var temp = table.row(index[0]).data();
+                                table.row(index[0]).remove().draw();
+
+                                progid.push(data.NextID);
+                                $("#Air_ID").val(progid);
+
+                                $('.ui-pnotify').remove();
+                                new PNotify({
+                                    title: 'DELETED!',
+                                    text: data.message,
+                                    type: 'error',
+                                    animation: 'slide',
+                                    delay: 3000,
+                                    top: "500px",
+                                    min_height: "16px",
+                                    animate_speed: 400,
+                                    text_escape: true,
+                                    //nonblock: {
+                                    //    nonblock: true,
+                                    //    nonblock_opacity: .1
+                                    //},
+                                    styling: 'bootstrap3',
+                                });
+                                swal("Deleted!", data.message, "success");
+                                setTimeout(function () {
+                                    swal.close();
+                                }, 1000);
+                            } else {
+                                swal("Error!", data.message, "error");
+                            }
+
+
+                        } else {
+                            swal("WARNING!", "You cannot delete this info / No Permission", "warning");
+
+                            //toastr.error(data.message, "Error",
+                            //    options = {
+                            //        "closeButton": true,
+                            //        "debug": false,
+                            //        "progressBar": true,
+                            //        "preventDuplicates": true,
+                            //        "positionClass": "toast-top-center",
+                            //        "onclick": null,
+                            //        "showDuration": "400",
+                            //        "hideDuration": "1000",
+                            //        "timeOut": "7000",
+                            //        "extendedTimeOut": "1000",
+                            //        "showEasing": "swing",
+                            //        "hideEasing": "linear",
+                            //        "showMethod": "fadeIn",
+                            //        "hideMethod": "fadeOut"
+                            //    });
+                        }
+                    }
+                });
+            }
+            else {
+                swal("Cancelled", "Your file is safe :)", "error");
+            }
         });
 
-        function getById(id) {
-        resetDatafromFrom();
+}
 
-            $.ajax({
-        type: "POST",
-                url: "/AP/GetDataById",
-                data: {id: id },
-                success: function (data) {
-                    if (data == "") {
-        swal("WARNING!", "You cannot edit this info / No Permission", "warning");
-                    }
-                    else {
-        $("#Air_ID").val(data[0].Air_ID);
-                        $("#Payable_Code").val(data[0].Payable_Code);
-                        $("#Payable_Code").prop('readonly', true);
+$("#btnUpdate").click(function (e) {
 
-                        $("#Payable_Supplier").val(data[0].Payable_Supplier);
-                        $("#Ticket_Commission").val(data[0].Ticket_Commission);
-                        $("#VAT").val(data[0].VAT);
-                        $("#Cat_ID").val(data[0].Cat_ID);
+    if ($("#myForm").valid()) {  //<<< I was missing this check
+        var oForm = document.forms["myForm"];
+        //var CourseType = $('#Course_Type option:selected').text();
 
-
-                        $("#btnSave").hide();
-                        $("#btnUpdate").show();
-
-                        $(".modal-title").text("Update Agent");
-                        $("#myModal").modal('show');
-                        $(".modal-header").addClass('bg-primary');
-                        $(".modal-header").removeClass('bg-success');
-                    }
-                }
-            });
-
-        }
-        function deleteById(id) {
-        progid = [];
-            var table = $('#myTable').DataTable();
-
-            var rowData = table.row("#" + id).data();
-
-            var empId = rowData[0];
-            var ename = rowData[1];
-            var forAlert = empId + ", " + ename;
-
-            swal({
-        title: "Are you sure?",
-                text: "Your will not be able to recover " + forAlert + " Data!",
-                //text: forAlert,
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "No, cancel plx!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            },
-                function (isConfirm) {
-                    if (isConfirm) {
-
-        $.ajax({
+        var ajaxConfig = {
             type: "POST",
-            url: "/AP/DeleteDataByID",
-            data: { id: id },
+            url: oForm.action,
+            data: new FormData(oForm),
+            success: function (data) {
+                if (data.success) {
+                    
+                    var table = $("#myTable").DataTable();
+
+                    $('#myModal').modal('hide');
+
+                    index = table.row('#' + oForm["Air_ID"].value); //1234126
+                    var temp = table.row(index[0]).data();
+
+                    temp[1] = oForm["Payable_Code"].value;
+                    temp[2] = oForm["Payable_Supplier"].value;
+                    temp[3] = oForm["Ticket_Commission"].value;
+                    temp[4] = oForm["VAT"].value;
+                    //temp[3] = '<label class="badge bg-success">AP</label>';
+
+                    table.row(index[0]).data(temp).draw();
+
+
+                    $('.ui-pnotify').remove();
+                    new PNotify({
+                        title: 'SUCCESS!',
+                        text: data.message,
+                        type: 'success',
+                        animation: 'slide',
+                        delay: 3000,
+                        top: "500px",
+                        min_height: "16px",
+                        animate_speed: 400,
+                        text_escape: true,
+                        //nonblock: {
+                        //    nonblock: true,
+                        //    nonblock_opacity: .1
+                        //},
+                        styling: 'bootstrap3',
+                    });
+                }
+                else {
+                    swal("Error!", data.message, "error");
+                }
+            }
+        }
+        if ($("form").attr('enctype') == "multipart/form-data") {
+            ajaxConfig["contentType"] = false,
+                ajaxConfig["processData"] = false;
+        }
+        $.ajax(ajaxConfig);
+        return false;
+    }
+
+});
+var progid = [];
+$("#btnSave").click(function () {
+    progid = [];
+    var oForm = document.forms["myForm"];
+
+    if ($("#myForm").valid()) {  //<<< I was missing this check
+        var table = $("#myTable").DataTable();
+
+        var ajaxConfig = {
+            type: "POST",
+            url: oForm.action,
+            data: new FormData(oForm),
             success: function (data) {
 
                 if (data.success) {
+                    $('#myModal').modal('hide');
+                    var rowIndex = table.row.add([
+                        '<button onclick="getById(this.id)" id="' + oForm["Air_ID"].value + '" class="btn btn-primary btn-sm">Edit</button> <button id="' + oForm["Air_ID"].value + '" class="btn btn-danger btn-sm" onclick = "deleteById(id)" > Delete</button > ',
+                        oForm["Payable_Code"].value,
+                        oForm["Payable_Supplier"].value,
+                        oForm["Ticket_Commission"].value,
+                        oForm["VAT"].value,
+                        '<label class="badge bg-success">AP</label>'
+                    ]).draw(false);
 
-                    if (data.Delete == "Delete") {
-                        var table = $('#myTable').DataTable();
-                        index = table.row('#' + id);
-                        var temp = table.row(index[0]).data();
-                        table.row(index[0]).remove().draw();
+                    var row = $('#myTable').dataTable().fnGetNodes(rowIndex);
+                    $(row).attr('id', oForm["Air_ID"].value);
 
-                        progid.push(data.NextID);
-                        $("#Air_ID").val(progid);
+                    progid.push(data.NextID);
+                    $("#Air_ID").val(progid);
 
-                        $('.ui-pnotify').remove();
-                        new PNotify({
-                            title: 'DELETED!',
-                            text: data.message,
-                            type: 'error',
-                            animation: 'slide',
-                            delay: 3000,
-                            top: "500px",
-                            min_height: "16px",
-                            animate_speed: 400,
-                            text_escape: true,
-                            //nonblock: {
-                            //    nonblock: true,
-                            //    nonblock_opacity: .1
-                            //},
-                            styling: 'bootstrap3',
-                        });
-                        swal("Deleted!", data.message, "success");
-                        setTimeout(function () {
-                            swal.close();
-                        }, 1000);
-                    } else {
-                        swal("Error!", data.message, "error");
-                    }
-
-
-                } else {
-                    swal("WARNING!", "You cannot delete this info / No Permission", "warning");
-
-                    //toastr.error(data.message, "Error",
-                    //    options = {
-                    //        "closeButton": true,
-                    //        "debug": false,
-                    //        "progressBar": true,
-                    //        "preventDuplicates": true,
-                    //        "positionClass": "toast-top-center",
-                    //        "onclick": null,
-                    //        "showDuration": "400",
-                    //        "hideDuration": "1000",
-                    //        "timeOut": "7000",
-                    //        "extendedTimeOut": "1000",
-                    //        "showEasing": "swing",
-                    //        "hideEasing": "linear",
-                    //        "showMethod": "fadeIn",
-                    //        "hideMethod": "fadeOut"
-                    //    });
+                    $('.ui-pnotify').remove();
+                    new PNotify({
+                        title: 'SUCCESS!',
+                        text: data.message,
+                        type: 'success',
+                        animation: 'slide',
+                        delay: 3000,
+                        top: "500px",
+                        min_height: "16px",
+                        animate_speed: 400,
+                        text_escape: true,
+                        //nonblock: {
+                        //    nonblock: true,
+                        //    nonblock_opacity: .1
+                        //},
+                        styling: 'bootstrap3',
+                    });
+                }
+                else {
+                    swal("Error!", data.message, "error");
                 }
             }
-        });
-                    }
-                    else {
-        swal("Cancelled", "Your file is safe :)", "error");
-                    }
-                });
-
         }
-
-        $("#btnUpdate").click(function (e) {
-
-            if ($("#myForm").valid()) {  //<<< I was missing this check
-                var oForm = document.forms["myForm"];
-                //var CourseType = $('#Course_Type option:selected').text();
-
-                var ajaxConfig = {
-        type: "POST",
-                    url: oForm.action,
-                    data: new FormData(oForm),
-                    success: function (data) {
-                        if (data.success) {
-                            var table = $("#myTable").DataTable();
-
-                            $('#myModal').modal('hide');
-
-                            index = table.row('#' + oForm["Air_ID"].value); //1234126
-                            var temp = table.row(index[0]).data();
-
-                            temp[0] = oForm["Payable_Code"].value;
-                            temp[1] = oForm["Payable_Supplier"].value;
-                            temp[2] = oForm["Ticket_Commission"].value;
-                            temp[3] = oForm["VAT"].value;
-                            //temp[3] = '<label class="badge bg-success">AP</label>';
-
-                            table.row(index[0]).data(temp).draw();
-
-
-                            $('.ui-pnotify').remove();
-                            new PNotify({
-        title: 'SUCCESS!',
-                                text: data.message,
-                                type: 'success',
-                                animation: 'slide',
-                                delay: 3000,
-                                top: "500px",
-                                min_height: "16px",
-                                animate_speed: 400,
-                                text_escape: true,
-                                //nonblock: {
-        //    nonblock: true,
-        //    nonblock_opacity: .1
-        //},
-        styling: 'bootstrap3',
-                            });
-                        }
-                        else {
-        swal("Error!", data.message, "error");
-                        }
-                    }
-                }
-                if ($("form").attr('enctype') == "multipart/form-data") {
-        ajaxConfig["contentType"] = false,
-        ajaxConfig["processData"] = false;
-                }
-                $.ajax(ajaxConfig);
-                return false;
-            }
-
-        });
-        var progid = [];
-        $("#btnSave").click(function () {
-        progid = [];
-            var oForm = document.forms["myForm"];
-
-            if ($("#myForm").valid()) {  //<<< I was missing this check
-                var table = $("#myTable").DataTable();
-
-                var ajaxConfig = {
-        type: "POST",
-                    url: oForm.action,
-                    data: new FormData(oForm),
-                    success: function (data) {
-
-                        if (data.success) {
-        $('#myModal').modal('hide');
-                            var rowIndex = table.row.add([
-                                oForm["Payable_Code"].value,
-                                oForm["Payable_Supplier"].value,
-                                oForm["Ticket_Commission"].value,
-                                oForm["VAT"].value,
-                                '<label class="badge bg-success">AP</label>',
-                                '<button onclick="getById(this.id)" id="' + oForm[" Air_ID"].value + '" class="btn btn-primary btn-sm">Edit</button> <button id="' + oForm[" Air_ID"].value + '" class="btn btn-danger btn-sm" onclick = "deleteById(id)" > Delete</button > '
-                            ]).draw(false);
-
-var row = $('#myTable').dataTable().fnGetNodes(rowIndex);
-$(row).attr('id', oForm["Air_ID"].value);
-
-progid.push(data.NextID);
-$("#Air_ID").val(progid);
-
-$('.ui-pnotify').remove();
-new PNotify({
-    title: 'SUCCESS!',
-    text: data.message,
-    type: 'success',
-    animation: 'slide',
-    delay: 3000,
-    top: "500px",
-    min_height: "16px",
-    animate_speed: 400,
-    text_escape: true,
-    //nonblock: {
-    //    nonblock: true,
-    //    nonblock_opacity: .1
-    //},
-    styling: 'bootstrap3',
+        if ($("form").attr('enctype') == "multipart/form-data") {
+            ajaxConfig["contentType"] = false,
+                ajaxConfig["processData"] = false;
+        }
+        $.ajax(ajaxConfig);
+        return false;
+    }
 });
-                        }
-                        else {
-    swal("Error!", data.message, "error");
-}
-                    }
-                }
-if ($("form").attr('enctype') == "multipart/form-data") {
-    ajaxConfig["contentType"] = false,
-        ajaxConfig["processData"] = false;
-}
-$.ajax(ajaxConfig);
-return false;
-            }
-        });
 
 function resetDatafromFrom() {
     // $("#ImagePreview").attr('src', '/AdminAssets/dist/img/avatar5.png');//e.target.result);
@@ -351,10 +352,10 @@ $(function () {
             info: false
         },
 
-        //"order": [0, "asc"],
-        // "orderable": false,
+        order: [1, "asc"],
         "columnDefs": [
-            { "targets": [5], "orderable": false }
+            { "targets": [0], "orderable": false, width: 150 },
+            { "targets": [5], "orderable": false },
         ],
         //dom: 'lBfrtip',
         language: {
@@ -399,4 +400,3 @@ $(function () {
     //});
 });
 
- 

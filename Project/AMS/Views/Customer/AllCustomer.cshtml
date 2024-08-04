@@ -7,6 +7,7 @@
 <table id="myTable" class="table table-bordered table-hover">
     <thead>
         <tr>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.Lookup)
             </th>
@@ -40,7 +41,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Fax)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -49,6 +49,10 @@
             foreach (var item in Model)
             {
                 <tr id="@item.Cust_ID">
+                    <td>
+                        <button onclick="getById(this.id)" id="@item.Cust_ID" class="btn btn-primary">Edit</button>
+                        <button onclick="deleteById(this.id)" id="@item.Cust_ID" class="btn btn-danger">Delete</button>
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Lookup)
                     </td>
@@ -82,10 +86,6 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Fax)
-                    </td>
-                    <td>
-                        <button onclick="getById(this.id)" id="@item.Cust_ID" class="btn btn-primary">Edit</button>
-                        <button onclick="deleteById(this.id)" id="@item.Cust_ID" class="btn btn-danger">Delete</button>
                     </td>
                 </tr>
                 counter++;

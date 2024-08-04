@@ -51,8 +51,8 @@ function deleteById(id) {
 
     var rowData = table.row("#" + id).data();
 
-    var empId = rowData[0];
-    var ename = rowData[1];
+    var empId = rowData[1];
+    var ename = rowData[2];
     var forAlert = empId + ", " + ename;
 
     swal({
@@ -164,8 +164,8 @@ $("#btnUpdate").click(function (e) {
                     index = table.row('#' + oForm["Exp_Code"].value); //1234126
                     var temp = table.row(index[0]).data();
 
-                    temp[0] = oForm["Account"].value;
-                    temp[1] = oForm["Contact_Name"].value;
+                    temp[1] = oForm["Account"].value;
+                    temp[2] = oForm["Contact_Name"].value;
 
                     table.row(index[0]).data(temp).draw();
 
@@ -219,10 +219,10 @@ $("#btnSave").click(function () {
                 if (data.success) {
                     $('#myModal').modal('hide');
                     var rowIndex = table.row.add([
+                        '<button onclick="getById(this.id)" id="' + oForm["Exp_Code"].value + '" class="btn btn-primary btn-sm">Edit</button> <button id="' + oForm["Exp_Code"].value + '" class="btn btn-danger btn-sm" onclick = "deleteById(id)" > Delete</button > ',
                         oForm["Account"].value,
                         oForm["Contact_Name"].value,
                         '<label class="badge bg-info">Daily Expenses</label>',
-                        '<button onclick="getById(this.id)" id="' + oForm["Exp_Code"].value + '" class="btn btn-primary btn-sm">Edit</button> <button id="' + oForm["Exp_Code"].value + '" class="btn btn-danger btn-sm" onclick = "deleteById(id)" > Delete</button > '
                     ]).draw(false);
 
                     var row = $('#myTable').dataTable().fnGetNodes(rowIndex);
@@ -335,9 +335,10 @@ $(function () {
             info: false
         },
 
-        //"order": [0, "asc"],
+        "order": [1, "asc"],
         // "orderable": false,
         "columnDefs": [
+            { "targets": [0], "orderable": false, width:150 },
             { "targets": [3], "orderable": false }
         ],
         //dom: 'lBfrtip',

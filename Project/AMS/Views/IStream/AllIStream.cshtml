@@ -7,6 +7,7 @@
 <table id="myTable" class="table table-bordered table-hover">
     <thead>
         <tr>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.Stream_ID)
             </th>
@@ -17,7 +18,7 @@
                 @Html.DisplayNameFor(model => model.Stream_Status)
             </th>
 
-            <th></th>
+
         </tr>
     </thead>
     <tbody>
@@ -26,6 +27,10 @@
             foreach (var item in Model)
             {
                 <tr id="@item.Stream_ID">
+                    <td>
+                        <button onclick="getById(this.id)" id="@item.Stream_ID" class="btn btn-primary btn-sm">Edit</button>
+                        <button onclick="deleteById(this.id)" id="@item.Stream_ID" class="btn btn-danger btn-sm">Delete</button>
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Stream_ID)
                     </td>
@@ -44,10 +49,7 @@
                             }
                         }
                     </td>
-                    <td>
-                        <button onclick="getById(this.id)" id="@item.Stream_ID" class="btn btn-primary btn-sm">Edit</button>
-                        <button onclick="deleteById(this.id)" id="@item.Stream_ID" class="btn btn-danger btn-sm">Delete</button>
-                    </td>
+
                 </tr>
                 counter++;
             }
